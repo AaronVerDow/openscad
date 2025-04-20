@@ -113,7 +113,7 @@ mkDerivation rec {
       "-DCMAKE_CXX_STANDARD=17"
     ];
 
-  enableParallelBuilding = true;
+  # enableParallelBuilding = true;
 
   preBuild = ''
   '';

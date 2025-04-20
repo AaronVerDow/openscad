@@ -13,5 +13,9 @@
       };
 
       defaultPackage.${system} = self.packages.${system}.openscad;
+
+      devShells.${system}.default = pkgs.mkShell {
+        nativeBuildInputs = [ self.packages.${system}.openscad ];
+      };
     };
 }
