@@ -11,7 +11,6 @@ Coding style highlights:
 * Use 2 spaces for indentation
 * Use C++11 functionality where applicable. Please read [Scott Meyer's Effective Modern C++](https://shop.oreilly.com/product/0636920033707.do) for a good primer on modern C++ style and features.
 
-
 ## Beautifying code
 
 Code to be committed can be beautified by installing [uncrustify](https://github.com/uncrustify/uncrustify) and running
@@ -22,7 +21,7 @@ Alternatively, it's possible to beautify the entire codebase by running `scripts
 * You're bringing an old branch to life and want to minimize conflict cause by the large coding style update.
 
 **Note:** Uncrustify is in heavy development and tends to introduce breaking changes from time to time.
-OpenSCAD has been tested against uncrustify commit a05edf605a5b1ea69ac36918de563d4acf7f31fb (Dec 24 2017).
+OpenSCAD has been tested against uncrustify commit `a05edf605a5b1ea69ac36918de563d4acf7f31fb` (Dec 24 2017).
 
 # Compiling
 
@@ -79,22 +78,21 @@ To enable this feature, add `-DOPENSCAD_UPLOAD_TESTS=1` to `cmake`
 
 ## Adding a new test
 
-* create a test file at an appropriate location under tests/data/
-* if the test is non-obvious, create a human readable description as comments in the test (or in another file in the same directory in case the file isn't human readable)
-* if a new test app was written, this must be added to tests/CMakeLists.txt
-* Add the tests to the test apps for which you want them to run (in tests/CMakeLists.txt)
-* rebuild the test environment
-* run the test with the environment variable `TEST_GENERATE=1`, e.g.: `TEST_GENERATE=1 ctest -R mytest` (this will generate a mytest-expected.txt file which is used for regression testing)
-* manually verify that the output is correct (tests/regression/<testapp>/mytest-expected.<suffix>)
-* run the test normally and verify that it passes: `ctest -R mytest`
+* Create a test file at an appropriate location under `tests/data/`
+* If the test is non-obvious, create a human readable description as comments in the test, or in another file in the same directory in case the file isn't human readable.
+* If a new test app was written, this must be added to `tests/CMakeLists.txt`
+* Rebuild the test environment.
+* Run the test with the environment variable `TEST_GENERATE=1`, e.g.: `TEST_GENERATE=1 ctest -R mytest` (this will generate a `mytest-expected.txt` file which is used for regression testing.)
+* Manually verify that the output is correct: `tests/regression/<testapp>/mytest-expected.<suffix>`
+* Run the test normally and verify that it passes: `ctest -R mytest`
 
 ## Adding a new example
 
 This is almost the same as adding a new regression test:
-* Create the example under examples/
-* run the test with the environment variable `TEST_GENERATE=1`, e.g.: `$ TEST_GENERATE=1 ctest -C Examples -R exampleNNN` (this will generate a exampleNNN-expected.txt file which is used for regression testing)
-* manually verify that the output is correct (tests/regression/<testapp>/exampleNNN.<suffix>)
-* run the test normally and verify that it passes: `$ ctest -C Examples -R exampleNNN`
+* Create the example under `examples/`
+* Run the test with the environment variable `TEST_GENERATE=1`, e.g.: `$ TEST_GENERATE=1 ctest -C Examples -R exampleNNN` (this will generate a exampleNNN-expected.txt file which is used for regression testing)
+* Manually verify that the output is correct: `tests/regression/<testapp>/exampleNNN.<suffix>`
+* Run the test normally and verify that it passes: `ctest -C Examples -R exampleNNN`
 
 ## Troubleshooting:
 
