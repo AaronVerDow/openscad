@@ -1,0 +1,18 @@
+* structure.md
+  * https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Building_OpenSCAD_from_Sources
+* compile_linux.md
+  * https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Building_on_Linux/UNIX
+* cross_compiling.md
+  * https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Cross-compiling_for_Windows_on_Linux_or_Mac_OS_X
+* compiling_windows.md
+  * https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Building_on_Windows
+  * https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Building_on_Microsoft_Windows
+* compiling_macos.md
+  * https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Building_on_Mac_OS_X
+* contributing.md
+  * https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Submitting_patches
+  * doc/hacking.md
+* testing.md
+  * doc/testing.md
+* translations.md
+  * doc/translation.txt
