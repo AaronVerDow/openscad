@@ -96,6 +96,8 @@ Take care that you don't have old local copies anywhere (`/usr/local/`).
 If all dependencies are present and of a high enough version, skip ahead 
 to the Compilation instructions. 
 
+__Note:__ These scripts are likely to fail on Sun, Solaris, AIX, IRIX, etc (skip to the 'building dependencies' section below).
+
 ## Building for Linux/BSD on systems with older or missing dependencies
 
 If some of your system dependency libraries are missing or old, then you 
@@ -115,7 +117,11 @@ build, again check dependencies.
 
     ./scripts/check-dependencies.sh
 
-After that, follow the Compilation instructions below.
+
+(If you only need CGAL or OpenCSG, you can just run ' ./scripts/uni-build-dependencies.sh cgal' or opencsg and it builds only a single library.)
+
+After completion, return to the section above on 'verifying dependencies' to see if they installed correctly, then follow the Compilation instructions below.
+
 
 ## Building on Nix
 
