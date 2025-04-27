@@ -35,26 +35,27 @@ OpenSCAD has been tested against uncrustify commit `a05edf605a5b1ea69ac36918de56
    * External editor modes
    * Add to RELEASE_NOTES.md
 
+# Pre-Release Checklist
+
+* [ ] Update translations:
+  * [ ] Send emails to translation managers, see [.po files](https://github.com/openscad/openscad/tree/master/locale)
+* [ ] Update resources/html/AboutDialog.html with new contributors etc.
+* [ ] Merge MCAD
+  * [ ] In MCAD clone:
+
+        $ git fetch upstream
+        $ git merge upstream/master
+        $ git push
+
+  * [ ] In OpenSCAD: (See bottom of this file for how to build release binaries)
+
+        $ cd libraries/MCAD
+        $ git pull
+        $ cd ../..
+        $ git commit -m "Updated MCAD" libraries/MCAD
+        $ git push
+
 # Release Checklist
-
-* [ ] Pre-release preparations
-  * [ ] Update translations:
-    * [ ] Send emails to translation managers, see [.po files](https://github.com/openscad/openscad/tree/master/locale)
-  * [ ] Update resources/html/AboutDialog.html with new contributors etc.
-  * [ ] Merge MCAD
-    * [ ] In MCAD clone:
-
-          $ git fetch upstream
-          $ git merge upstream/master
-          $ git push
-
-    * [ ] In OpenSCAD: (See bottom of this file for how to build release binaries)
-
-          $ cd libraries/MCAD
-          $ git pull
-          $ cd ../..
-          $ git commit -m "Updated MCAD" libraries/MCAD
-          $ git push
 
 * [ ] Update manpage: doc/openscad.1
 * [ ] Update releases/$VERSION.md
@@ -79,10 +80,9 @@ OpenSCAD has been tested against uncrustify commit `a05edf605a5b1ea69ac36918de56
       scp openscad-$VERSION.src.tar.gz openscad@files.openscad.org:www
 
 * [ ] Build binaries for all platforms and wait for upload
-* [ ] Announce:
 * [ ] ./scripts/github-release.sh $VERSION
 * [ ] Write release email/blog entry
-* [ ] Update web page
+* [ ] Update web page:
   * [ ] news.html
   * [ ] inc/src_release_links.js
 * [ ] Update external resources:
@@ -102,22 +102,26 @@ OpenSCAD has been tested against uncrustify commit `a05edf605a5b1ea69ac36918de56
 
 ## Build and Upload Release Binaries
 
-    $ tar xzf openscad-$VERSION.src.tar.gz
-    $ cd openscad-$VERSION
+    tar xzf openscad-$VERSION.src.tar.gz
+    cd openscad-$VERSION
 
-Mac OS X:
+### Mac OS X:
 
-    $ ./scripts/publish-macosx.sh -> OpenSCAD-$VERSION.dmg
+    ./scripts/publish-macosx.sh -> OpenSCAD-$VERSION.dmg
 
-Linux:
-    32-bit: run on a 32-bit machine or VM
-    64-bit: run on a 64-bit machine or VM
+### Linux:
 
-    $ ./scripts/release-common.sh -> openscad-$VERSION.x86-ARCH.tar.gz
-    (where ARCH will be detected and set to 32 or 64)
-    $ scp openscad-$VERSION.x86-ARCH.tar.gz openscad@files.openscad.org:www
-    o Update web page with download links
+* 32-bit: run on a 32-bit machine or VM
+* 64-bit: run on a 64-bit machine or VM
 
-Windows mingw cross-build:
+* Where ARCH will be detected and set to 32 or 64:
 
-FIXME: Adapt scripts/builder.sh to build release binaries
+      ./scripts/release-common.sh -> openscad-$VERSION.x86-ARCH.tar.gz
+
+* Update web page with download links
+
+      scp openscad-$VERSION.x86-ARCH.tar.gz openscad@files.openscad.org:www
+
+### Windows mingw cross-build:
+
+__FIXME:__ Adapt scripts/builder.sh to build release binaries
