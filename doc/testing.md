@@ -1,5 +1,49 @@
 # Testing
 
+## Running containerized GitHub CI workflows locally
+
+*   Install [circleci-cli](https://circleci.com/docs/2.0/local-cli/) (you'll need an API key)
+
+    *Note*: we also use GitHub Workflows, but only to run tests on Windows (which we cross-build for in the Linux-based CircleCI workflows below). Also, [act](https://github.com/nektos/act) doesn't like our submodule setup anyway.
+
+*   Run the CI jobs
+
+	```bash
+	# When "successful", these will fail to upload at the very end of the workflow.
+	circleci local execute --job  openscad-mxe-64bit
+	circleci local execute --job  openscad-mxe-32bit
+	circleci local execute --job  openscad-appimage-64bit
+	```
+
+	*Note*: openscad-macos can't be built locally.
+
+*   If/when GCC gets randomly killed, give docker more RAM (e.g. 4GB per concurrent image you plan to run)
+
+*   To debug the jobs more interactively, you can go the manual route (inspect .circleci/config.yml to get the actual docker image you need)
+
+	```bash
+	docker run --entrypoint=/bin/bash -it openscad/mxe-x86_64-gui:latest
+	```
+
+	Then once you get the console:
+	
+	```bash
+	git clone https://github.com/%your username%/openscad.git workspace
+	cd workspace
+	git checkout %your branch%
+	git submodule init
+	git submodule update
+
+	# Then execute the commands from .circleci/config.yml:
+	#    export NUMCPU=2
+	#    ...
+	#    ./scripts/release-common.sh -snapshot -mingw64 -v "$OPENSCAD_VERSION"
+	```
+
+## Running GitHub CI workflows locally
+
+Add stuff
+
 ## Prerequisites
 
 Install the prerequisite helper programs on your system:
