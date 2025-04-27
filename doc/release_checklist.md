@@ -88,3 +88,36 @@
 ### Windows mingw cross-build:
 
 __FIXME:__ Adapt scripts/builder.sh to build release binaries
+
+# Patch Checklist
+
+Given: VERSION (e.g. 2015.03-1)
+
+* [ ] Make sure we have a $VERSION branch. If not, create one
+* [ ] Update releases/$VERSION.md
+* [ ] scripts/makereleasenotes.sh
+* [ ] Update VERSION and VERSIONDATE in
+  * [ ] openscad.pro
+  * [ ] scripts/publish-macosx.sh
+  * [ ] scripts/release-common.sh
+  * [ ] scripts/publish-mingw-x.sh
+  * [ ] tests/CMakeLists.txt
+  
+* [ ] git tag "openscad-$VERSION"
+* [ ] ./scripts/git-archive-all.py --prefix=openscad-$VERSION/ openscad-$VERSION.src.tar.gz
+* [ ] git push --tags
+* [ ] Upload Source package
+
+      scp openscad-$VERSION.src.tar.gz openscad@files.openscad.org:www
+
+* [ ] Revert VERSION and VERSIONDATE in openscad.pro scripts/publish-macosx.sh scripts/release-common.sh scripts/publish-mingw-x.sh tests/CMakeLists.txt
+* [ ] Write short release email to mailing list
+* [ ] Tweet as OpenSCAD
+* [ ] Notify package managers
+  * [ ] Debian/Ubuntu: https://launchpad.net/~chrysn
+  * [ ] Ubuntu PPA: https://github.com/hyperair
+  * [ ] Fedora: Miro Hrončok <miro@hroncok.cz> or <mhroncok@redhat.com>
+  * [ ] OpenSUSE: Pavol Rusnak <prusnak@opensuse.org>
+  * [ ] Arch Linux: Kyle Keen <keenerd@gmail.com>
+  * [ ] MacPorts: https://svn.macports.org/repository/macports/trunk/dports/science/openscad/Portfile
+  * [ ] Homebrew: https://github.com/caskroom/homebrew-cask/blob/master/Casks/openscad.rb
