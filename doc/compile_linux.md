@@ -9,17 +9,17 @@ There is also a generic linux binary package at http://www.openscad.org that can
 see https://build.opensuse.org/package/show/home:t-paul/OpenSCAD
 
 ## chrysn's Ubuntu packages
-For Ubuntu systems you can also try [https://launchpad.net/~chrysn/+archive/openscad launchpad PPA](chrysn's Ubuntu packages) at his PPA, or you can just copy/paste the following onto the command line: 
+For Ubuntu systems you can also try [chrysn's Ubuntu packages](https://launchpad.net/~chrysn/+archive/openscad) at his launchpad PPA, or run:
 
-```
-sudo add-apt-repository ppa:chrysn/openscad
-sudo apt-get update
-sudo apt-get install openscad
-```
+    sudo add-apt-repository ppa:chrysn/openscad
+    sudo apt-get update
+    sudo apt-get install openscad
 
-His repositories for OpenSCAD and OpenCSG are [http://archive.amsuess.com/pool/contrib/o/openscad/ here] and [http://archive.amsuess.com/pool/main/o/opencsg/ here]. 
+Repositories for
+* [OpenSCAD](http://archive.amsuess.com/pool/contrib/o/openscad/) 
+* [OpenCSG](http://archive.amsuess.com/pool/main/o/opencsg/)
 
-== Building OpenSCAD yourself ==
+## Building OpenSCAD yourself
 
 If you wish to build OpenSCAD for yourself, start by installing '''''git''''' on your system using your package manager. Git is sometimes packaged under the name 'scmgit' or 'git-core'. Then, use git to download the OpenSCAD source code
 
