@@ -34,20 +34,12 @@ STL and OFF file formats.
 
 - [Getting Started](#getting-started)
 - [Documentation](#documentation)
-    - [Building OpenSCAD](#building-openscad)
-        - [Prerequisites](#prerequisites)
-        - [Getting the source code](#getting-the-source-code)
-        - [Building for macOS](#building-for-macos)
-        - [Building for Linux/BSD](#building-for-linuxbsd)
-        - [Building for Linux/BSD on systems with older or missing dependencies](#building-for-linuxbsd-on-systems-with-older-or-missing-dependencies)
-        - [Building for Windows](#building-for-windows)
-        - [Compilation](#compilation)
+
+# Install
+
+You can download the latest binaries of OpenSCAD at <https://www.openscad.org/downloads.html>. Install binaries as you would any other software.
 
 # Getting started
-
-You can download the latest binaries of OpenSCAD at
-<https://www.openscad.org/downloads.html>. Install binaries as you would any other
-software.
 
 When you open OpenSCAD, you'll see three frames within the window. The
 left frame is where you'll write code to model 3D objects. The right
@@ -84,4 +76,29 @@ Manual](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual).
 
 # Documentation
 
-Have a look at the OpenSCAD Homepage (https://www.openscad.org/documentation.html) for documentation.
+Documentation on the use of OpenSCAD can be accessed through the [OpenSCAD Homepage.](https://www.openscad.org/documentation.html)
+
+Doucmentation on development is stored [within this repository.](./doc/gitbook/SUMMARY.md)
+
+# Compiling
+
+    git clone https://github.com/openscad/openscad.git
+    cd openscad
+    git submodule update --init --recursive
+    cmake -B build -DEXPERIMENTAL=1
+    cmake --build build
+
+Full instructions, helper scripts for installing dependencies, and additional instructions for various platforms are available [here](./doc/gitbook/COMPILE.md)
+
+# Testing
+
+Test changes by running:
+
+    cd build/
+    ctest
+
+See [this page](./doc/gitbook/TESTING.md) for additional instructions.
+
+# Contributing
+
+Contributions are welcome! Please take a look at the [style guide](./doc/gitbook/CONTRIBUTING.md), and test all changes.
