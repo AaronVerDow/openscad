@@ -1,7 +1,3 @@
-# Contributing
-
-This is a quick reference for contributing, see [Building OpenSCAD from Sources](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Building_OpenSCAD_from_Sources) in the wiki book for more detailed information.
-
 # Style Guide
 
 The OpenSCAD coding style is encoded in `.uncrustify.cfg`.
