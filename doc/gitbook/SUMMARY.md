@@ -4,6 +4,7 @@
 * [Structure](structure.md)
 * [Compiling](compiling.md)
   * [Linux](compile_linux.md)
+  * [Windows](compile_windows.md)
   * [Cross Compiling](cross_compiling.md)
 * [Testing](testing.md)
 * [Contributing](contributing.md)

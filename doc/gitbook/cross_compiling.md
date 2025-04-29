@@ -1,3 +1,33 @@
+
+## Building for Windows
+
+OpenSCAD for Windows is usually cross-compiled from Linux. If you wish to
+attempt an MSVC build on Windows, please see this site:
+https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Building_on_Windows
+
+To cross-build, first make sure that you have all necessary dependencies 
+of the MXE project ( listed at https://mxe.cc/#requirements ). Don't install
+MXE itself, the scripts below will do that for you under `$HOME/openscad_deps/mxe`
+
+Then get your development tools installed to get GCC. Then after you've 
+cloned this git repository, start a new clean bash shell and run the 
+script that sets up the environment variables.
+
+    source ./scripts/setenv-mingw-xbuild.sh 64
+
+Then run the script to download & compile all the prerequisite libraries above:
+
+    ./scripts/mingw-x-build-dependencies.sh 64
+
+Note that this process can take several hours, and tens of gigabytes of 
+disk space, as it uses the [https://mxe.cc](https://mxe.cc) system to cross-build many
+libraries. After it is complete, build OpenSCAD and package it to an 
+installer:
+
+    ./scripts/release-common.sh mingw64
+
+For a 32-bit Windows cross-build, replace 64 with 32 in the above instructions. 
+
 # Cross Compiling
 
 OpenSCAD includes convenience scripts to cross-build Windows installer binaries using the [MXE system](http://mxe.cc). If you wish to use them, you can first install the [MXE Requirements](http://mxe.cc/#requirements) such as cmake, perl, scons, using your system's package manager. Then you can perform the following commands to download OpenSCAD source and build a windows installer:
