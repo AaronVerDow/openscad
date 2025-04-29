@@ -227,11 +227,11 @@ Create and install a clean package:
 
     sudo checkinstall -D make install
 
-# CGAL didn't automatically build
+## CGAL didn't automatically build
 
 If this happens, you can try to compile CGAL yourself. It is recommended to install to $HOME/openscad_deps and otherwise follow the build process as outlined above. 
 
-# Compiling fails with an Internal compiler error from GCC or GAS
+## Compiling fails with an Internal compiler error from GCC or GAS
 
 This can happen if you run out of virtual memory, which means all of physical RAM as well as virtual swap space from the disk. See below under "horribly slow" for reasons. If you are non-root, there are a few things you can try. The first is to use the 'clang' compiler, as it uses much less RAM than gcc. The second thing is to edit the Makefile and remove the '-g' and '-pipe' flags from the compiler flags section.
 
