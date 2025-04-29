@@ -110,9 +110,9 @@ Use `scripts/shell.nix` for incremental builds during development and testing.
 
 The final results will not be portable, but this is a good way to run incremental builds and test locally. __Running install is not recommended.__
 
-To create a Nix package, see [nixpgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/graphics/openscad/default.nix) for the Qt5 release, or [this gist](https://gist.github.com/AaronVerDow/b945a96dbcf35edfc13f543662966534) for a more up to date Qt6 pacakge.
-
 Continue with [compilation](#compilation).
+
+To create a Nix package, see [nixpgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/graphics/openscad/default.nix) for the Qt5 release, or [this gist](https://gist.github.com/AaronVerDow/b945a96dbcf35edfc13f543662966534) for a more up to date Qt6 pacakge.
 
 ## Sun / Solaris / IllumOS / AIX / IRIX / Minix / etc
 
