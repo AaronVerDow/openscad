@@ -52,7 +52,7 @@ To pull the various submodules (incl. the [MCAD library](https://github.com/open
 
 # Build
 
-## Linux/BSD
+## Linux
 
 First, make sure that you have git installed (often packaged as 'git-core' 
 or 'scmgit'). Once you've cloned this git repository, download and install 
@@ -71,9 +71,11 @@ Take care that you don't have old local copies anywhere (`/usr/local/`).
 If all dependencies are present and of a high enough version, skip ahead 
 to the Compilation instructions. 
 
-__Note:__ These scripts are likely to fail on Sun, Solaris, AIX, IRIX, etc (skip to the 'building dependencies' section below).
+If there are missing dependencies, use the BSD section below.
 
-## BSD/Missing Dependencies
+Continue with [compilation](#compilation).
+
+## BSD
 
 This section is for BSD or Linux with missing dependencies.  It will download and build newer versions of dependencies into `$HOME/openscad_deps`.
 
@@ -97,6 +99,8 @@ build, again check dependencies.
 
 On OpenBSD it may fail to build after running out of RAM. OpenSCAD requires at least 1 Gigabyte to build with GCC. You may have need to be a user with 'staff' level access or otherwise alter required system parameters. The 'dependency build' sequence has also not been ported to OpenBSD so you must rely on the standard OpenBSD system package tools (in other words you have to have root).
 
+Continue with [compilation](#compilation).
+
 ## Nix
 
 Use `scripts/shell.nix` for incremental builds during development and testing.
@@ -108,6 +112,8 @@ The final results will not be portable, but this is a good way to run incrementa
 
 To create a Nix package, see [nixpgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/graphics/openscad/default.nix) for the Qt5 release, or [this gist](https://gist.github.com/AaronVerDow/b945a96dbcf35edfc13f543662966534) for a more up to date Qt6 pacakge.
 
+Continue with [compilation](#compilation).
+
 ## Sun / Solaris / IllumOS / AIX / IRIX / Minix / etc
 
 The OpenSCAD dependency builds have been mainly focused on Linux and BSD systems like Debian or FreeBSD. The 'helper scripts' are likely to fail on other types of Un*x. Furthermore the OpenSCAD build system files (qmake .pro files for the GUI, cmake CMakeFiles.txt for the test suite) have not been tested thoroughly on non-Linux non-BSD systems. Extensive work may be required to get a working build on such systems.
@@ -115,7 +121,7 @@ The OpenSCAD dependency builds have been mainly focused on Linux and BSD systems
 
 ## Mac
 
-### Requirements
+Requirements:
 
 * Xcode
 * Homebrew packages:
@@ -127,24 +133,18 @@ The OpenSCAD dependency builds have been mainly focused on Linux and BSD systems
     * meson
     * python-packaging
 
-### Install with Homebrew
-
-This assumes [Homebrew](https://brew.sh/) is already installed.
+Automatically install all dpendencies using [Homebrew](https://brew.sh/):
 
     ./scripts/macosx-build-homebrew.sh
 
-### Install from Source
-
-Run the script that sets up the environment variables:
+Or, build depednencies from source:
 
     source scripts/setenv-macos.sh
-
-Then run the script to compile all the dependencies:
-
     ./scripts/macosx-build-dependencies.sh
 
+Continue with [compilation](#compilation).
 
-## Windows
+## Cross Compile for Windows
 
 To cross-build, first make sure that you have all necessary dependencies 
 of the MXE project ( listed at https://mxe.cc/#requirements ). Don't install
@@ -209,6 +209,7 @@ This can take a few hours, because it has to build things like gcc, qt, and boos
 Optional: If you want to build an installer, you need to install the nullsoft installer system. It should be in your package manager, called "nsis".
 
 ### Build OpenSCAD
+
 Now that all the requirements have been met, all that remains is to build OpenSCAD itself. Open a terminal window and enter:
 
     git clone git://github.com/openscad/openscad.git
@@ -240,74 +241,54 @@ Note that as of early 2013, OpenSCAD's `scripts/release-common.sh` automatically
 
 ## Build On Windows
 
-### Set up tools and dependencies
-
 Download [64-bit MSYS2](https://www.msys2.org)
 
 Install per instructions, including the install-time upgrades (`pacman -Syu`, `-Su`).  Installing development components is not necessary at this point. 
 
-### Install OpenSCAD build dependencies
+* Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
+* Install OpenSCAD build dependencies
 
-Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
+        curl -L https://github.com/openscad/openscad/raw/master/scripts/msys2-install-dependencies.sh | sh 
 
-    curl -L https://github.com/openscad/openscad/raw/master/scripts/msys2-install-dependencies.sh | sh 
+* Set up source directory:
 
-### Set up source directory
+        git clone https://github.com/openscad/openscad.git srcdir
+        cd srcdir
+        git submodule update --init --recursive  # needed because of manifold
 
-Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
 
-    git clone https://github.com/openscad/openscad.git srcdir
-    cd srcdir
-    git submodule update --init --recursive  # needed because of manifold
+* Set up build directory:
 
-Replace `srcdir` with whatever name you like.
+        cd srcdir
+        mkdir builddir
+        cd builddir
+        cmake .. -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DEXPERIMENTAL=ON -DSNAPSHOT=ON
 
-### Build with command line
+* Build:
+  * You might want to add `-jN`, where N is the number of compiles to run in parallel - approximately, the number of processor cores on the system.
 
-#### Set up build directory
+        cd srcdir/builddir
+        make
 
-Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
+* Run:
 
-    cd srcdir
-    mkdir builddir
-    cd builddir
-    cmake .. -G"MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DEXPERIMENTAL=ON -DSNAPSHOT=ON
-
-Replace `builddir` with whatever name you like.
-
-#### Build
-
-Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
-
-    cd srcdir/builddir
-    make
-
-You might want to add `-jN`, where N is the number of compiles to run in parallel - approximately, the number of processor cores on the system.
-
-#### Run
-
-Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
-
-    cd srcdir/builddir
-    ./openscad
+        cd srcdir/builddir
+        ./openscad
 
 ### Build with Qt Creator IDE
 
 Note:  When I tried this, it mostly built but failed in `cgalutils.cc`, in an environment where the command-line build worked.
 
-#### Install QT Creator
+* Install QT Creator
 
-    pacman -S mingw-w64-x86_64-qt-creator
+        pacman -S mingw-w64-x86_64-qt-creator
 
-#### Load project
+* Load project
 
-    qtcreator &
+        qtcreator &
 
-Open `CMakeLists.txt` from the top of the source tree.  Use the default configuration.
-
-#### Build
-
-Build with Control-B or Build / Build project "openscad".
+* Open `CMakeLists.txt` from the top of the source tree.  Use the default configuration.
+* Build with Control-B or Build / Build project "openscad".
 
 ### 32-bit support
 
@@ -387,10 +368,8 @@ We support building OpenSCAD headless for WebAssembly w/ Emscripten, using a pre
 
 The following command creates `build-web/openscad.wasm` & `build-web/openscad.js`:
 
-```bash
-./scripts/wasm-base-docker-run.sh emcmake cmake -B build-web -DCMAKE_BUILD_TYPE=Debug -DEXPERIMENTAL=1
-./scripts/wasm-base-docker-run.sh cmake --build build-web -j2
-```
+    ./scripts/wasm-base-docker-run.sh emcmake cmake -B build-web -DCMAKE_BUILD_TYPE=Debug -DEXPERIMENTAL=1
+    ./scripts/wasm-base-docker-run.sh cmake --build build-web -j2
 
 [openscad/openscad-playground](https://github.com/openscad/openscad-playground) uses this WASM build to provide a [Web UI](https://ochafik.com/openscad2/) with a subset of features of OpenSCAD.
 
@@ -401,25 +380,31 @@ The following command creates `build-web/openscad.wasm` & `build-web/openscad.js
 
 The following command creates `build-node/openscad.js`, which is executable (requires `node`):
 
-```bash
-./scripts/wasm-base-docker-run.sh emcmake cmake -B build-node -DWASM_BUILD_TYPE=node -DCMAKE_BUILD_TYPE=Debug -DEXPERIMENTAL=1
-./scripts/wasm-base-docker-run.sh cmake --build build-node -j2
-build-node/openscad.js --help
-```
+    ./scripts/wasm-base-docker-run.sh emcmake cmake -B build-node -DWASM_BUILD_TYPE=node -DCMAKE_BUILD_TYPE=Debug -DEXPERIMENTAL=1
+    ./scripts/wasm-base-docker-run.sh cmake --build build-node -j2
+    build-node/openscad.js --help
 
 > [!NOTE]
 > With a debug build (`-DCMAKE_BUILD_TYPE=Debug`), you can set C++ breakpoints in VSCode + Node ([needs an extension](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_debugging-webassembly)).
 
 # Compilation
 
-First, run `cmake -B build -DEXPERIMENTAL=1` to generate a Makefile in the `build` folder.
+First, generate a Makefile in the `build` folder:
 
-Then run `cmake --build build`. Finally, on Linux you might run `cmake --install build` as root.
+    cmake -B build -DEXPERIMENTAL=1
+
+Execute the build:
+
+    cmake --build build
+
+OpenSCAD can be tested by running `./build/openscad` or optionally installed to the system:
+
+    sudo cmake --install build
 
 If you had problems compiling from source, raise a new issue in the
 [issue tracker on the github page](https://github.com/openscad/openscad/issues).
 
-Once built, you can run tests with `ctest` from the `build` directory.
+Once built, you can run tests with `ctest` from the `build` directory. See [testing](./TESTING.md) for more information.
 
 Note: Both `cmake --build` and `ctest` accepts a `-j N` argument for distributing the load over `N` parallel processes.
 
