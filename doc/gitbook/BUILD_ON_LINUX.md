@@ -19,11 +19,11 @@ to the Compilation instructions.
 
 __Note:__ These scripts are likely to fail on Sun, Solaris, AIX, IRIX, etc (skip to the 'building dependencies' section below).
 
-# Linux/BSD with older or missing dependencies
+# BSD/Missing Dependencies
 
-If some of your system dependency libraries are missing or old, then you 
-can download and build newer versions into `$HOME/openscad_deps` by 
-following this process. First, run the script that sets up the 
+This section is for BSD or Linux with missing dependencies.  It will download and build newer versions of dependencies into `$HOME/openscad_deps`.
+
+First, run the script that sets up the 
 environment variables. 
 
     source ./scripts/setenv-unibuild.sh
@@ -41,10 +41,9 @@ build, again check dependencies.
 
 (If you only need CGAL or OpenCSG, you can just run ' ./scripts/uni-build-dependencies.sh cgal' or opencsg and it builds only a single library.)
 
-After completion, return to the section above on 'verifying dependencies' to see if they installed correctly, then follow the Compilation instructions below.
+On OpenBSD it may fail to build after running out of RAM. OpenSCAD requires at least 1 Gigabyte to build with GCC. You may have need to be a user with 'staff' level access or otherwise alter required system parameters. The 'dependency build' sequence has also not been ported to OpenBSD so you must rely on the standard OpenBSD system package tools (in other words you have to have root).
 
-
-## Nix
+# Nix
 
 Use `scripts/shell.nix` for incremental builds during development and testing.
 
@@ -55,14 +54,6 @@ The final results will not be portable, but this is a good way to run incrementa
 
 To create a Nix package, see [nixpgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/graphics/openscad/default.nix) for the Qt5 release, or [this gist](https://gist.github.com/AaronVerDow/b945a96dbcf35edfc13f543662966534) for a more up to date Qt6 pacakge.
 
-## BSD
-
-The build instructions above are designed to work unchanged on FreeBSD and NetBSD. However the BSDs typically require special environment variables set up to build any QT project - you can set them up automatically by running
-
-    source ./scripts/setenv-unibuild.sh
-
-On OpenBSD it may fail to build after running out of RAM. OpenSCAD requires at least 1 Gigabyte to build with GCC. You may have need to be a user with 'staff' level access or otherwise alter required system parameters. The 'dependency build' sequence has also not been ported to OpenBSD so you must rely on the standard OpenBSD system package tools (in other words you have to have root).
-
-## Sun / Solaris / IllumOS / AIX / IRIX / Minix / etc
+# Sun / Solaris / IllumOS / AIX / IRIX / Minix / etc
 
 The OpenSCAD dependency builds have been mainly focused on Linux and BSD systems like Debian or FreeBSD. The 'helper scripts' are likely to fail on other types of Un*x. Furthermore the OpenSCAD build system files (qmake .pro files for the GUI, cmake CMakeFiles.txt for the test suite) have not been tested thoroughly on non-Linux non-BSD systems. Extensive work may be required to get a working build on such systems.
