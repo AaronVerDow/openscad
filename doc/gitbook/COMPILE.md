@@ -54,13 +54,13 @@ To pull the various submodules (incl. the [MCAD library](https://github.com/open
 
 ## Build
 
-See one of the following sections, then return to this page. 
+Run setup for your specific OS, then return to this page.
 
-* compile_linux.md
-* compile_mac.md
-* compile_for_windows.md
-* compile_on_windows.md
-* compile_browser.md
+* [Build on Linux](BUILD_ON_LINUX.md)
+* [Build on Mac](BUILD_ON_MAC.md)
+* [Build on Windows](BUILD_ON_WINDOWS.md)
+* [Build for Windows](BUILD_FOR_WINDOWS.md)
+* [Build for Browser](BUILD_FOR_BROWSER.md)
 
 ## Compilation
 
