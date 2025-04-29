@@ -1,8 +1,8 @@
-## Building for WebAssembly
+# Building for WebAssembly
 
 We support building OpenSCAD headless for WebAssembly w/ Emscripten, using a premade Docker image built in [openscad/openscad-wasm](https://github.com/openscad/openscad-wasm) (which also has usage examples)
 
-### Browser
+## Browser
 
 The following command creates `build-web/openscad.wasm` & `build-web/openscad.js`:
 
@@ -16,7 +16,7 @@ The following command creates `build-web/openscad.wasm` & `build-web/openscad.js
 > [!NOTE]
 > With a debug build (`-DCMAKE_BUILD_TYPE=Debug`), you can set C++ breakpoints in Firefox and in Chrome (the latter [needs an extension](https://developer.chrome.com/docs/devtools/wasm)).
 
-### Standalone node.js build
+# Standalone node.js build
 
 The following command creates `build-node/openscad.js`, which is executable (requires `node`):
 

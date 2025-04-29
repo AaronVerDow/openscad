@@ -1,10 +1,3 @@
-
-## Building for Windows
-
-OpenSCAD for Windows is usually cross-compiled from Linux. If you wish to
-attempt an MSVC build on Windows, please see this site:
-https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Building_on_Windows
-
 To cross-build, first make sure that you have all necessary dependencies 
 of the MXE project ( listed at https://mxe.cc/#requirements ). Don't install
 MXE itself, the scripts below will do that for you under `$HOME/openscad_deps/mxe`

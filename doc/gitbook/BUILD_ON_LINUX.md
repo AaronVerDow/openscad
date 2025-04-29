@@ -1,4 +1,4 @@
-## Building for Linux/BSD
+# Linux/BSD
 
 First, make sure that you have git installed (often packaged as 'git-core' 
 or 'scmgit'). Once you've cloned this git repository, download and install 
@@ -19,7 +19,7 @@ to the Compilation instructions.
 
 __Note:__ These scripts are likely to fail on Sun, Solaris, AIX, IRIX, etc (skip to the 'building dependencies' section below).
 
-## Building for Linux/BSD on systems with older or missing dependencies
+# Linux/BSD with older or missing dependencies
 
 If some of your system dependency libraries are missing or old, then you 
 can download and build newer versions into `$HOME/openscad_deps` by 
@@ -46,7 +46,14 @@ After completion, return to the section above on 'verifying dependencies' to see
 
 ## Nix
 
-A [development Nix shell](scripts/nix) is included for local, incremental compilation.
+Use `scripts/shell.nix` for incremental builds during development and testing.
+
+    cd scrits/
+    nix-shell
+
+The final results will not be portable, but this is a good way to run incremental builds and test locally. __Running install is not recommended.__
+
+To create a Nix package, see [nixpgs](https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/graphics/openscad/default.nix) for the Qt5 release, or [this gist](https://gist.github.com/AaronVerDow/b945a96dbcf35edfc13f543662966534) for a more up to date Qt6 pacakge.
 
 ## BSD
 
