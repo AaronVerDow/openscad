@@ -1,7 +1,3 @@
-# Summary
-
-* [Introduction](README.md)
-* [Structure](STRUCTURE.md)
 * [Compile](COMPILE.md)
   * [Build on Linux](BUILD_ON_LINUX.md)
   * [Build on Mac](BUILD_ON_MAC.md)
@@ -12,3 +8,4 @@
 * [Contributing](CONTRIBUTING.md)
   * [Release Checklist](RELEASE_CHECKLIST.md)
   * [Translation](TRANSLATION.md)
+* [Structure](STRUCTURE.md)
