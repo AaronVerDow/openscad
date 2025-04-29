@@ -1,9 +1,7 @@
-# Compiling
-
 To build OpenSCAD from source, follow the instructions for the
 platform applicable to you below.
 
-## Prerequisites
+# Prerequisites
 
 To build OpenSCAD, you need some libraries and tools. The version
 numbers in brackets specify the versions which have been used for
@@ -39,7 +37,7 @@ For the test suite, additional requirements are:
 * Python3 (3.8 -> )
 * [Ghostscript (10.x ->)](https://www.ghostscript.com/index.html)
 
-## Getting the source code
+# Getting the source code
 
 Install git (https://git-scm.com/) onto your system. Then run a clone:
 
@@ -52,7 +50,7 @@ To pull the various submodules (incl. the [MCAD library](https://github.com/open
     cd openscad
     git submodule update --init --recursive
 
-## Build
+# Build
 
 Run setup for your specific OS, then return to this page.
 
@@ -62,7 +60,7 @@ Run setup for your specific OS, then return to this page.
 * [Build for Windows](BUILD_FOR_WINDOWS.md)
 * [Build for Browser](BUILD_FOR_BROWSER.md)
 
-## Compilation
+# Compilation
 
 First, run `cmake -B build -DEXPERIMENTAL=1` to generate a Makefile in the `build` folder.
 

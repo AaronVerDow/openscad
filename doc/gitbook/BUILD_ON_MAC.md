@@ -1,24 +1,27 @@
-## Building for macOS
-
-Prerequisites:
+# Requirements
 
 * Xcode
-* automake, libtool, cmake, pkg-config, wget, meson, python-packaging (we recommend installing these using Homebrew)
+* Homebrew packages:
+    * automake
+    * libtool
+    * cmake
+    * pkg-config
+    * wget
+    * meson
+    * python-packaging
 
-Install Dependencies:
+# Install with Homebrew
 
-After building dependencies using one of the following options, follow the instructions in the *Compilation* section.
+This assumes [Homebrew](https://brew.sh/) is already installed.
 
-1. **From source**
+    ./scripts/macosx-build-homebrew.sh
 
-    Run the script that sets up the environment variables:
+# Install from Source
 
-        source scripts/setenv-macos.sh
+Run the script that sets up the environment variables:
 
-    Then run the script to compile all the dependencies:
+    source scripts/setenv-macos.sh
 
-        ./scripts/macosx-build-dependencies.sh
+Then run the script to compile all the dependencies:
 
-2. **Homebrew** (assumes [Homebrew](https://brew.sh/) is already installed)
-
-        ./scripts/macosx-build-homebrew.sh
+    ./scripts/macosx-build-dependencies.sh

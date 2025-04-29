@@ -1,48 +1,39 @@
-# Testing
+# Running containerized GitHub CI workflows
 
-## Running containerized GitHub CI workflows locally
+* Install [circleci-cli](https://circleci.com/docs/2.0/local-cli/) (you'll need an API key)
+  * __Note:__ we also use GitHub Workflows, but only to run tests on Windows (which we cross-build for in the Linux-based CircleCI workflows below). Also, [act](https://github.com/nektos/act) doesn't like our submodule setup anyway.
+* Run the CI jobs
 
-*   Install [circleci-cli](https://circleci.com/docs/2.0/local-cli/) (you'll need an API key)
+      # When "successful", these will fail to upload at the very end of the workflow.
+      circleci local execute --job  openscad-mxe-64bit
+      circleci local execute --job  openscad-mxe-32bit
+      circleci local execute --job  openscad-appimage-64bit
 
-    *Note*: we also use GitHub Workflows, but only to run tests on Windows (which we cross-build for in the Linux-based CircleCI workflows below). Also, [act](https://github.com/nektos/act) doesn't like our submodule setup anyway.
+  * __Note:__ openscad-macos can't be built locally.
+* If/when GCC gets randomly killed, give docker more RAM (e.g. 4GB per concurrent image you plan to run)
+* To debug the jobs more interactively, you can go the manual route (inspect .circleci/config.yml to get the actual docker image you need)
 
-*   Run the CI jobs
+      docker run --entrypoint=/bin/bash -it openscad/mxe-x86_64-gui:latest
 
-	```bash
-	# When "successful", these will fail to upload at the very end of the workflow.
-	circleci local execute --job  openscad-mxe-64bit
-	circleci local execute --job  openscad-mxe-32bit
-	circleci local execute --job  openscad-appimage-64bit
-	```
+* Then once you get the console:
 
-	*Note*: openscad-macos can't be built locally.
+      git clone https://github.com/%your username%/openscad.git workspace
+      cd workspace
+      git checkout %your branch%
+      git submodule init
+      git submodule update
 
-*   If/when GCC gets randomly killed, give docker more RAM (e.g. 4GB per concurrent image you plan to run)
+Then execute the commands from .circleci/config.yml:
 
-*   To debug the jobs more interactively, you can go the manual route (inspect .circleci/config.yml to get the actual docker image you need)
+      export NUMCPU=2
+      ...
+      ./scripts/release-common.sh -snapshot -mingw64 -v "$OPENSCAD_VERSION"
 
-	```bash
-	docker run --entrypoint=/bin/bash -it openscad/mxe-x86_64-gui:latest
-	```
+# Running GitHub CI workflows manually
 
-	Then once you get the console:
-	
-	```bash
-	git clone https://github.com/%your username%/openscad.git workspace
-	cd workspace
-	git checkout %your branch%
-	git submodule init
-	git submodule update
+Fill this out.
 
-	# Then execute the commands from .circleci/config.yml:
-	#    export NUMCPU=2
-	#    ...
-	#    ./scripts/release-common.sh -snapshot -mingw64 -v "$OPENSCAD_VERSION"
-	```
-
-## Running GitHub CI workflows locally
-
-Add stuff
+# Run tests manually
 
 ## Prerequisites
 
@@ -68,30 +59,29 @@ NOTE: **ONLY THE ZIP VERSION** of the download contains the tests. They would no
 
 ### Linux, Mac:
 
-From your build directory
-```
-$ ctest -j8           Runs tests enabled by default using 8 parallel processes.
-$ ctest -R <regex>    Runs only matching tests, e.g. ctest -R dxf
-$ ctest -C <configs>  Adds extended tests belonging to configs.
-                      Valid configs:
-                      Default  - Run default tests
-                      Heavy    - Run more time consuming tests (> ~10 seconds)
-                      Examples - test all examples
-                      Bugs     - test known bugs (tests will fail)
-                      All      - test everything
-```
+From your build directory:
+
+    ctest -j8           Runs tests enabled by default using 8 parallel processes.
+    ctest -R <regex>    Runs only matching tests, e.g. ctest -R dxf
+    ctest -C <configs>  Adds extended tests belonging to configs.
+                        Valid configs:
+                        Default  - Run default tests
+                        Heavy    - Run more time consuming tests (> ~10 seconds)
+                        Examples - test all examples
+                        Bugs     - test known bugs (tests will fail)
+                        All      - test everything
 
 ### Win:
 
 Unzip the OpenSCAD-Tests-YYYY.MM.DD file onto a Windows machine. There will be a script called OpenSCAD-Test-Console.py in the parent folder. Double-click it, and it will open a console, from which you can type the ctest commands listed above.
 
-## Automatically upload test results (experimental)
+# Automatically upload test results (experimental)
 
 It's possible to automatically upload tests results to an external server. This is good for CI, as well as being able to easily report bugs.
 
 To enable this feature, add `-DOPENSCAD_UPLOAD_TESTS=1` to `cmake` 
 
-## Adding a new test
+# Adding a new test
 
 * Create a test file at an appropriate location under `tests/data/`
 * If the test is non-obvious, create a human readable description as comments in the test, or in another file in the same directory in case the file isn't human readable.
@@ -101,7 +91,7 @@ To enable this feature, add `-DOPENSCAD_UPLOAD_TESTS=1` to `cmake`
 * Manually verify that the output is correct: `tests/regression/<testapp>/mytest-expected.<suffix>`
 * Run the test normally and verify that it passes: `ctest -R mytest`
 
-## Adding a new example
+# Adding a new example
 
 This is almost the same as adding a new regression test:
 * Create the example under `examples/`
@@ -115,26 +105,19 @@ This is almost the same as adding a new regression test:
 
 The following tests will fail if run without X:
 
-```
-	93 - echo_recursion-test-function3 (Failed)
-	94 - echo_recursion-test-module (Failed)
-	140 - echo_recursion-test-vector (Failed)
-	143 - echo_issue4172-echo-vector-stack-exhaust (Failed)
-```
-
+    93 - echo_recursion-test-function3 (Failed)
+    94 - echo_recursion-test-module (Failed)
+    140 - echo_recursion-test-vector (Failed)
+    143 - echo_issue4172-echo-vector-stack-exhaust (Failed)
 
 You may be able to run the tests by using a virtual framebuffer program like Xvnc or Xvfb. For example:
 
-```
-$ Xvfb :5 -screen 0 800x600x24 &
-$ DISPLAY=:5 ctest
-```
+    Xvfb :5 -screen 0 800x600x24 &
+    DISPLAY=:5 ctest
 
-or
+or:
 
-```
-$ xvfb-run ctest
-```
+    xvfb-run ctest
 
 Some versions of Xvfb may fail, however. 
 
@@ -144,10 +127,8 @@ X forwarding over ssh works as well.
 
 To help CMAKE find eigen, OpenCSG, CGAL, Boost, and GLEW, you can use environment variables, just like for the main qmake & openscad.pro. Examples:
 
-```
-OPENSCAD_LIBRARIES=$HOME cmake .
-CGALDIR=$HOME/CGAL-3.9 BOOSTDIR=$HOME/boost-1.47.0 cmake .
-```
+    OPENSCAD_LIBRARIES=$HOME cmake .
+    CGALDIR=$HOME/CGAL-3.9 BOOSTDIR=$HOME/boost-1.47.0 cmake .
 
 Valid variables are as follows: `BOOSTDIR`, `CGALDIR`, `EIGENDIR`, `GLEWDIR`, `OPENCSGDIR`, `OPENSCAD_LIBRARIES`
 
@@ -157,7 +138,7 @@ When running, this might help find your locally built libraries (assuming you in
 * Mac: `export DYLD_LIBRARY_PATH=$HOME/lib`
 
 ## Location of logs
- 
+
 Logs of test runs and a pretty-printed `index.html` are found in `build/Testing/Temporary`
 * Expected results are found in `tests/regression/*`
 * Actual results are found in `build/tests/output/*`
@@ -172,26 +153,22 @@ With `-DUSE_IMAGE_COMPARE_PY=OFF` additional options are available:
 
 ## Locale errors
 
-```
-terminate called after throwing an instance of 'std::runtime_error'
-  what():  locale::facet::_S_create_c_locale name not valid
-```
+The following is a boost/libstdc++ bug:
 
-Is a boost/libstdc++ bug. Fix like so before running:
+    terminate called after throwing an instance of 'std::runtime_error'
+      what():  locale::facet::_S_create_c_locale name not valid
 
-```
-$ export LC_MESSAGES=
-```
+Fix like so before running:
+
+    export LC_MESSAGES=
 
 ## Build without OpenGL
 
 There is an unsupported way to do this, by defining NULLGL to Cmake:
 
-```
-mkdir nullglbin
-cd nullglbin && cmake .. -DNULLGL=1 && make
-```
- 
+    mkdir nullglbin
+    cd nullglbin && cmake .. -DNULLGL=1 && make
+
 The resulting openscad_nogui binary will fail most tests, but may be useful for debugging and outputting 3d-formats like STL on systems without GL. This option may break in the future and require tweaking to get working again.
 
 ## Proprietary GL driver issues
@@ -204,14 +181,13 @@ The MSVC build was last tested circa 2012. The last time it worked,
 these were the necessary commands to run.
 
 Start the QT command prompt:
-```
-cd \where\you\installed\openscad
-cd tests
-cmake . -DCMAKE_BUILD_TYPE=Release
-sed -i s/\/MD/\/MT/ CMakeCache.txt
-cmake .
-nmake -f Makefile
-```
+
+    cd \where\you\installed\openscad
+    cd tests
+    cmake . -DCMAKE_BUILD_TYPE=Release
+    sed -i s/\/MD/\/MT/ CMakeCache.txt
+    cmake .
+    nmake -f Makefile
 
 ## Other issues
 

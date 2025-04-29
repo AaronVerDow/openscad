@@ -1,16 +1,16 @@
-## Set up tools and dependencies
+# Set up tools and dependencies
 
 Download [64-bit MSYS2](https://www.msys2.org)
 
 Install per instructions, including the install-time upgrades (`pacman -Syu`, `-Su`).  Installing development components is not necessary at this point. 
 
-## Install OpenSCAD build dependencies
+# Install OpenSCAD build dependencies
 
 Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
 
     curl -L https://github.com/openscad/openscad/raw/master/scripts/msys2-install-dependencies.sh | sh 
 
-## Set up source directory
+# Set up source directory
 
 Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
 
@@ -20,9 +20,9 @@ Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
 
 Replace `srcdir` with whatever name you like.
 
-## Build with command line
+# Build with command line
 
-### Set up build directory
+## Set up build directory
 
 Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
 
@@ -33,7 +33,7 @@ Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
 
 Replace `builddir` with whatever name you like.
 
-### Build
+## Build
 
 Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
 
@@ -42,52 +42,52 @@ Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
 
 You might want to add `-jN`, where N is the number of compiles to run in parallel - approximately, the number of processor cores on the system.
 
-### Run
+## Run
 
 Start an MSYS2 shell window using the "MSYS2 MinGW x64" link in the Start menu.
 
     cd srcdir/builddir
     ./openscad
 
-## Build with Qt Creator IDE
+# Build with Qt Creator IDE
 
 Note:  When I tried this, it mostly built but failed in `cgalutils.cc`, in an environment where the command-line build worked.
 
-### Install QT Creator
+## Install QT Creator
 
     pacman -S mingw-w64-x86_64-qt-creator
 
-### Load project
+## Load project
 
     qtcreator &
 
 Open `CMakeLists.txt` from the top of the source tree.  Use the default configuration.
 
-### Build
+## Build
 
 Build with Control-B or Build / Build project "openscad".
 
-## 32-bit support
+# 32-bit support
 
 It may be possible to build OpenSCAD on a 32-bit system by installing the 32-bit version of MSYS2 from the [https://www.msys2.org/wiki/MSYS2-installation/ MSYS2 install page].  (More information to come.)
 
-## Prebuilt OpenSCAD
+# Prebuilt OpenSCAD
 
 Note that MSYS2 also provides a precompiled OpenSCAD package. This can be installed using
 
     pacman -S mingw-w64-x86_64-openscad
 
-## Historical Notes ==
+# Historical Notes
 
 The following is historical content from previous versions of this page, that might still be applicable.
 
-### QtCreator
+## QtCreator
 
 The Build-Type must be changed to "Release".
 
 In some cases the build fails when generating the parser code using flex and bison. In that case disabling the "Shadow Build" (see Project tab / General Settings) can help.
 
-### Building Debug Version
+## Building Debug Version
 
 Currently the QScintilla package provides only a release version of the library. Using this with a debug build of OpenSCAD is not possible (the resulting binary crashs with an assertion error inside Qt).
 
@@ -114,7 +114,7 @@ To create a working debug version of OpenSCAD, a debug version of QScintilla mus
       cp debug/libqscintilla2d.dll.a /mingw64/lib/
       cp debug/qscintilla2d.dll /mingw64/bin/
 
-### OpenGL (Optional)
+## OpenGL (Optional)
 
 OpenSCAD needs at least OpenGL version 2.0 to be able to correctly
 render the preview using OpenCSG. It's possible to run with older
