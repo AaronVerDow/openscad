@@ -204,6 +204,14 @@ struct Export3mfOptions {
   }
 };
 
+struct ExportSvgOptions {
+    bool fillEnabled = false;
+    QColor fillColor = Qt::white;
+    bool strokeEnabled = true;
+    QColor strokeColor = Qt::black;
+    double strokeWidth = 0.35;
+};
+
 struct ExportInfo {
   FileFormat format;
   FileFormatInfo info;
@@ -215,6 +223,7 @@ struct ExportInfo {
 
   std::shared_ptr<const ExportPdfOptions> optionsPdf;
   std::shared_ptr<const Export3mfOptions> options3mf;
+  std::shared_ptr<const ExportSvgOptions> optionsSvg;
 };
 
 ExportInfo createExportInfo(const FileFormat& format, const FileFormatInfo& info, const std::string& filepath, const Camera *camera, const CmdLineExportOptions& cmdLineOptions);
@@ -230,7 +239,7 @@ void export_off(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
 void export_wrl(const std::shared_ptr<const Geometry>& geom, std::ostream& output);
 void export_amf(const std::shared_ptr<const Geometry>& geom, std::ostream& output);
 void export_dxf(const std::shared_ptr<const Geometry>& geom, std::ostream& output);
-void export_svg(const std::shared_ptr<const Geometry>& geom, std::ostream& output);
+void export_svg(const std::shared_ptr<const Geometry>& geom, std::ostream& output, const ExportInfo& exportInfo);
 void export_pov(const std::shared_ptr<const Geometry>& geom, std::ostream& output, const ExportInfo& exportInfo);
 void export_pdf(const std::shared_ptr<const Geometry>& geom, std::ostream& output, const ExportInfo& exportInfo);
 void export_nefdbg(const std::shared_ptr<const Geometry>& geom, std::ostream& output);
