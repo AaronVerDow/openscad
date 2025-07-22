@@ -49,9 +49,9 @@ ExportSvgOptions ExportSvgDialog::getOptions() const
 {
     ExportSvgOptions opts;
     opts.fillEnabled = isFillEnabled();
-    opts.fillColor = getFillColor();
+    opts.fillColor = getFillColor().name(QColor::HexRgb).toStdString();
     opts.strokeEnabled = isStrokeEnabled();
-    opts.strokeColor = getStrokeColor();
+    opts.strokeColor = getStrokeColor().name(QColor::HexRgb).toStdString();
     opts.strokeWidth = getStrokeWidth();
     return opts;
 }

@@ -206,9 +206,9 @@ struct Export3mfOptions {
 
 struct ExportSvgOptions {
     bool fillEnabled = false;
-    QColor fillColor = Qt::white;
+    std::string fillColor = "#ffffff";
     bool strokeEnabled = true;
-    QColor strokeColor = Qt::black;
+    std::string strokeColor = "#000000";
     double strokeWidth = 0.35;
 };
 

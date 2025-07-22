@@ -42,8 +42,8 @@ static void append_svg(const Polygon2d& poly, std::ostream& output, const Export
   std::string fill = "none";
   double strokeWidth = 0.5;
   if (opts) {
-    if (opts->strokeEnabled) stroke = opts->strokeColor.name().toStdString();
-    if (opts->fillEnabled) fill = opts->fillColor.name().toStdString();
+    if (opts->strokeEnabled) stroke = opts->strokeColor;
+    if (opts->fillEnabled) fill = opts->fillColor;
     strokeWidth = opts->strokeWidth;
   }
   output << "<path d=\"\n";
