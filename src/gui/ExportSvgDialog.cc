@@ -8,6 +8,8 @@ ExportSvgDialog::ExportSvgDialog()
     fillColor = QColor(Qt::white);
     strokeColor = QColor(Qt::black);
     doubleSpinBoxStrokeWidth->setValue(defaultStrokeWidth);
+    updateFillColor(fillColor);
+    updateStrokeColor(strokeColor);
     updateFillControlsEnabled();
     updateStrokeControlsEnabled();
 
