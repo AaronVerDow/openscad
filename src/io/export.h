@@ -205,11 +205,31 @@ struct Export3mfOptions {
 };
 
 struct ExportSvgOptions {
-    bool fillEnabled = false;
-    std::string fillColor = "#ffffff";
-    bool strokeEnabled = true;
-    std::string strokeColor = "#000000";
+    bool fill = false;
+    std::string fillColor = "white";
+    bool stroke = true;
+    std::string strokeColor = "black";
     double strokeWidth = 0.35;
+
+  static std::shared_ptr<const ExportSvgOptions> withOptions(const CmdLineExportOptions& cmdLineOptions) {
+    return std::make_shared<const ExportSvgOptions>(ExportSvgOptions{
+        .fill = set_cmd_line_option(cmdLineOptions, Settings::SECTION_EXPORT_SVG, Settings::SettingsExportSvg::exportSvgFill),
+        .fillColor = set_cmd_line_option(cmdLineOptions, Settings::SECTION_EXPORT_SVG, Settings::SettingsExportSvg::exportSvgFillColor),
+        .stroke = set_cmd_line_option(cmdLineOptions, Settings::SECTION_EXPORT_SVG, Settings::SettingsExportSvg::exportSvgStroke),
+        .strokeColor = set_cmd_line_option(cmdLineOptions, Settings::SECTION_EXPORT_SVG, Settings::SettingsExportSvg::exportSvgStrokeColor),
+        .strokeWidth = set_cmd_line_option(cmdLineOptions, Settings::SECTION_EXPORT_SVG, Settings::SettingsExportSvg::exportSvgStrokeWidth),
+    });
+  }
+
+  static const std::shared_ptr<const ExportSvgOptions> fromSettings() {
+    return std::make_shared<const ExportSvgOptions>(ExportSvgOptions{
+      .fill = Settings::SettingsExportSvg::exportSvgFill.value(),
+      .fillColor = Settings::SettingsExportSvg::exportSvgFillColor.value(),
+      .stroke = Settings::SettingsExportSvg::exportSvgStroke.value(),
+      .strokeColor = Settings::SettingsExportSvg::exportSvgStrokeColor.value(),
+      .strokeWidth = Settings::SettingsExportSvg::exportSvgStrokeWidth.value(),
+    });
+  }
 };
 
 struct ExportInfo {

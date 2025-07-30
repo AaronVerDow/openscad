@@ -204,6 +204,8 @@ ExportInfo createExportInfo(const FileFormat& format, const FileFormatInfo& info
     exportInfo.options3mf = Export3mfOptions::withOptions(cmdLineOptions);
   } else if (format == FileFormat::PDF) {
     exportInfo.optionsPdf = ExportPdfOptions::withOptions(cmdLineOptions);
+  } else if (format == FileFormat::SVG) {
+    exportInfo.optionsSvg = ExportSvgOptions::withOptions(cmdLineOptions);
   }
 
   return exportInfo;

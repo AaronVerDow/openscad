@@ -47,8 +47,8 @@ static void append_svg(const Polygon2d& poly, std::ostream& output, const Export
     options = &defaultSvgOptions;
   }
 
-  const std::string stroke = options->strokeEnabled ? options->strokeColor : "none";
-  const std::string fill = options->fillEnabled ? options->fillColor : "none";
+  const std::string stroke = options->stroke ? options->strokeColor : "none";
+  const std::string fill = options->fill ? options->fillColor : "none";
   const double strokeWidth = options->strokeWidth;
   output << "<path d=\"\n";
   for (const auto& o : poly.outlines()) {

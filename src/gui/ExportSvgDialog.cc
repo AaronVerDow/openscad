@@ -50,9 +50,9 @@ double ExportSvgDialog::getStrokeWidth() const
 ExportSvgOptions ExportSvgDialog::getOptions() const
 {
     ExportSvgOptions opts;
-    opts.fillEnabled = isFillEnabled();
+    opts.fill = isFillEnabled();
     opts.fillColor = getFillColor().name(QColor::HexRgb).toStdString();
-    opts.strokeEnabled = isStrokeEnabled();
+    opts.stroke = isStrokeEnabled();
     opts.strokeColor = getStrokeColor().name(QColor::HexRgb).toStdString();
     opts.strokeWidth = getStrokeWidth();
     return opts;
