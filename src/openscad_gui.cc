@@ -133,8 +133,8 @@ void dialogInitHandler(FontCacheInitializer *initializer, void *)
   QObject::connect(&futureWatcher, &QFutureWatcher<void>::finished, scadApp, &OpenSCADApp::hideFontCacheDialog);
 
   auto future = QtConcurrent::run([initializer] {
-    return dialogThreadFunc(initializer);
-  });
+      return dialogThreadFunc(initializer);
+    });
   futureWatcher.setFuture(future);
 
   // We don't always get the started() signal, so we start manually
@@ -302,15 +302,15 @@ int gui(std::vector<std::string>& inputFiles, const std::filesystem::path& origi
 #ifdef ENABLE_GUI_TESTS
   // Adds a singleshot timer that will be executed when the application will be started.
   // the timer validates that each mainwindow respects the expected UX behavior.
-  if(gui_test != "none"){
-      QTimer::singleShot(0, [&]()
-      {
-          int failureCount=0;
-          for(auto w : app.windowManager.getWindows()){
-              failureCount+=runAllTest(w);
-          }
-          app.exit(failureCount);
-      });
+  if (gui_test != "none"){
+    QTimer::singleShot(0, [&]()
+    {
+      int failureCount = 0;
+      for (auto w : app.windowManager.getWindows()){
+        failureCount += runAllTest(w);
+      }
+      app.exit(failureCount);
+    });
   }
 #endif // ENABLE_GUI_TESTS
 

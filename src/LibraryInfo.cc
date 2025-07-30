@@ -54,9 +54,9 @@
 #ifdef ENABLE_MANIFOLD
 #include <manifold/version.h>  // if it is new enough for us, it has version.h
 #define MANIFOLD_VERSION_STRING \
-  TOSTRING(MANIFOLD_VERSION_MAJOR) "." \
-  TOSTRING(MANIFOLD_VERSION_MINOR) "." \
-  TOSTRING(MANIFOLD_VERSION_PATCH)
+        TOSTRING(MANIFOLD_VERSION_MAJOR) "." \
+        TOSTRING(MANIFOLD_VERSION_MINOR) "." \
+        TOSTRING(MANIFOLD_VERSION_PATCH)
 #else
 #define MANIFOLD_VERSION_STRING "<not enabled>"
 #endif
@@ -144,7 +144,7 @@ std::string LibraryInfo::info()
 #endif
 #ifdef ENABLE_PYTHON
     << "\nPython Version: " << python_version()
-#endif    
+#endif
     << "\nOpenCSG version: " << OPENCSG_VERSION_STRING
     << "\nClipper2 version: " << CLIPPER2_VERSION
     << "\nManifold version: " << MANIFOLD_VERSION_STRING

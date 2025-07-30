@@ -54,14 +54,14 @@ namespace {
 
 QString fileOpenFilter(const QString& pattern, QStringList extensions)
 {
-    if (extensions.isEmpty()) {
-        extensions << "scad" << "csg";
+  if (extensions.isEmpty()) {
+    extensions << "scad" << "csg";
 #ifdef ENABLE_PYTHON
-        extensions << "py";
+    extensions << "py";
 #endif
-    }
-    extensions.replaceInStrings(QRegularExpression("^"), "*.");
-    return pattern.arg(extensions.join(" "));
+  }
+  extensions.replaceInStrings(QRegularExpression("^"), "*.");
+  return pattern.arg(extensions.join(" "));
 }
 
 QList<UIUtils::ExampleCategory> _exampleCategories;
@@ -83,28 +83,28 @@ void readExamplesDir(const QJsonObject& obj, const fs::path& dir)
 
   if (!hasCategory(name)) {
     _exampleCategories.append(UIUtils::ExampleCategory{
-      .sort = obj["sort"].toInt(UIUtils::ExampleCategory::DEFAULT_SORT),
-      .name = name,
-      .tooltip = obj["tooltip"].toString()});
+        .sort = obj["sort"].toInt(UIUtils::ExampleCategory::DEFAULT_SORT),
+        .name = name,
+        .tooltip = obj["tooltip"].toString()});
   }
 
   auto& examples = _examples[name];
   for (const auto& entry : fs::directory_iterator{dir}) {
-      if (!entry.is_regular_file()) {
-        continue;
-      }
-      const auto& path = entry.path();
-      if (path.extension() != ".scad") {
-        continue;
-      }
-      examples.append(UIUtils::ExampleEntry{
+    if (!entry.is_regular_file()) {
+      continue;
+    }
+    const auto& path = entry.path();
+    if (path.extension() != ".scad") {
+      continue;
+    }
+    examples.append(UIUtils::ExampleEntry{
         .name = QString::fromStdString(path.filename().generic_string()),
         .fileInfo = QFileInfo(QString::fromStdString(path.generic_string()))
       });
   }
   std::sort(examples.begin(), examples.end(), [](const UIUtils::ExampleEntry& e1, const UIUtils::ExampleEntry& e2) -> bool {
-    return e1.name < e2.name;
-  });
+      return e1.name < e2.name;
+    });
 }
 
 void enumerateExamples(const fs::path& dir)
@@ -127,8 +127,8 @@ void enumerateExamples(const fs::path& dir)
     readExamplesDir(obj, entry.path());
   }
   std::sort(_exampleCategories.begin(), _exampleCategories.end(), [](const UIUtils::ExampleCategory& c1, const UIUtils::ExampleCategory& c2) -> bool {
-    return c2.sort > c1.sort;
-  });
+      return c2.sort > c1.sort;
+    });
 }
 
 const QList<UIUtils::ExampleCategory>& readExamples()
@@ -140,7 +140,7 @@ const QList<UIUtils::ExampleCategory>& readExamples()
   return _exampleCategories;
 }
 
-}
+} // namespace
 
 QFileInfo UIUtils::openFile(QWidget *parent, QStringList extensions)
 {
@@ -301,7 +301,7 @@ void UIUtils::openOfflineCheatSheet()
   }
 }
 
-QString UIUtils::getBackgroundColorStyleSheet(const QColor &color)
+QString UIUtils::getBackgroundColorStyleSheet(const QColor& color)
 {
   return QString("background-color:%1;").arg(color.toRgb().name());
 }

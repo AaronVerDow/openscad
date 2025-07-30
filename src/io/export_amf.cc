@@ -150,7 +150,7 @@ static void append_amf(const CGALNefGeometry& root_N, std::ostream& output)
     LOG(message_group::Export_Error, "CGAL error in CGAL_Nef_polyhedron3::convert_to_polyhedron(): %1$s", e.what());
   }
 }
-#endif
+#endif // ifdef ENABLE_CGAL
 
 static void append_amf(const std::shared_ptr<const Geometry>& geom, std::ostream& output)
 {

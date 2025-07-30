@@ -72,7 +72,7 @@ std::string toString(const Vector3d& v)
   const double_conversion::DoubleToStringConverter dc(
     DC_FLAGS, DC_INF, DC_NAN, DC_EXP,
     DC_DECIMAL_LOW_EXP, DC_DECIMAL_HIGH_EXP, DC_MAX_LEADING_ZEROES, DC_MAX_TRAILING_ZEROES
-  );
+    );
 
   char buffer[DC_BUFFER_SIZE];
 
@@ -132,16 +132,18 @@ uint64_t append_stl(const std::shared_ptr<const PolySet>& polyset, std::ostream&
   if (!binary) {
     vertexStrings.resize(ps->vertices.size());
     std::transform(ps->vertices.begin(), ps->vertices.end(), vertexStrings.begin(),
-      [](const auto& p) { return toString(p); });
+                   [](const auto& p) {
+        return toString(p);
+      });
   }
 
   // Used for binary mode only
   std::array<float, 4lu * 3> coords;
 
-  for (const auto &t : ps->indices) {
-    const auto &p0 = ps->vertices[t[0]];
-    const auto &p1 = ps->vertices[t[1]];
-    const auto &p2 = ps->vertices[t[2]];
+  for (const auto& t : ps->indices) {
+    const auto& p0 = ps->vertices[t[0]];
+    const auto& p1 = ps->vertices[t[1]];
+    const auto& p2 = ps->vertices[t[2]];
 
     // Tessellation already eliminated these cases.
     assert(p0 != p1 && p0 != p2 && p1 != p2);
@@ -154,9 +156,9 @@ uint64_t append_stl(const std::shared_ptr<const PolySet>& polyset, std::ostream&
     if (binary) {
       auto coords_offset = 0;
       auto addCoords = [&](const auto& v) {
-        for (auto i : {0, 1, 2})
-          coords[coords_offset++] = v[i];
-      };
+          for (auto i : {0, 1, 2})
+            coords[coords_offset++] = v[i];
+        };
       addCoords(normal);
       addCoords(p0);
       addCoords(p1);
@@ -166,9 +168,9 @@ uint64_t append_stl(const std::shared_ptr<const PolySet>& polyset, std::ostream&
       char attrib[2] = {0, 0};
       output.write(attrib, 2);
     } else {
-      const auto &s0 = vertexStrings[t[0]];
-      const auto &s1 = vertexStrings[t[1]];
-      const auto &s2 = vertexStrings[t[2]];
+      const auto& s0 = vertexStrings[t[0]];
+      const auto& s1 = vertexStrings[t[1]];
+      const auto& s2 = vertexStrings[t[2]];
 
       // Since the points are different, the precision we use to
       // format them to string should guarantee the strings are
@@ -276,8 +278,8 @@ void export_stl(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
     std::ostringstream buffer; // Using a memory buffer
     char header[80] = "OpenSCAD Model\n";
     buffer.write(header, sizeof(header));
-    
-  // Placeholder for triangle count
+
+    // Placeholder for triangle count
     uint32_t triangle_count = 0;
     char tmp_triangle_count[4] = {0, 0, 0, 0};
     buffer.write(tmp_triangle_count, 4);
@@ -285,19 +287,19 @@ void export_stl(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
     // Writing triangles and counting them
     triangle_count = append_stl(geom, buffer, binary);
 
-  if (triangle_count > 4294967295) {
-    LOG(message_group::Export_Error, "Triangle count exceeded 4294967295, so the STL file is not valid");
+    if (triangle_count > 4294967295) {
+      LOG(message_group::Export_Error, "Triangle count exceeded 4294967295, so the STL file is not valid");
     }
 
-  // Updating the triangle count in the buffer
+    // Updating the triangle count in the buffer
     char triangle_count_bytes[4] = {
-        static_cast<char>(triangle_count & 0xff),
-        static_cast<char>((triangle_count >> 8) & 0xff),
-        static_cast<char>((triangle_count >> 16) & 0xff),
-        static_cast<char>((triangle_count >> 24) & 0xff)};
+      static_cast<char>(triangle_count & 0xff),
+      static_cast<char>((triangle_count >> 8) & 0xff),
+      static_cast<char>((triangle_count >> 16) & 0xff),
+      static_cast<char>((triangle_count >> 24) & 0xff)};
     buffer.seekp(80, std::ios_base::beg);
     buffer.write(triangle_count_bytes, 4);
-    
+
     // Flushing the buffer to the output stream
     output << buffer.str();
 

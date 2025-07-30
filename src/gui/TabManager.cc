@@ -465,8 +465,7 @@ void TabManager::openTabFile(const QString& filename)
   QFileInfo fileinfo(filename);
   const auto suffix = fileinfo.suffix().toLower();
   const auto knownFileType = Importer::knownFileExtensions.contains(suffix);
-  if(!knownFileType)
-    return;
+  if (!knownFileType)return;
 
   const auto cmd = Importer::knownFileExtensions[suffix];
   if (cmd.isEmpty()) {
@@ -704,13 +703,13 @@ bool TabManager::saveAs(EditorInterface *edt)
 
 bool TabManager::saveAs(EditorInterface *edt, const QString& filepath)
 {
-    bool saveOk = save(edt, filepath);
-    if (saveOk) {
-      auto [fname, fpath] = getEditorTabNameWithModifier(edt);
-      setEditorTabName(fname, fpath, edt);
-      par->setWindowTitle(fname);
-    }
-    return saveOk;
+  bool saveOk = save(edt, filepath);
+  if (saveOk) {
+    auto [fname, fpath] = getEditorTabNameWithModifier(edt);
+    setEditorTabName(fname, fpath, edt);
+    par->setWindowTitle(fname);
+  }
+  return saveOk;
 }
 
 bool TabManager::saveACopy(EditorInterface *edt)

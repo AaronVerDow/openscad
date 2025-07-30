@@ -30,7 +30,7 @@ Vector3d uniqueMultiply(std::unordered_map<Vector3d, Vector3d>& vert_mult_map, c
   return entry->second;
 }
 
-}  // namespace 
+}  // namespace
 
 void addAttributeValues(IAttributeData&) {}
 
@@ -75,10 +75,10 @@ void VBOBuilder::addEdgeData()
 }
 
 void VBOBuilder::createVertex(const std::array<Vector3d, 3>& points,
-                               const std::array<Vector3d, 3>& normals,
-                               const Color4f& color,
-                               size_t active_point_index, size_t primitive_index,
-                               size_t shape_size, bool outlines, bool /*mirror*/)
+                              const std::array<Vector3d, 3>& normals,
+                              const Color4f& color,
+                              size_t active_point_index, size_t primitive_index,
+                              size_t shape_size, bool outlines, bool /*mirror*/)
 {
   addAttributeValues(*(data()->positionData()), points[active_point_index][0], points[active_point_index][1], points[active_point_index][2]);
   if (data()->hasNormalData()) {
@@ -174,7 +174,7 @@ void VBOBuilder::createInterleavedVBOs()
           }
           last_size = data->size() / data->count();
           for (size_t i = 0; i < last_size; ++i) {
-	    // This path is chosen in vertex-object-renderers non-direct mode
+            // This path is chosen in vertex-object-renderers non-direct mode
             GL_TRACE("A glBufferSubData(GL_ARRAY_BUFFER, %p, %d, %p)", (void *)dst % size % (void *)src);
             GL_CHECKD(glBufferSubData(GL_ARRAY_BUFFER, dst, size, src));
             src += size;
@@ -332,7 +332,7 @@ void VBOBuilder::addShaderData()
 }
 
 void VBOBuilder::add_barycentric_attribute(size_t active_point_index,
-                                            size_t primitive_index, size_t shape_size, bool outlines)
+                                           size_t primitive_index, size_t shape_size, bool outlines)
 {
   const std::shared_ptr<VertexData> vertex_data = data();
 
@@ -370,8 +370,8 @@ void VBOBuilder::add_barycentric_attribute(size_t active_point_index,
 }
 
 void VBOBuilder::create_triangle(const Color4f& color, const Vector3d& p0,
-                                  const Vector3d& p1, const Vector3d& p2, size_t primitive_index,
-                                  size_t shape_size, bool outlines, bool enable_barycentric, bool mirror)
+                                 const Vector3d& p1, const Vector3d& p2, size_t primitive_index,
+                                 size_t shape_size, bool outlines, bool enable_barycentric, bool mirror)
 {
   const double ax = p1[0] - p0[0], bx = p1[0] - p2[0];
   const double ay = p1[1] - p0[1], by = p1[1] - p2[1];
@@ -385,29 +385,29 @@ void VBOBuilder::create_triangle(const Color4f& color, const Vector3d& p0,
   if (!data()) return;
 
   if (enable_barycentric) {
-      add_barycentric_attribute(0, primitive_index, shape_size, outlines);
+    add_barycentric_attribute(0, primitive_index, shape_size, outlines);
   }
   createVertex({p0, p1, p2}, {n, n, n}, color, 0, primitive_index, shape_size,
-                            outlines, mirror);
+               outlines, mirror);
 
   if (!mirror) {
     if (enable_barycentric) {
       add_barycentric_attribute(1, primitive_index, shape_size, outlines);
     }
     createVertex({p0, p1, p2}, {n, n, n}, color, 1, primitive_index, shape_size, outlines,
-                  mirror);
+                 mirror);
   }
   if (enable_barycentric) {
     add_barycentric_attribute(2, primitive_index, shape_size, outlines);
   }
   createVertex({p0, p1, p2}, {n, n, n}, color, 2, primitive_index, shape_size, outlines,
-                mirror);
+               mirror);
   if (mirror) {
     if (enable_barycentric) {
       add_barycentric_attribute(1, primitive_index, shape_size, outlines);
     }
     createVertex({p0, p1, p2}, {n, n, n}, color, 1, primitive_index, shape_size, outlines,
-                  mirror);
+                 mirror);
   }
 }
 
@@ -415,7 +415,7 @@ void VBOBuilder::create_triangle(const Color4f& color, const Vector3d& p0,
 // This will usually create a new VertexState and append it to our
 // vertex states
 void VBOBuilder::create_surface(const PolySet& ps, const Transform3d& m,
-                                 const Color4f& default_color, bool enable_barycentric, bool force_default_color)
+                                const Color4f& default_color, bool enable_barycentric, bool force_default_color)
 {
   const std::shared_ptr<VertexData> vertex_data = data();
 
@@ -441,7 +441,7 @@ void VBOBuilder::create_surface(const PolySet& ps, const Transform3d& m,
     const auto& poly = ps.indices[i];
     const auto color_index = has_colors && i < ps.color_indices.size() ? ps.color_indices[i] : -1;
     const auto& color = !force_default_color && color_index >= 0 && color_index < ps.colors.size() &&
-                            ps.colors[color_index].isValid()
+      ps.colors[color_index].isValid()
                           ? ps.colors[color_index]
                           : default_color;
     if (poly.size() == 3) {
@@ -486,8 +486,8 @@ void VBOBuilder::create_surface(const PolySet& ps, const Transform3d& m,
 }
 
 void VBOBuilder::create_edges(const Polygon2d& polygon,
-                               const Transform3d& m,
-                               const Color4f& color)
+                              const Transform3d& m,
+                              const Color4f& color)
 {
   const std::shared_ptr<VertexData> vertex_data = data();
 

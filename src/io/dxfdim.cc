@@ -86,8 +86,8 @@ static Value builtin_dxf_dim(Arguments arguments, const Location& loc)
     return Value::undefined.clone();
   }
   const std::string key = STR(filename, "|", layername, "|", name, "|", xorigin,
-                        "|", yorigin, "|", scale, "|", lastwritetime,
-                        "|", filesize);
+                              "|", yorigin, "|", scale, "|", lastwritetime,
+                              "|", filesize);
   auto result = dxf_dim_cache.find(key);
   if (result != dxf_dim_cache.end()) return {result->second};
   handle_dep(filepath.string());
@@ -183,8 +183,8 @@ static Value builtin_dxf_cross(Arguments arguments, const Location& loc)
   }
 
   const std::string key = STR(filename, "|", layername, "|", xorigin, "|", yorigin,
-                        "|", scale, "|", lastwritetime,
-                        "|", filesize);
+                              "|", scale, "|", lastwritetime,
+                              "|", filesize);
 
   auto result = dxf_cross_cache.find(key);
   if (result != dxf_cross_cache.end()) {

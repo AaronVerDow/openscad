@@ -30,11 +30,11 @@ CGAL_DoubleMesh repairPolySet(const PolySet& ps)
   points.reserve(ps.indices.size() * 3);
   polygons.reserve(ps.indices.size());
   for (const auto& inds : ps.indices) {
-    std::vector<size_t> &polygon = polygons.emplace_back();
+    std::vector<size_t>& polygon = polygons.emplace_back();
     polygon.reserve(inds.size());
-    for (const auto &ind : inds) {
+    for (const auto& ind : inds) {
       polygon.push_back(points.size());
-      auto &pt = ps.vertices[ind];
+      auto& pt = ps.vertices[ind];
       points.emplace_back(pt[0], pt[1], pt[2]);
     }
   }
@@ -55,7 +55,9 @@ std::shared_ptr<SurfaceMesh> createSurfaceMeshFromPolySet(const PolySet& ps)
     mesh->add_vertex(typename SurfaceMesh::Point(v[0], v[1], v[2]));
   }
   for (const auto& face : ps.indices) {
-    mesh->add_face(face | boost::adaptors::transformed([](uint32_t i){ return typename SurfaceMesh::Vertex_index(i); }));
+    mesh->add_face(face | boost::adaptors::transformed([](uint32_t i){
+        return typename SurfaceMesh::Vertex_index(i);
+      }));
   }
   return mesh;
 }
@@ -68,7 +70,7 @@ template <class SurfaceMesh>
 std::unique_ptr<PolySet> createPolySetFromSurfaceMesh(const SurfaceMesh& mesh)
 {
   //  FIXME: We may want to convert directly, without PolySetBuilder here, to maintain manifoldness, if possible.
-  PolySetBuilder builder(0, mesh.number_of_faces()+ mesh.number_of_faces());
+  PolySetBuilder builder(0, mesh.number_of_faces() + mesh.number_of_faces());
   for (const auto& f : mesh.faces()) {
     builder.beginPolygon(mesh.degree(f));
 

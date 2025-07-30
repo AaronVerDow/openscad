@@ -30,14 +30,14 @@ std::shared_ptr<const Geometry> CGALCache::get(const std::string& id) const
 }
 
 bool CGALCache::acceptsGeometry(const std::shared_ptr<const Geometry>& geom) {
-  return 0 
-#ifdef ENABLE_CGAL	  
-    || std::dynamic_pointer_cast<const CGALNefGeometry>(geom) != nullptr
-#endif    
-#ifdef ENABLE_MANIFOLD
-    || std::dynamic_pointer_cast<const ManifoldGeometry>(geom) != nullptr
+  return 0
+#ifdef ENABLE_CGAL
+         || std::dynamic_pointer_cast<const CGALNefGeometry>(geom) != nullptr
 #endif
-    ;
+#ifdef ENABLE_MANIFOLD
+         || std::dynamic_pointer_cast<const ManifoldGeometry>(geom) != nullptr
+#endif
+  ;
 }
 
 bool CGALCache::insert(const std::string& id, const std::shared_ptr<const Geometry>& N)

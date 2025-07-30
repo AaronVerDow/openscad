@@ -27,7 +27,8 @@
 
 namespace {
 
-class OffscreenContextWGL : public OffscreenContext {
+class OffscreenContextWGL : public OffscreenContext
+{
 public:
   OffscreenContextWGL(uint32_t width, uint32_t height) : OffscreenContext(width, height) {}
   ~OffscreenContextWGL() {
@@ -37,13 +38,13 @@ public:
   }
 
   std::string getInfo() const override {
-  std::stringstream result;
-  // should probably get some info from WGL context here?
-  result << "GL context creator: WGL (old)\n"
-      	 << "PNG generator: lodepng\n";
+    std::stringstream result;
+    // should probably get some info from WGL context here?
+    result << "GL context creator: WGL (old)\n"
+           << "PNG generator: lodepng\n";
 
-  return result.str();
-}
+    return result.str();
+  }
 
   bool makeCurrent() const override {
     return wglMakeCurrent(this->dev_context, this->openGLContext);
@@ -162,8 +163,8 @@ bool create_wgl_dummy_context(OffscreenContextWGL& ctx)
 namespace offscreen_old {
 
 std::shared_ptr<OffscreenContext> CreateOffscreenContextWGL(
-  uint32_t width, uint32_t height, uint32_t majorGLVersion, 
-  uint32_t minorGLVersion, bool compatibilityProfile)   
+  uint32_t width, uint32_t height, uint32_t majorGLVersion,
+  uint32_t minorGLVersion, bool compatibilityProfile)
 {
   auto ctx = std::make_shared<OffscreenContextWGL>(width, height);
 

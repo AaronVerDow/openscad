@@ -305,10 +305,10 @@ void QGLView::normalizeAngle(GLdouble& angle)
 void QGLView::mouseMoveEvent(QMouseEvent *event)
 {
   auto this_mouse = event->globalPos();
-  if(measure_state != MEASURE_IDLE) {
-	QPoint pt = event->pos();
-  	this->shown_obj = findObject(pt.x(), pt.y());
-	update();
+  if (measure_state != MEASURE_IDLE) {
+    QPoint pt = event->pos();
+    this->shown_obj = findObject(pt.x(), pt.y());
+    update();
   }
   double dx = (this_mouse.x() - last_mouse.x()) * 0.7;
   double dy = (this_mouse.y() - last_mouse.y()) * 0.7;
@@ -362,13 +362,13 @@ void QGLView::mouseReleaseEvent(QMouseEvent *event)
   releaseMouse();
 
   auto button_right = this->mouseSwapButtons?Qt::LeftButton : Qt::RightButton;
-  auto button_left =  this->mouseSwapButtons?Qt::RightButton : Qt::LeftButton;
+  auto button_left = this->mouseSwapButtons?Qt::RightButton : Qt::LeftButton;
   if (!mouse_drag_moved) {
-    if(event->button() == button_right) {
+    if (event->button() == button_right) {
       QPoint point = event->pos();
       emit doRightClick(point);
     }
-    if(event->button() == button_left) {
+    if (event->button() == button_left) {
       QPoint point = event->pos();
       emit doLeftClick(point);
     }
@@ -394,7 +394,7 @@ void QGLView::wheelEvent(QWheelEvent *event)
   const auto pos = Q_WHEEL_EVENT_POSITION(event);
   const int v = event->angleDelta().y();
   if (QApplication::keyboardModifiers() & Qt::ShiftModifier) {
-    zoomFov (v);
+    zoomFov(v);
   } else if (this->mouseCentricZoom) {
     zoomCursor(pos.x(), pos.y(), v);
   } else {
@@ -421,7 +421,7 @@ void QGLView::zoom(double v, bool relative)
 
 void QGLView::zoomFov(double v)
 {
-  this->cam.setVpf( this->cam.fovValue () * pow(0.9, v / 120.0));
+  this->cam.setVpf(this->cam.fovValue() * pow(0.9, v / 120.0));
   update();
   emit cameraChanged();
 }
@@ -540,33 +540,33 @@ void QGLView::rotate2(double x, double y, double z)
   emit cameraChanged();
 }
 
-std::vector<SelectedObject> QGLView::findObject(int mouse_x,int mouse_y)
+std::vector<SelectedObject> QGLView::findObject(int mouse_x, int mouse_y)
 {
-  int viewport[4]={0,0,0,0};
+  int viewport[4] = {0, 0, 0, 0};
   double posXF, posYF, posZF;
   double posXN, posYN, posZN;
-  viewport[2]=size().rwidth();
-  viewport[3]=size().rheight();
+  viewport[2] = size().rwidth();
+  viewport[3] = size().rheight();
 
   GLdouble winX = mouse_x;
   GLdouble winY = viewport[3] - mouse_y;
 
-  gluUnProject(winX, winY, 1, this->modelview, this->projection, viewport,&posXF, &posYF, &posZF);
-  gluUnProject(winX, winY, -1, this->modelview, this->projection, viewport,&posXN, &posYN, &posZN);
+  gluUnProject(winX, winY, 1, this->modelview, this->projection, viewport, &posXF, &posYF, &posZF);
+  gluUnProject(winX, winY, -1, this->modelview, this->projection, viewport, &posXN, &posYN, &posZN);
   Vector3d far_pt(posXF, posYF, posZF);
   Vector3d near_pt(posXN, posYN, posZN);
 
-  Vector3d testpt(0,0,0);
+  Vector3d testpt(0, 0, 0);
   std::vector<SelectedObject> result;
   auto renderer = this->getRenderer();
-  if(renderer == nullptr) return result;
-  result = renderer->findModelObject(near_pt, far_pt, mouse_x, mouse_y, cam.zoomValue()/300);
+  if (renderer == nullptr)return result;
+  result = renderer->findModelObject(near_pt, far_pt, mouse_x, mouse_y, cam.zoomValue() / 300);
   return result;
 }
 
 void QGLView::selectPoint(int mouse_x, int mouse_y)
 {
-  std::vector<SelectedObject> obj= findObject(mouse_x, mouse_y);
+  std::vector<SelectedObject> obj = findObject(mouse_x, mouse_y);
   if (obj.size() == 1) {
     this->selected_obj.push_back(obj[0]);
     update();
@@ -579,7 +579,9 @@ int QGLView::pickObject(QPoint position)
 
   if (this->getRenderer()) {
     this->makeCurrent();
-    auto guard = sg::make_scope_guard([this]() { this->doneCurrent(); });
+    auto guard = sg::make_scope_guard([this]() {
+      this->doneCurrent();
+    });
 
     // Update the selector with the right image size
     this->selector->reset(this);

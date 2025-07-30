@@ -213,7 +213,7 @@ const std::string PlatformUtils::sysinfo(bool extended)
 #ifdef USE_MIMALLOC
 #include <mimalloc.h>
 // mimalloc needs an output handler that references stderr after we mess with it.
-static void mi_output( const char* msg, void* arg ) {
+static void mi_output(const char *msg, void *arg) {
   fputs(msg, stderr);
 }
 #endif

@@ -99,8 +99,7 @@ void PolySetBuilder::appendGeometry(const std::shared_ptr<const Geometry>& geom)
   } else if (const auto N = std::dynamic_pointer_cast<const CGALNefGeometry>(geom)) {
     if (const auto ps = CGALUtils::createPolySetFromNefPolyhedron3(*(N->p3))) {
       appendPolySet(*ps);
-    }
-    else {
+    } else {
       LOG(message_group::Error, "Nef->PolySet failed");
     }
 #endif // ifdef ENABLE_CGAL
@@ -143,12 +142,12 @@ void PolySetBuilder::addVertex(int ind)
   }
 }
 
-void PolySetBuilder::addVertex(const Vector3d &v)
+void PolySetBuilder::addVertex(const Vector3d& v)
 {
   addVertex(vertexIndex(v));
 }
 
-void PolySetBuilder::endPolygon(const Color4f &color) {
+void PolySetBuilder::endPolygon(const Color4f& color) {
   // FIXME: Should we check for self-touching polygons (non-consecutive duplicate indices)?
 
   // FIXME: Can we move? What would the state of current_polygon_ be after move?

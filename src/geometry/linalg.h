@@ -58,9 +58,9 @@ public:
 
   void setRgba(int r, int g, int b, int a = 255) {
     color_ << static_cast<float>(r) / 255.0f,
-              static_cast<float>(g) / 255.0f,
-              static_cast<float>(b) / 255.0f,
-              static_cast<float>(a) / 255.0f;
+      static_cast<float>(g) / 255.0f,
+      static_cast<float>(b) / 255.0f,
+      static_cast<float>(a) / 255.0f;
   }
   void setRgba(float r, float g, float b, float a = 1.0f) {
     color_ << r, g, b, a;
@@ -72,7 +72,7 @@ public:
     color_[3] = a;
   }
 
-  bool getRgba(int &r, int &g, int &b, int &a) const {
+  bool getRgba(int& r, int& g, int& b, int& a) const {
     if (!isValid()) return false;
     r = std::clamp(static_cast<int>(this->r() * 255.0f), 0, 255);
     g = std::clamp(static_cast<int>(this->g() * 255.0f), 0, 255);
@@ -81,7 +81,7 @@ public:
     return true;
   }
 
-  bool getRgba(uint8_t &r, uint8_t &g, uint8_t &b, uint8_t &a) const {
+  bool getRgba(uint8_t& r, uint8_t& g, uint8_t& b, uint8_t& a) const {
     if (!isValid()) return false;
     r = static_cast<uint8_t>(std::clamp(this->r(), 0.0f, 1.0f) * 255.0f);
     g = static_cast<uint8_t>(std::clamp(this->g(), 0.0f, 1.0f) * 255.0f);
@@ -90,7 +90,7 @@ public:
     return true;
   }
 
-  bool getRgba(float &r, float &g, float &b, float &a) const {
+  bool getRgba(float& r, float& g, float& b, float& a) const {
     if (!isValid()) return false;
     r = this->r();
     g = this->g();
@@ -108,7 +108,7 @@ public:
   [[nodiscard]] float b() const { return color_[2]; }
   [[nodiscard]] float a() const { return color_[3]; }
 
-  [[nodiscard]] bool operator<(const Color4f &b) const {
+  [[nodiscard]] bool operator<(const Color4f& b) const {
     for (int i = 0; i < 4; i++) {
       if (color_[i] < b.color_[i]) return true;
       if (color_[i] > b.color_[i]) return false;
@@ -116,11 +116,11 @@ public:
     return false;
   }
 
-  [[nodiscard]] bool operator==(const Color4f &b) const {
+  [[nodiscard]] bool operator==(const Color4f& b) const {
     return color_ == b.color_;
   }
 
-  [[nodiscard]] bool operator!=(const Color4f &b) const {
+  [[nodiscard]] bool operator!=(const Color4f& b) const {
     return !(*this == b);
   }
 

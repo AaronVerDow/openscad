@@ -38,6 +38,6 @@ protected:
 };
 
 #define VISITABLE() \
-        Response accept(State &state, BaseVisitor &visitor) const override { \
+        Response accept(State & state, BaseVisitor & visitor) const override { \
           return acceptImpl(state, *this, visitor); \
         }

@@ -59,7 +59,7 @@ public:
   bool init(const QJsonObject& serviceObject);
 
   static const PrintService *getPrintService(const std::string& name);
-  static const PrintServices &getPrintServices();
+  static const PrintServices& getPrintServices();
 
 private:
 

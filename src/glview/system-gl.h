@@ -112,7 +112,7 @@ inline void glColor4fv(float *c) {}
 #define hasGLExtension(ext) glewIsSupported("GL_" #ext)
 #endif
 #ifdef USE_GLAD
-#define hasGLExtension(ext) GLAD_GL_## ext
+#define hasGLExtension(ext) GLAD_GL_ ## ext
 #endif
 
 std::string gl_dump();

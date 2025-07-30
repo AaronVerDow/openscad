@@ -28,8 +28,8 @@ public:
     using reference = value_type; // type used by operator*(), not actually a reference
     using pointer = void;     // type used by operator->(), not implemented
     iterator(const RangeType& range, iter_state state) :
-        range(range), val(range.begin_val), state(state),
-        num_values(range.numValues()), i_step(state == iter_state::RANGE_END ? num_values : 0)
+      range(range), val(range.begin_val), state(state),
+      num_values(range.numValues()), i_step(state == iter_state::RANGE_END ? num_values : 0)
     {
       if (std::isnan(range.begin_val) || std::isnan(range.end_val) ||
           std::isnan(range.step_val) || range.step_val == 0) {
@@ -51,7 +51,6 @@ public:
              state == other.state && range == other.range;
     }
     bool operator!=(const iterator& other) const { return !(*this == other); }
-;
 private:
     const RangeType& range;
     double val;

@@ -241,28 +241,28 @@ std::unique_ptr<const Geometry> SurfaceNode::createGeometry() const
       double vx = (v1 + v2 + v3 + v4) / 4;
 
       builder.appendPolygon({
-                Vector3d(ox + j - 1, oy + i - 1, v1),
-                Vector3d(ox + j, oy + i - 1, v2),
-                Vector3d(ox + j - 0.5, oy + i - 0.5, vx)
-                });
+        Vector3d(ox + j - 1, oy + i - 1, v1),
+        Vector3d(ox + j, oy + i - 1, v2),
+        Vector3d(ox + j - 0.5, oy + i - 0.5, vx)
+      });
 
       builder.appendPolygon({
-                Vector3d(ox + j, oy + i - 1, v2),
-                Vector3d(ox + j, oy + i, v4),
-                Vector3d(ox + j - 0.5, oy + i - 0.5, vx)
-                });
+        Vector3d(ox + j, oy + i - 1, v2),
+        Vector3d(ox + j, oy + i, v4),
+        Vector3d(ox + j - 0.5, oy + i - 0.5, vx)
+      });
 
       builder.appendPolygon({
-                Vector3d(ox + j, oy + i, v4),
-                Vector3d(ox + j - 1, oy + i, v3),
-                Vector3d(ox + j - 0.5, oy + i - 0.5, vx)
-                });
+        Vector3d(ox + j, oy + i, v4),
+        Vector3d(ox + j - 1, oy + i, v3),
+        Vector3d(ox + j - 0.5, oy + i - 0.5, vx)
+      });
 
       builder.appendPolygon({
-                Vector3d(ox + j - 1, oy + i, v3),
-                Vector3d(ox + j - 1, oy + i - 1, v1),
-                Vector3d(ox + j - 0.5, oy + i - 0.5, vx)
-                });
+        Vector3d(ox + j - 1, oy + i, v3),
+        Vector3d(ox + j - 1, oy + i - 1, v1),
+        Vector3d(ox + j - 0.5, oy + i - 0.5, vx)
+      });
     }
 
   // edges along Y
@@ -274,17 +274,17 @@ std::unique_ptr<const Geometry> SurfaceNode::createGeometry() const
 
 
     builder.appendPolygon({
-        Vector3d(ox + 0, oy + i - 1, min_val),
-        Vector3d(ox + 0, oy + i - 1, v1),
-        Vector3d(ox + 0, oy + i, v2),
-        Vector3d(ox + 0, oy + i, min_val)
+      Vector3d(ox + 0, oy + i - 1, min_val),
+      Vector3d(ox + 0, oy + i - 1, v1),
+      Vector3d(ox + 0, oy + i, v2),
+      Vector3d(ox + 0, oy + i, min_val)
     });
 
     builder.appendPolygon({
-        Vector3d(ox + columns - 1, oy + i, min_val),
-        Vector3d(ox + columns - 1, oy + i, v4),
-        Vector3d(ox + columns - 1, oy + i - 1, v3),
-        Vector3d(ox + columns - 1, oy + i - 1, min_val)
+      Vector3d(ox + columns - 1, oy + i, min_val),
+      Vector3d(ox + columns - 1, oy + i, v4),
+      Vector3d(ox + columns - 1, oy + i - 1, v3),
+      Vector3d(ox + columns - 1, oy + i - 1, min_val)
     });
   }
 
@@ -296,17 +296,17 @@ std::unique_ptr<const Geometry> SurfaceNode::createGeometry() const
     double v4 = data[ (i) + (lines - 1) * columns ];
 
     builder.appendPolygon({
-        Vector3d(ox + i, oy + 0, min_val),
-        Vector3d(ox + i, oy + 0, v2),
-        Vector3d(ox + i - 1, oy + 0, v1),
-        Vector3d(ox + i - 1, oy + 0, min_val)
+      Vector3d(ox + i, oy + 0, min_val),
+      Vector3d(ox + i, oy + 0, v2),
+      Vector3d(ox + i - 1, oy + 0, v1),
+      Vector3d(ox + i - 1, oy + 0, min_val)
     });
 
     builder.appendPolygon({
-        Vector3d(ox + i - 1, oy + lines - 1, min_val),
-        Vector3d(ox + i - 1, oy + lines - 1, v3),
-        Vector3d(ox + i, oy + lines - 1, v4),
-        Vector3d(ox + i, oy + lines - 1, min_val)
+      Vector3d(ox + i - 1, oy + lines - 1, min_val),
+      Vector3d(ox + i - 1, oy + lines - 1, v3),
+      Vector3d(ox + i, oy + lines - 1, v4),
+      Vector3d(ox + i, oy + lines - 1, min_val)
     });
   }
 

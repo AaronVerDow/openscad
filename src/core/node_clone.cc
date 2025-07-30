@@ -43,16 +43,16 @@
 
 std::vector<ModuleInstantiation *> modinsts_list;
 
-#define NodeCloneFunc(T) std::shared_ptr<T> clone_what(const T *node) {\
-       	ModuleInstantiation *inst = new ModuleInstantiation(node->modinst->name() ,\
-	node->modinst->arguments, node->modinst->location());\
-	modinsts_list.push_back(inst); \
-       	auto clone = std::make_shared<T>(*node);\
-       	clone->modinst = inst; \
-	return clone;\
+#define NodeCloneFunc(T) std::shared_ptr<T> clone_what(const T * node) { \
+          ModuleInstantiation *inst = new ModuleInstantiation(node->modinst->name(), \
+                                                              node->modinst->arguments, node->modinst->location()); \
+          modinsts_list.push_back(inst); \
+          auto clone = std::make_shared<T>(*node); \
+          clone->modinst = inst; \
+          return clone; \
 }
 
-#define NodeCloneUse(T) { const T *node = dynamic_cast<const T *>(this); if((node) != nullptr) clone=clone_what(node); }
+#define NodeCloneUse(T) { const T *node = dynamic_cast<const T *>(this); if ((node) != nullptr) clone = clone_what(node); }
 NodeCloneFunc(CubeNode)
 NodeCloneFunc(SphereNode)
 NodeCloneFunc(CylinderNode)
@@ -79,38 +79,38 @@ NodeCloneFunc(RoofNode)
 
 std::shared_ptr<AbstractNode> AbstractNode::clone(void)
 {
-	std::shared_ptr<AbstractNode> clone=nullptr;
-	NodeCloneUse(CubeNode)
-	NodeCloneUse(SphereNode)
-	NodeCloneUse(CylinderNode)
-	NodeCloneUse(PolyhedronNode)
-	NodeCloneUse(SquareNode)
-	NodeCloneUse(CircleNode)
-	NodeCloneUse(PolygonNode)
-	NodeCloneUse(TransformNode)
-	NodeCloneUse(ColorNode)
-	NodeCloneUse(RotateExtrudeNode)
-	NodeCloneUse(LinearExtrudeNode)
-	NodeCloneUse(CsgOpNode)
-	NodeCloneUse(CgalAdvNode)
-	NodeCloneUse(RenderNode)
-	NodeCloneUse(SurfaceNode)
-	NodeCloneUse(TextNode)
-	NodeCloneUse(OffsetNode)
-	NodeCloneUse(ProjectionNode)
-	NodeCloneUse(GroupNode)
-	NodeCloneUse(ImportNode)
+  std::shared_ptr<AbstractNode> clone = nullptr;
+  NodeCloneUse(CubeNode)
+  NodeCloneUse(SphereNode)
+  NodeCloneUse(CylinderNode)
+  NodeCloneUse(PolyhedronNode)
+  NodeCloneUse(SquareNode)
+  NodeCloneUse(CircleNode)
+  NodeCloneUse(PolygonNode)
+  NodeCloneUse(TransformNode)
+  NodeCloneUse(ColorNode)
+  NodeCloneUse(RotateExtrudeNode)
+  NodeCloneUse(LinearExtrudeNode)
+  NodeCloneUse(CsgOpNode)
+  NodeCloneUse(CgalAdvNode)
+  NodeCloneUse(RenderNode)
+  NodeCloneUse(SurfaceNode)
+  NodeCloneUse(TextNode)
+  NodeCloneUse(OffsetNode)
+  NodeCloneUse(ProjectionNode)
+  NodeCloneUse(GroupNode)
+  NodeCloneUse(ImportNode)
 #if defined(ENABLE_EXPERIMENTAL) && defined(ENABLE_CGAL)
-	NodeCloneUse(RoofNode)
+  NodeCloneUse(RoofNode)
 #endif
-	if(clone != nullptr) {
-		clone->idx = idx_counter++;
-		clone->children.clear();
-		for(const auto &child: this->children) {
-			clone->children.push_back(child->clone());
-		}
-		return clone;
-	}
-	std::cout << "Type not defined for clone :" << typeid(this).name() << "\n\r";
-	return std::shared_ptr<AbstractNode>(this);
+  if (clone != nullptr) {
+    clone->idx = idx_counter++;
+    clone->children.clear();
+    for (const auto& child: this->children) {
+      clone->children.push_back(child->clone());
+    }
+    return clone;
+  }
+  std::cout << "Type not defined for clone :" << typeid(this).name() << "\n\r";
+  return std::shared_ptr<AbstractNode>(this);
 }

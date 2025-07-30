@@ -60,7 +60,7 @@ public:
       indices.back().reserve(p.size());
       for (auto ind : boost::adaptors::reverse(p)) {
         // align v to the grid; the CGALPoint will receive the aligned vertex
-	Vector3d v=ps.vertices[ind];
+        Vector3d v = ps.vertices[ind];
         size_t idx = grid.align(v);
         if (idx == vertices.size()) {
           CGALPoint p(v[0], v[1], v[2]);

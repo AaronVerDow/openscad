@@ -86,7 +86,7 @@ bool hasOfflineCheatSheet();
 
 void openOfflineCheatSheet();
 
-QString getBackgroundColorStyleSheet(const QColor &color);
+QString getBackgroundColorStyleSheet(const QColor& color);
 
 QString blendForBackgroundColorStyleSheet(const QColor& input, const QColor& blend, float transparency = 0.2);
 

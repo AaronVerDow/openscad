@@ -107,7 +107,7 @@ template void triangulateFaces(CGAL::Surface_mesh<CGAL::Point_3<CGAL::Epick>>& p
 
 std::unique_ptr<PolySet> createTriangulatedPolySetFromPolygon2d(const Polygon2d& polygon2d)
 {
-  auto polyset = std::make_unique<PolySet>(2); 
+  auto polyset = std::make_unique<PolySet>(2);
   polyset->setTriangular(true);
 
   Polygon2DCGAL::CDT cdt; // Uses a constrained Delaunay triangulator.
@@ -116,9 +116,9 @@ std::unique_ptr<PolySet> createTriangulatedPolySetFromPolygon2d(const Polygon2d&
     // Adds all vertices, and add all contours as constraints.
     for (const auto& outline : polygon2d.outlines()) {
       Polygon2DCGAL::CDT::Vertex_handle prev;
-      for (int i=0;i<=outline.vertices.size();i++) {
+      for (int i = 0; i <= outline.vertices.size(); i++) {
         const int idx = i % outline.vertices.size();
-        const auto &v = outline.vertices[idx];
+        const auto& v = outline.vertices[idx];
         auto curr = cdt.insert({v[0], v[1]});
         // FIXME: We need be make sure that client relying on vertex indices being
         // maintained also skips coincident vertices the same way.
@@ -146,17 +146,17 @@ std::unique_ptr<PolySet> createTriangulatedPolySetFromPolygon2d(const Polygon2d&
     if (fit->info().in_domain()) {
       // If this assert hits, it means that the polygon2d somehow contains
       // self-intersecting or intersecting constraints. This shouldn't happen
-      // since Clipper guarantees no overlaps, but could happen if we lose 
+      // since Clipper guarantees no overlaps, but could happen if we lose
       // precision from converting from Clipper's coordinate space (int64) to Polygon2's (double).
-      // One possible workaround is to reduce Clipper's precision further, 
+      // One possible workaround is to reduce Clipper's precision further,
       // see https://github.com/openscad/openscad/issues/5253.
       assert(fit->vertex(0)->info().id != -1);
       assert(fit->vertex(1)->info().id != -1);
       assert(fit->vertex(2)->info().id != -1);
       polyset->indices.push_back({
-        fit->vertex(0)->info().id,
-        fit->vertex(1)->info().id,
-        fit->vertex(2)->info().id});
+          fit->vertex(0)->info().id,
+          fit->vertex(1)->info().id,
+          fit->vertex(2)->info().id});
     }
   }
   return polyset;

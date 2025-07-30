@@ -310,7 +310,7 @@ private slots:
   void csgRender();
   void csgReloadRender();
   void action3DPrint();
-  void sendToExternalTool(class ExternalToolInterface& externalToolService);
+  void sendToExternalTool(class ExternalToolInterface &externalToolService);
   void actionRender();
   void actionRenderDone(const std::shared_ptr<const Geometry>&);
   void cgalRender();
@@ -434,11 +434,11 @@ signals:
 
 #ifdef ENABLE_GUI_TESTS
 public:
-  std::shared_ptr<AbstractNode> instantiateRootFromSource(SourceFile* file);
+  std::shared_ptr<AbstractNode> instantiateRootFromSource(SourceFile *file);
 signals:
   // This is a new signal introduced while drafting the testing framework, while in experimental mode
   // we protected it using the #ifdef/endif so it should not be considered as part of the MainWindow API.
-  void compilationDone(SourceFile*);
+  void compilationDone(SourceFile *);
 #endif //
 
 };

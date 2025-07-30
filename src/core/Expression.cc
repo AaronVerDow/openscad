@@ -250,7 +250,7 @@ Value Range::evaluate(const std::shared_ptr<const Context>& context) const
   double begin_val;
   double end_val;
   if (!this->begin->evaluate(context).getDouble(begin_val)
-    || !this->end->evaluate(context).getDouble(end_val)) {
+      || !this->end->evaluate(context).getDouble(end_val)) {
     return Value::undefined.clone();
   }
 
@@ -794,7 +794,7 @@ Value LcEach::evalRecur(Value&& v, const std::shared_ptr<const Context>& context
     return {std::move(vec)};
   } else if (v.type() == Value::Type::STRING) {
     EmbeddedVectorType vec(context->session());
-    auto &wrapper = v.toStrUtf8Wrapper();
+    auto& wrapper = v.toStrUtf8Wrapper();
     vec.reserve(wrapper.size());
     for (auto ch : wrapper) vec.emplace_back(std::move(ch));
     return {std::move(vec)};
@@ -859,7 +859,7 @@ static void doForEach(
       }
     }
   } else if (variable_values.type() == Value::Type::VECTOR) {
-    auto &vec = variable_values.toVector();
+    auto& vec = variable_values.toVector();
     if (pReserve) {
       (*pReserve)(vec.size());
     }
@@ -869,7 +869,7 @@ static void doForEach(
                 );
     }
   } else if (variable_values.type() == Value::Type::OBJECT) {
-    auto &keys = variable_values.toObject().keys();
+    auto& keys = variable_values.toObject().keys();
     if (pReserve) {
       (*pReserve)(keys.size());
     }
@@ -879,7 +879,7 @@ static void doForEach(
                 );
     }
   } else if (variable_values.type() == Value::Type::STRING) {
-    auto &wrapper = variable_values.toStrUtf8Wrapper();
+    auto& wrapper = variable_values.toStrUtf8Wrapper();
     if (pReserve) {
       (*pReserve)(wrapper.size());
     }
@@ -895,7 +895,7 @@ static void doForEach(
   }
 }
 
-void LcFor::forEach(const AssignmentList& assignments, const Location& loc, const std::shared_ptr<const Context>& context, const std::function<void(const std::shared_ptr<const Context>&)>& operation, const std::function<void(size_t)>* pReserve)
+void LcFor::forEach(const AssignmentList& assignments, const Location& loc, const std::shared_ptr<const Context>& context, const std::function<void(const std::shared_ptr<const Context>&)>& operation, const std::function<void(size_t)> *pReserve)
 {
   doForEach(assignments, loc, operation, 0, context, pReserve);
 }
@@ -904,8 +904,8 @@ Value LcFor::evaluate(const std::shared_ptr<const Context>& context) const
 {
   EmbeddedVectorType vec(context->session());
   std::function<void(size_t)> reserve = [&vec](size_t capacity) {
-    vec.reserve(capacity);
-  };
+      vec.reserve(capacity);
+    };
   forEach(this->arguments, this->loc, context,
           [&vec, expression = expr.get()] (const std::shared_ptr<const Context>& iterationContext) {
     vec.emplace_back(expression->evaluate(iterationContext));

@@ -37,7 +37,7 @@ void MouseSelector::reset(GLView *view) {
  */
 void MouseSelector::initShader() {
   // Attributes:
-  // frag_idcolor - (uniform) 24 bit of the selected object's id encoded into R/G/B components as float values 
+  // frag_idcolor - (uniform) 24 bit of the selected object's id encoded into R/G/B components as float values
   const auto selectshader = ShaderUtils::compileShaderProgram(
     ShaderUtils::loadShaderSource("MouseSelector.vert"),
     ShaderUtils::loadShaderSource("MouseSelector.frag"));

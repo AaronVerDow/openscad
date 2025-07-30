@@ -35,7 +35,7 @@ std::unique_ptr<Polygon2d> project(const PolySet& ps) {
   for (const auto& p : ps.indices) {
     Outline2d outline;
     for (const auto& v : p) {
-      pt=ps.vertices[v];
+      pt = ps.vertices[v];
       outline.vertices.emplace_back(pt[0], pt[1]);
     }
     poly->addOutline(outline);
@@ -99,8 +99,7 @@ std::unique_ptr<PolySet> tessellate_faces(const PolySet& polyset)
     auto& currface = polygons.emplace_back();
     for (const auto& ind : pgon) {
       const Vector3f v = polyset.vertices[ind].cast<float>();
-      if (currface.empty() || v != polyset.vertices[currface.back()].cast<float>())
-        currface.push_back(ind);
+      if (currface.empty() || v != polyset.vertices[currface.back()].cast<float>())currface.push_back(ind);
     }
     const Vector3f head = polyset.vertices[currface.front()].cast<float>();
     while (!currface.empty() && head == polyset.vertices[currface.back()].cast<float>())
@@ -141,9 +140,8 @@ std::unique_ptr<PolySet> tessellate_faces(const PolySet& polyset)
     const auto& face = polygons[i];
     if (face.size() == 3) {
       // trivial case - triangles cannot be concave or have holes
-       result->indices.push_back({face[0],face[1],face[2]});
-       if (has_colors)
-         result->color_indices.push_back(polygon_color_indices[i]);
+      result->indices.push_back({face[0], face[1], face[2]});
+      if (has_colors)result->color_indices.push_back(polygon_color_indices[i]);
     }
     // Quads seem trivial, but can be concave, and can have degenerate cases.
     // So everything more complex than triangles goes into the general case.
@@ -153,9 +151,8 @@ std::unique_ptr<PolySet> tessellate_faces(const PolySet& polyset)
       auto err = GeometryUtils::tessellatePolygonWithHoles(verts, facesBuffer, triangles, nullptr);
       if (!err) {
         for (const auto& t : triangles) {
-          result->indices.push_back({t[0],t[1],t[2]});
-          if (has_colors)
-            result->color_indices.push_back(polygon_color_indices[i]);
+          result->indices.push_back({t[0], t[1], t[2]});
+          if (has_colors)result->color_indices.push_back(polygon_color_indices[i]);
         }
       }
     }
@@ -195,7 +192,7 @@ std::shared_ptr<const PolySet> getGeometryAsPolySet(const std::shared_ptr<const 
     }
     return PolySet::createEmpty();
   }
-#endif
+#endif // ifdef ENABLE_CGAL
 #ifdef ENABLE_MANIFOLD
   if (auto mani = std::dynamic_pointer_cast<const ManifoldGeometry>(geom)) {
     return mani->toPolySet();

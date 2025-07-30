@@ -41,12 +41,12 @@ bool export_png(const std::shared_ptr<const Geometry>& root_geom, const ViewOpti
   std::unique_ptr<OffscreenView> glview;
   try {
     glview = std::make_unique<OffscreenView>(camera.pixel_width, camera.pixel_height);
-  } catch (const OffscreenViewException &ex) {
+  } catch (const OffscreenViewException& ex) {
     fprintf(stderr, "Can't create OffscreenView: %s.\n", ex.what());
     return false;
   }
   std::shared_ptr<Renderer> geomRenderer;
-  // Choose PolySetRenderer for PolySet and Polygon2d, and for Manifold since we 
+  // Choose PolySetRenderer for PolySet and Polygon2d, and for Manifold since we
   // know that all geometries are convertible to PolySet.
   if (RenderSettings::inst()->backend3D == RenderBackend3D::ManifoldBackend ||
       std::dynamic_pointer_cast<const PolySet>(root_geom) ||
@@ -79,7 +79,7 @@ std::unique_ptr<OffscreenView> prepare_preview(Tree& tree, const ViewOptions& op
   std::unique_ptr<OffscreenView> glview;
   try {
     glview = std::make_unique<OffscreenView>(camera.pixel_width, camera.pixel_height);
-  } catch (const OffscreenViewException &ex) {
+  } catch (const OffscreenViewException& ex) {
     LOG("Can't create OffscreenView: %1$s.", ex.what());
     return nullptr;
   }

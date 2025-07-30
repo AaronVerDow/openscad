@@ -194,9 +194,9 @@ private:
   void writeSettings();
   void hidePasswords();
   void addPrefPage(QActionGroup *group, QAction *action, QWidget *widget);
-  void createFontSizeMenu(QComboBox *box, const QString &setting);
-  void updateGUIFontFamily(QFontComboBox *fontSelector, const QString &setting);
-  void updateGUIFontSize(QComboBox *fsSelector, const QString &setting);
+  void createFontSizeMenu(QComboBox *box, const QString& setting);
+  void updateGUIFontFamily(QFontComboBox *fontSelector, const QString& setting);
+  void updateGUIFontSize(QComboBox *fsSelector, const QString& setting);
   void updateLocalAppParams();
   void addLocalAppParameter(const Settings::LocalAppParameterType&);
   void moveListBoxRow(QListWidget *listBox, int offset);
@@ -211,5 +211,5 @@ private:
 class GlobalPreferences
 {
 public:
-    static Preferences* inst();
+  static Preferences *inst();
 };

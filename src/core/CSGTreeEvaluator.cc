@@ -153,7 +153,7 @@ Response CSGTreeEvaluator::visit(State& state, const AbstractIntersectionNode& n
   return Response::ContinueTraversal;
 }
 
-Response CSGTreeEvaluator::visit(State& state, const class ListNode& node)
+Response CSGTreeEvaluator::visit(State& state, const class ListNode &node)
 {
   if (state.parent()) {
     if (state.isPrefix()) {
@@ -161,7 +161,7 @@ Response CSGTreeEvaluator::visit(State& state, const class ListNode& node)
       if (node.modinst->isBackground()) state.setBackground(true);
     }
     if (state.isPostfix()) {
-      for (auto &chnode : this->visitedchildren[node.index()]) {
+      for (auto& chnode : this->visitedchildren[node.index()]) {
         addToParent(state, *chnode);
       }
     }
@@ -174,11 +174,11 @@ Response CSGTreeEvaluator::visit(State& state, const class ListNode& node)
 }
 
 // Creates a 1-unit-thick PolySet with dim==2 from a Polygon2d.
-std::shared_ptr<const PolySet> polygon2dToPolySet(const Polygon2d &p2d) {
+std::shared_ptr<const PolySet> polygon2dToPolySet(const Polygon2d& p2d) {
   const auto ps = p2d.tessellate();
   constexpr int dim = 2;
   // Estimating num vertices and polygons: top + bottom + sides
-  PolySetBuilder builder(ps->vertices.size() * 2, 
+  PolySetBuilder builder(ps->vertices.size() * 2,
                          ps->indices.size() * 2 + ps->vertices.size(),
                          dim, p2d.is_convex());
   builder.setConvexity(p2d.getConvexity());
@@ -203,8 +203,8 @@ std::shared_ptr<const PolySet> polygon2dToPolySet(const Polygon2d &p2d) {
   // Create sides
   for (const auto& o : p2d.outlines()) {
     for (size_t i = 0; i < o.vertices.size(); ++i) {
-      const Vector2d &prev = o.vertices[i];
-      const Vector2d &curr = o.vertices[(i+1)%o.vertices.size()];
+      const Vector2d& prev = o.vertices[i];
+      const Vector2d& curr = o.vertices[(i + 1) % o.vertices.size()];
       builder.appendPolygon({
         Vector3d(prev[0], prev[1], -0.5),
         Vector3d(curr[0], curr[1], -0.5),

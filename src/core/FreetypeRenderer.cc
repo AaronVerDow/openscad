@@ -272,7 +272,7 @@ const FontFacePtr FreetypeRenderer::Params::get_font_face() const
 
   const FontFacePtr face = cache->get_font(font);
   if (!face) {
-    LOG(message_group::Warning, loc, documentPath,"Can't get font %1$s", font);
+    LOG(message_group::Warning, loc, documentPath, "Can't get font %1$s", font);
     return nullptr;
   }
 
@@ -360,14 +360,16 @@ FreetypeRenderer::ShapeResults::ShapeResults(
 
   std::vector<hb_feature_t> features;
   features.reserve(face->features_.size());
-  std::transform(begin(face->features_), end(face->features_), std::back_inserter(features), [](const std::string &s) {
+  std::transform(begin(face->features_), end(face->features_), std::back_inserter(features), [](const std::string& s) {
     hb_feature_t f;
     hb_feature_from_string(s.c_str(), s.size(), &f);
     return f;
   });
   std::vector<hb_feature_t *> features_ptr;
   features.reserve(features.size());
-  std::transform(begin(features), end(features), std::back_inserter(features_ptr), [](hb_feature_t &f) { return &f; });
+  std::transform(begin(features), end(features), std::back_inserter(features_ptr), [](hb_feature_t& f) {
+    return &f;
+  });
 
   hb_shape(hb_ft_font, hb_buf, features_ptr.data()[0], features_ptr.size());
 

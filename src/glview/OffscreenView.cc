@@ -20,7 +20,7 @@
 
 namespace {
 
-  /*!
+/*!
    Capture framebuffer from OpenGL and write it to the given ostream.
    Called by save_framebuffer() from platform-specific code.
  */

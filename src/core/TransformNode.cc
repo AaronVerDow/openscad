@@ -130,7 +130,7 @@ std::shared_ptr<AbstractNode> builtin_rotate(const ModuleInstantiation *inst, Ar
       }
     }
     Matrix3d M;
-    M << cy * cz,  cz *sx *sy - cx * sz,   cx *cz *sy + sx * sz,
+    M << cy * cz,  cz * sx * sy - cx * sz,   cx * cz * sy + sx * sz,
       cy *sz,  cx *cz + sx * sy * sz,  -cz * sx + cx * sy * sz,
       -sy,       cy *sx,                  cx *cy;
     node->matrix.rotate(M);

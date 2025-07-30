@@ -83,8 +83,8 @@ static bool check_valid(const fs::path& p, const std::vector<std::string> *openf
    valid files could be found.
  */
 inline fs::path find_valid_path_(const fs::path& sourcepath,
-                          const fs::path& localpath,
-                          const std::vector<std::string> *openfilenames)
+                                 const fs::path& localpath,
+                                 const std::vector<std::string> *openfilenames)
 {
   if (localpath.is_absolute()) {
     if (check_valid(localpath, openfilenames)) {

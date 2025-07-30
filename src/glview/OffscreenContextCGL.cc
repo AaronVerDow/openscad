@@ -9,7 +9,8 @@
 #include "glview/system-gl.h"
 #include <OpenGL/OpenGL.h>
 
-class OffscreenContextCGL : public OffscreenContext {
+class OffscreenContextCGL : public OffscreenContext
+{
 
 public:
   OffscreenContextCGL(int width, int height) : OffscreenContext(width, height) {}
@@ -21,7 +22,7 @@ public:
   std::string getInfo() const override {
     std::ostringstream out;
     out << "GL context creator: CGL (new)\n"
-	<< "PNG generator: Core Foundation\n";
+        << "PNG generator: Core Foundation\n";
     return out.str();
   }
 
@@ -33,7 +34,7 @@ public:
 };
 
 std::shared_ptr<OffscreenContext> CreateOffscreenContextCGL(size_t width, size_t height,
-							    size_t majorGLVersion, size_t minorGLVersion)
+                                                            size_t majorGLVersion, size_t minorGLVersion)
 {
   auto ctx = std::make_shared<OffscreenContextCGL>(width, height);
 

@@ -63,5 +63,5 @@ private:
 
   QIcon iconOk;
   QIcon iconError;
-	QIcon iconWaiting;
+  QIcon iconWaiting;
 };

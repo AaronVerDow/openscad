@@ -51,7 +51,7 @@ class PrintInitDialog : public QDialog, public Ui::PrintInitDialog, public InitC
 
   Q_OBJECT;
 public:
-  PrintInitDialog();  
+  PrintInitDialog();
   int exec() override;
 
   print_service_t getServiceType() const;
@@ -68,7 +68,7 @@ public slots:
 private:
   void resetSelection();
   void addRemotePrintServiceButtons();
-  void populateFileFormatComboBox(const std::vector<FileFormat> &fileFormats,
+  void populateFileFormatComboBox(const std::vector<FileFormat>& fileFormats,
                                   FileFormat currentFormat);
   void setFileFormat(const std::string& identifier);
 

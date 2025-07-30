@@ -21,7 +21,7 @@ namespace fs = std::filesystem;
 const char *make_command = nullptr;
 
 namespace {
-  
+
 std::unordered_set<std::string> dependencies;
 
 }  // namespace

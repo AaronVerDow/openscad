@@ -205,7 +205,7 @@ void Lex::lex_results(const std::string& input, int start, LexInterface *const o
   int isstyle = obj->getStyleAt(start - 1);
   if (isstyle == ecomment) results.state = rules_.state("COMMENT");
 
-  char* styles = new char[input.size()];
+  char *styles = new char[input.size()];
   lexertl::lookup(sm, results);
   while (results.id != eEOF) {
     size_t s = std::distance(input.begin(), results.first);
@@ -324,7 +324,7 @@ int ScadLexer2::getStyleAt(int pos)
   return sstyle;
 }
 
-void ScadLexer2::highlightingMultiple(int start, int length, char* styles) {
+void ScadLexer2::highlightingMultiple(int start, int length, char *styles) {
   editor()->SendScintilla(QsciScintilla::SCI_STARTSTYLING, start);
   editor()->SendScintilla(QsciScintilla::SCI_SETSTYLINGEX, length, styles);
 }

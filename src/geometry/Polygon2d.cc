@@ -168,13 +168,13 @@ double Polygon2d::area() const
    Triangulates this polygon2d and returns a 2D-in-3D PolySet.
 
    This is used for various purposes:
-   * Geometry evaluation for roof, linear_extrude, rotate_extrude
-   * Rendering (both preview and render mode)
-   * Polygon area calculation
-   *
-   * One use-case is special: For geometry construction in Manifold mode, we require this function to
-   * guarantee that vertices and their order are untouched (apart from adding a zero 3rd dimension)
-   *
+ * Geometry evaluation for roof, linear_extrude, rotate_extrude
+ * Rendering (both preview and render mode)
+ * Polygon area calculation
+ *
+ * One use-case is special: For geometry construction in Manifold mode, we require this function to
+ * guarantee that vertices and their order are untouched (apart from adding a zero 3rd dimension)
+ *
  */
 std::unique_ptr<PolySet> Polygon2d::tessellate() const
 {
@@ -182,8 +182,7 @@ std::unique_ptr<PolySet> Polygon2d::tessellate() const
 #if defined(ENABLE_MANIFOLD) && defined(USE_MANIFOLD_TRIANGULATOR)
   if (RenderSettings::inst()->backend3D == RenderBackend3D::ManifoldBackend) {
     return ManifoldUtils::createTriangulatedPolySetFromPolygon2d(*this);
-  }
-  else
+  } else
 #endif
   return CGALUtils::createTriangulatedPolySetFromPolygon2d(*this);
 }

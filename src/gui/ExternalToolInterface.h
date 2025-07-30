@@ -43,13 +43,13 @@ class ExternalToolInterface
 public:
   ExternalToolInterface(FileFormat fileFormat) : exportFormat_(fileFormat) {}
   virtual ~ExternalToolInterface() = default;
-  
+
   virtual bool exportTemporaryFile(const std::shared_ptr<const Geometry>& rootGeometry, const QString& sourceFileName, const Camera *const camera);
   virtual bool process(const std::string& displayName, std::function<bool (double)>) = 0;
 
   FileFormat fileFormat() const { return exportFormat_; }
-  virtual std::string getURL() const { return ""; };
-  virtual QDir getTempDir() const { return QDir::temp(); };
+  virtual std::string getURL() const { return ""; }
+  virtual QDir getTempDir() const { return QDir::temp(); }
 protected:
   std::string sourceFilename_;
   FileFormat exportFormat_;
@@ -73,11 +73,11 @@ std::unique_ptr<ExternalPrintService> createExternalPrintService(const PrintServ
 
 class OctoPrintService : public ExternalToolInterface
 {
-  public:
+public:
   OctoPrintService(FileFormat fileFormat) : ExternalToolInterface(fileFormat) {}
   bool process(const std::string& displayName, std::function<bool (double)>) override;
 
-  private:
+private:
   std::string action;
   std::string slicerEngine;
   std::string slicerAction;
@@ -87,7 +87,7 @@ std::unique_ptr<OctoPrintService> createOctoPrintService(FileFormat fileFormat);
 
 class LocalProgramService : public ExternalToolInterface
 {
-  public:
+public:
   LocalProgramService(FileFormat fileFormat) : ExternalToolInterface(fileFormat) {}
   bool process(const std::string& displayName, std::function<bool (double)>) override;
   QDir getTempDir() const override;

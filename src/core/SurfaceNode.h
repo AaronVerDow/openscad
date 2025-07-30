@@ -39,7 +39,9 @@ struct img_data_t
 public:
   using storage_type = double; // float could be enough here
 
-  img_data_t() { min_val = 0; height = width = 0; }
+  img_data_t() {
+    min_val = 0; height = width = 0;
+  }
 
   void clear() { min_val = 0; height = width = 0; storage.clear(); }
 

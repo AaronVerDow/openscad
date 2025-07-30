@@ -36,7 +36,7 @@
 namespace CGALUtils {
 
 std::unique_ptr<const Geometry> applyUnion3D(
-Geometry::Geometries::iterator chbegin, Geometry::Geometries::iterator chend)
+  Geometry::Geometries::iterator chbegin, Geometry::Geometries::iterator chend)
 {
   using QueueConstItem = std::pair<std::shared_ptr<const CGALNefGeometry>, int>;
   struct QueueItemGreater {
@@ -103,7 +103,7 @@ std::shared_ptr<const Geometry> applyOperator3D(const Geometry::Geometries& chil
       // Initialize N with first expected geometric object
       if (!foundFirst) {
         if (chN) {
-	  // FIXME: Do we need to make a copy here?
+          // FIXME: Do we need to make a copy here?
           N = std::make_shared<CGALNefGeometry>(*chN);
         } else { // first child geometry might be empty/null
           N = nullptr;

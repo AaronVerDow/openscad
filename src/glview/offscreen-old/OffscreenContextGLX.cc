@@ -53,7 +53,8 @@
 
 namespace {
 
-class OffscreenContextGLX : public OffscreenContext {
+class OffscreenContextGLX : public OffscreenContext
+{
 public:
   OffscreenContextGLX(uint32_t width, uint32_t height) : OffscreenContext(width, height) {}
   ~OffscreenContextGLX() {
@@ -73,8 +74,8 @@ public:
     glXQueryVersion(this->xdisplay, &major, &minor);
 
     result << "GL context creator: GLX (old)\n"
-    << "GLX version: " << major << "." << minor << "\n"
-    << "PNG generator: lodepng\n";
+           << "GLX version: " << major << "." << minor << "\n"
+           << "PNG generator: lodepng\n";
 
     return result.str();
   }
@@ -231,8 +232,8 @@ bool create_glx_dummy_context(OffscreenContextGLX& ctx)
 namespace offscreen_old {
 
 std::shared_ptr<OffscreenContext> CreateOffscreenContextGLX(
-  uint32_t width, uint32_t height, uint32_t majorGLVersion, 
-  uint32_t minorGLVersion, bool gles, bool compatibilityProfile)   
+  uint32_t width, uint32_t height, uint32_t majorGLVersion,
+  uint32_t minorGLVersion, bool gles, bool compatibilityProfile)
 {
   auto ctx = std::make_shared<OffscreenContextGLX>(width, height);
 

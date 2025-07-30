@@ -32,12 +32,12 @@
 
 #include "core/ScopeContext.h"
 
-std::shared_ptr<AbstractNode> Children::instantiate(const std::shared_ptr<AbstractNode> &target) const
+std::shared_ptr<AbstractNode> Children::instantiate(const std::shared_ptr<AbstractNode>& target) const
 {
   return children_scope->instantiateModules(*scopeContext(), target);
 }
 
-std::shared_ptr<AbstractNode> Children::instantiate(const std::shared_ptr<AbstractNode> &target, const std::vector<size_t>& indices) const
+std::shared_ptr<AbstractNode> Children::instantiate(const std::shared_ptr<AbstractNode>& target, const std::vector<size_t>& indices) const
 {
   return children_scope->instantiateModules(*scopeContext(), target, indices);
 }

@@ -721,29 +721,29 @@ bool Value::isUncheckedUndef() const
 }
 
 Value ObjectType::operator==(const ObjectType& other) const {
-    if (other.ptr == this->ptr) {
-        return true;
-    }
-    if (other.ptr->values.size() != this->ptr->values.size()) {
-        return false;
-    }
-
-    for ( size_t i = 0; i< this->ptr->values.size(); i++){
-        auto key_the_same = this->ptr->keys[i] != other.ptr->keys[i];
-        if ( key_the_same ) {
-            return false;
-        }
-
-        auto value_the_same = this->ptr->values[i] != other.ptr->values[i];
-        if ( value_the_same.toBool() ) {
-            return false;
-        }
-    }
+  if (other.ptr == this->ptr) {
     return true;
+  }
+  if (other.ptr->values.size() != this->ptr->values.size()) {
+    return false;
+  }
+
+  for ( size_t i = 0; i < this->ptr->values.size(); i++){
+    auto key_the_same = this->ptr->keys[i] != other.ptr->keys[i];
+    if (key_the_same) {
+      return false;
+    }
+
+    auto value_the_same = this->ptr->values[i] != other.ptr->values[i];
+    if (value_the_same.toBool() ) {
+      return false;
+    }
+  }
+  return true;
 }
 Value ObjectType::operator!=(const ObjectType& other) const {
-    Value a = * this == other;
-    return !a.toBool();
+  Value a = *this == other;
+  return !a.toBool();
 }
 
 Value ObjectType::operator<(const ObjectType& /*other*/) const {
@@ -1286,13 +1286,13 @@ ObjectType::ObjectType(EvaluationSession *session) :
   ptr->evaluation_session = session;
 }
 
-const Value& ObjectType::get(const std::string& key) const              { return ptr->get(key); }
-bool ObjectType::set(const std::string& key, Value value)               { return ptr->set(key,std::move(value)); }
+const Value& ObjectType::get(const std::string& key) const { return ptr->get(key); }
+bool ObjectType::set(const std::string& key, Value value)               { return ptr->set(key, std::move(value)); }
 bool ObjectType::del(const std::string& key)                            { return ptr->del(key) != NOINDEX; }
-bool ObjectType::contains(const std::string& key) const                 { return ptr->find(key)!= NOINDEX; }
-bool ObjectType::empty() const                                          { return ptr->values.empty(); }
-const std::vector<std::string>& ObjectType::keys() const                { return ptr->keys; }
-const std::vector<Value>& ObjectType::values() const                    { return ptr->values; }
+bool ObjectType::contains(const std::string& key) const { return ptr->find(key) != NOINDEX; }
+bool ObjectType::empty() const { return ptr->values.empty(); }
+const std::vector<std::string>& ObjectType::keys() const { return ptr->keys; }
+const std::vector<Value>& ObjectType::values() const { return ptr->values; }
 
 const Value& ObjectType::operator[](const str_utf8_wrapper& v) const
 {

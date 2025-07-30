@@ -61,7 +61,7 @@ std::shared_ptr<AbstractNode> builtin_linear_extrude(const ModuleInstantiation *
   double height = 100.0;
 
   if (parameters["v"].isDefined()) {
-    if(!parameters["v"].getVec3(node->height[0], node->height[1], node->height[2])) {
+    if (!parameters["v"].getVec3(node->height[0], node->height[1], node->height[2])) {
       LOG(message_group::Error, "v when specified should be a 3d vector.");
     }
     height = 1.0;
@@ -69,8 +69,8 @@ std::shared_ptr<AbstractNode> builtin_linear_extrude(const ModuleInstantiation *
   const Value& heightValue = parameters[{"height", "h"}];
   if (heightValue.isDefined()) {
     if (!heightValue.getFiniteDouble(height)) {
-        LOG(message_group::Error, "height when specified should be a number.");
-        height = 100.0;
+      LOG(message_group::Error, "height when specified should be a number.");
+      height = 100.0;
     }
     node->height.normalize();
   }
@@ -114,12 +114,12 @@ std::string LinearExtrudeNode::toString() const
   std::ostringstream stream;
 
   stream << this->name() << "(";
-  double height=this->height.norm();
+  double height = this->height.norm();
   stream << "height = " << height;
-  if(height > 0) {
-    Vector3d v=this->height/height;
-    if(v[2] < 1) {
-      stream << ", v = [ " <<  v[0] << ", " << v[1] << ", " << v[2] << "]" ;
+  if (height > 0) {
+    Vector3d v = this->height / height;
+    if (v[2] < 1) {
+      stream << ", v = [ " << v[0] << ", " << v[1] << ", " << v[2] << "]";
     }
   }
   if (this->center) {

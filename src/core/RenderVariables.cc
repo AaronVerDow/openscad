@@ -10,10 +10,10 @@ RenderVariables::applyToContext(ContextHandle<BuiltinContext>& context) const
 
   const auto vpr = camera.getVpr();
   context->set_variable("$vpr",
-    VectorType(context->session(), vpr.x(), vpr.y(), vpr.z()));
+                        VectorType(context->session(), vpr.x(), vpr.y(), vpr.z()));
   const auto vpt = camera.getVpt();
   context->set_variable("$vpt",
-    VectorType(context->session(), vpt.x(), vpt.y(), vpt.z()));
+                        VectorType(context->session(), vpt.x(), vpt.y(), vpt.z()));
   const auto vpd = camera.zoomValue();
   context->set_variable("$vpd", vpd);
   const auto vpf = camera.fovValue();

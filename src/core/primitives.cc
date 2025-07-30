@@ -58,7 +58,7 @@ template <class InsertIterator>
 static void generate_circle(InsertIterator iter, double r, double z, int fragments) {
   for (int i = 0; i < fragments; ++i) {
     double phi = (360.0 * i) / fragments;
-    *(iter++) = {r * cos_degrees(phi), r * sin_degrees(phi), z};
+    *(iter++) = {r *cos_degrees(phi), r *sin_degrees(phi), z};
   }
 }
 
@@ -117,9 +117,9 @@ static void set_fragments(const Parameters& parameters, const ModuleInstantiatio
 std::unique_ptr<const Geometry> CubeNode::createGeometry() const
 {
   if (this->x <= 0 || !std::isfinite(this->x)
-    || this->y <= 0 || !std::isfinite(this->y)
-    || this->z <= 0 || !std::isfinite(this->z)
-    ) {
+      || this->y <= 0 || !std::isfinite(this->y)
+      || this->z <= 0 || !std::isfinite(this->z)
+      ) {
     return PolySet::createEmpty();
   }
 
@@ -137,18 +137,18 @@ std::unique_ptr<const Geometry> CubeNode::createGeometry() const
     y2 = this->y;
     z2 = this->z;
   }
-  auto ps = std::make_unique<PolySet>(3, /*convex*/true);
+  auto ps = std::make_unique<PolySet>(3, /*convex*/ true);
   for (int i = 0; i < 8; i++) {
     ps->vertices.emplace_back(i & 1 ? x2 : x1, i & 2 ? y2 : y1,
                               i & 4 ? z2 : z1);
   }
   ps->indices = {
-      {4, 5, 7, 6}, // top
-      {2, 3, 1, 0}, // bottom
-      {0, 1, 5, 4}, // front
-      {1, 3, 7, 5}, // right
-      {3, 2, 6, 7}, // back
-      {2, 0, 4, 6}, // left
+    {4, 5, 7, 6},   // top
+    {2, 3, 1, 0},   // bottom
+    {0, 1, 5, 4},   // front
+    {1, 3, 7, 5},   // right
+    {3, 2, 6, 7},   // back
+    {2, 0, 4, 6},   // left
   };
 
   return ps;
@@ -197,7 +197,7 @@ std::unique_ptr<const Geometry> SphereNode::createGeometry() const
   //  if (num_rings % 2 == 0) num_rings++; // To ensure that the middle ring is at
   //  phi == 0 degrees
 
-  auto polyset = std::make_unique<PolySet>(3, /*convex*/true);
+  auto polyset = std::make_unique<PolySet>(3, /*convex*/ true);
   polyset->vertices.reserve(num_rings * num_fragments);
 
   // double offset = 0.5 * ((fragments / 2) % 2);
@@ -214,12 +214,12 @@ std::unique_ptr<const Geometry> SphereNode::createGeometry() const
   }
 
   for (int i = 0; i < num_rings - 1; ++i) {
-    for (int r=0;r<num_fragments;++r) {
+    for (int r = 0; r < num_fragments; ++r) {
       polyset->indices.push_back({
-        i*num_fragments+(r+1)%num_fragments,
-        i*num_fragments+r,
-        (i+1)*num_fragments+r,
-        (i+1)*num_fragments+(r+1)%num_fragments,
+        i *num_fragments + (r + 1) % num_fragments,
+        i * num_fragments + r,
+        (i + 1) * num_fragments + r,
+        (i + 1) * num_fragments + (r + 1) % num_fragments,
       });
     }
   }
@@ -278,13 +278,13 @@ std::unique_ptr<const Geometry> CylinderNode::createGeometry() const
   bool cone = (r2 == 0.0);
   bool inverted_cone = (r1 == 0.0);
 
-  auto polyset = std::make_unique<PolySet>(3, /*convex*/true);
+  auto polyset = std::make_unique<PolySet>(3, /*convex*/ true);
   polyset->vertices.reserve((cone || inverted_cone) ? num_fragments + 1 : 2 * num_fragments);
 
   if (inverted_cone) {
     polyset->vertices.emplace_back(0.0, 0.0, z1);
   } else {
-   generate_circle(std::back_inserter(polyset->vertices), r1, z1, num_fragments);
+    generate_circle(std::back_inserter(polyset->vertices), r1, z1, num_fragments);
   }
   if (cone) {
     polyset->vertices.emplace_back(0.0, 0.0, z2);
@@ -295,21 +295,21 @@ std::unique_ptr<const Geometry> CylinderNode::createGeometry() const
   for (int i = 0; i < num_fragments; ++i) {
     int j = (i + 1) % num_fragments;
     if (cone) polyset->indices.push_back({i, j, num_fragments});
-    else if (inverted_cone) polyset->indices.push_back({0, j+1, i+1});
-    else polyset->indices.push_back({i, j, j+num_fragments, i+num_fragments});
+    else if (inverted_cone) polyset->indices.push_back({0, j + 1, i + 1});
+    else polyset->indices.push_back({i, j, j + num_fragments, i + num_fragments});
   }
 
   if (!inverted_cone) {
     polyset->indices.push_back({});
     for (int i = 0; i < num_fragments; ++i) {
-      polyset->indices.back().push_back(num_fragments-i-1);
+      polyset->indices.back().push_back(num_fragments - i - 1);
     }
   }
   if (!cone) {
     polyset->indices.push_back({});
     int offset = inverted_cone ? 1 : num_fragments;
     for (int i = 0; i < num_fragments; ++i) {
-      polyset->indices.back().push_back(offset+i);
+      polyset->indices.back().push_back(offset + i);
     }
   }
 
@@ -408,11 +408,11 @@ std::unique_ptr<const Geometry> PolyhedronNode::createGeometry() const
 {
   auto p = PolySet::createEmpty();
   p->setConvexity(this->convexity);
-  p->vertices=this->points;
-  p->indices=this->faces;
+  p->vertices = this->points;
+  p->indices = this->faces;
   bool is_triangular = true;
-  for (auto &poly : p->indices) {
-    std::reverse(poly.begin(),poly.end());
+  for (auto& poly : p->indices) {
+    std::reverse(poly.begin(), poly.end());
     if (is_triangular && poly.size() > 3) {
       is_triangular = false;
     }
@@ -713,49 +713,49 @@ static std::shared_ptr<AbstractNode> builtin_polygon(const ModuleInstantiation *
 void register_builtin_primitives()
 {
   Builtins::init("cube", new BuiltinModule(builtin_cube),
-                 {
-                     "cube(size)",
-                     "cube([width, depth, height])",
-                     "cube([width, depth, height], center = true)",
-                 });
+  {
+    "cube(size)",
+    "cube([width, depth, height])",
+    "cube([width, depth, height], center = true)",
+  });
 
   Builtins::init("sphere", new BuiltinModule(builtin_sphere),
-                 {
-                     "sphere(radius)",
-                     "sphere(r = radius)",
-                     "sphere(d = diameter)",
-                 });
+  {
+    "sphere(radius)",
+    "sphere(r = radius)",
+    "sphere(d = diameter)",
+  });
 
   Builtins::init("cylinder", new BuiltinModule(builtin_cylinder),
-      {
-          "cylinder(h, r1, r2)",
-          "cylinder(h = height, r = radius, center = true)",
-          "cylinder(h = height, r1 = bottom, r2 = top, center = true)",
-          "cylinder(h = height, d = diameter, center = true)",
-          "cylinder(h = height, d1 = bottom, d2 = top, center = true)",
-      });
+  {
+    "cylinder(h, r1, r2)",
+    "cylinder(h = height, r = radius, center = true)",
+    "cylinder(h = height, r1 = bottom, r2 = top, center = true)",
+    "cylinder(h = height, d = diameter, center = true)",
+    "cylinder(h = height, d1 = bottom, d2 = top, center = true)",
+  });
 
   Builtins::init("polyhedron", new BuiltinModule(builtin_polyhedron),
-                 {
-                     "polyhedron(points, faces, convexity)",
-                 });
+  {
+    "polyhedron(points, faces, convexity)",
+  });
 
   Builtins::init("square", new BuiltinModule(builtin_square),
-                 {
-                     "square(size, center = true)",
-                     "square([width,height], center = true)",
-                 });
+  {
+    "square(size, center = true)",
+    "square([width,height], center = true)",
+  });
 
   Builtins::init("circle", new BuiltinModule(builtin_circle),
-                 {
-                     "circle(radius)",
-                     "circle(r = radius)",
-                     "circle(d = diameter)",
-                 });
+  {
+    "circle(radius)",
+    "circle(r = radius)",
+    "circle(d = diameter)",
+  });
 
   Builtins::init("polygon", new BuiltinModule(builtin_polygon),
-                 {
-                     "polygon([points])",
-                     "polygon([points], [paths])",
-                 });
+  {
+    "polygon([points])",
+    "polygon([points], [paths])",
+  });
 }

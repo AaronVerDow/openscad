@@ -46,7 +46,7 @@
 namespace {
 
 Renderer::ColorMode getColorMode(const CSGNode::Flag& flags, bool highlight_mode,
-                       bool background_mode, bool fberror, OpenSCADOperator type) {
+                                 bool background_mode, bool fberror, OpenSCADOperator type) {
   Renderer::ColorMode colormode = Renderer::ColorMode::NONE;
 
   if (highlight_mode) {
@@ -86,8 +86,8 @@ ThrownTogetherRenderer::ThrownTogetherRenderer(std::shared_ptr<CSGProducts> root
 void ThrownTogetherRenderer::prepare(const ShaderUtils::ShaderInfo *shaderinfo)
 {
   PRINTD("Thrown prepare");
-  if (vertex_state_containers_.empty()) {   
-    VertexStateContainer &vertex_state_container = vertex_state_containers_.emplace_back();
+  if (vertex_state_containers_.empty()) {
+    VertexStateContainer& vertex_state_container = vertex_state_containers_.emplace_back();
 
     VBOBuilder vbo_builder(std::make_unique<TTRVertexStateFactory>(), vertex_state_container);
     vbo_builder.addSurfaceData();
@@ -113,12 +113,12 @@ void ThrownTogetherRenderer::draw(bool showedges, const ShaderUtils::ShaderInfo 
 {
   // Only use shader if select rendering or showedges
   const bool enable_shader = shaderinfo && (
-    shaderinfo->type == ShaderUtils::ShaderType::EDGE_RENDERING && showedges || 
+    shaderinfo->type == ShaderUtils::ShaderType::EDGE_RENDERING && showedges ||
     shaderinfo->type == ShaderUtils::ShaderType::SELECT_RENDERING);
   if (enable_shader) {
     GL_TRACE("glUseProgram(%d)", shaderinfo->resource.shader_program);
     GL_CHECKD(glUseProgram(shaderinfo->resource.shader_program));
-    VBOUtils::shader_attribs_enable(*shaderinfo);   
+    VBOUtils::shader_attribs_enable(*shaderinfo);
   }
 
   GL_TRACE0("glDepthFunc(GL_LEQUAL)");
@@ -129,10 +129,10 @@ void ThrownTogetherRenderer::draw(bool showedges, const ShaderUtils::ShaderInfo 
       if (shaderinfo && shaderinfo->type == ShaderUtils::ShaderType::SELECT_RENDERING) {
         if (const auto ttr_vs = std::dynamic_pointer_cast<TTRVertexState>(vertex_state)) {
           GL_TRACE("glUniform3f(%d, %f, %f, %f)",
-                  shaderinfo->uniforms.at("frag_idcolor") %
-                  (((ttr_vs->csgObjectIndex() >> 0) & 0xff) / 255.0f) %
-                  (((ttr_vs->csgObjectIndex() >> 8) & 0xff) / 255.0f) %
-                  (((ttr_vs->csgObjectIndex() >> 16) & 0xff) / 255.0f));
+                   shaderinfo->uniforms.at("frag_idcolor") %
+                   (((ttr_vs->csgObjectIndex() >> 0) & 0xff) / 255.0f) %
+                   (((ttr_vs->csgObjectIndex() >> 8) & 0xff) / 255.0f) %
+                   (((ttr_vs->csgObjectIndex() >> 16) & 0xff) / 255.0f));
           GL_CHECKD(glUniform3f(shaderinfo->uniforms.at("frag_idcolor"),
                                 ((ttr_vs->csgObjectIndex() >> 0) & 0xff) / 255.0f,
                                 ((ttr_vs->csgObjectIndex() >> 8) & 0xff) / 255.0f,
@@ -145,7 +145,7 @@ void ThrownTogetherRenderer::draw(bool showedges, const ShaderUtils::ShaderInfo 
       }
     }
   }
-  
+
   if (enable_shader) {
     VBOUtils::shader_attribs_disable(*shaderinfo);
     glUseProgram(0);

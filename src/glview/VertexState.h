@@ -100,7 +100,8 @@ public:
   }
 };
 
-class VertexStateContainer {
+class VertexStateContainer
+{
 public:
   VertexStateContainer() {
     GL_TRACE("glGenBuffers(1, %p)", &vertices_vbo_);
@@ -118,7 +119,7 @@ public:
     o.vertices_vbo_ = 0;
     o.elements_vbo_ = 0;
   }
-  
+
   virtual ~VertexStateContainer() {
     if (vertices_vbo_) {
       GL_TRACE("glDeleteBuffers(1, %p)", &vertices_vbo_);
@@ -132,7 +133,7 @@ public:
 
   GLuint verticesVBO() const { return vertices_vbo_; }
   GLuint elementsVBO() const { return elements_vbo_; }
-  
+
   std::vector<std::shared_ptr<VertexState>>& states() { return vertex_states_; }
   const std::vector<std::shared_ptr<VertexState>>& states() const { return vertex_states_; }
 

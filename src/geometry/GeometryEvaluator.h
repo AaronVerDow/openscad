@@ -54,12 +54,12 @@ private:
 public:
     // This makes it explicit if we want a const vs. non-const result.
     // This is important to avoid inadvertently tagging a geometry as const when
-    // the underlying geometry is actually mutable. 
+    // the underlying geometry is actually mutable.
     // The template trick, combined with private constructors, makes it possible
     // to create a ResultObject containing a const, _only_ from const objects
     // (i.e. no implicit conversion from non-const to const).
-    template<class T> static ResultObject constResult(std::shared_ptr<const T> geom) {return {geom};}
-    template<class T> static ResultObject mutableResult(std::shared_ptr<T> geom) {return {geom};}
+    template <class T> static ResultObject constResult(std::shared_ptr<const T> geom) {return {geom};}
+    template <class T> static ResultObject mutableResult(std::shared_ptr<T> geom) {return {geom};}
 
     // Default constructor with nullptr can be used to represent empty geometry,
     // for example union() with no children, etc.
@@ -73,8 +73,8 @@ public:
       else return ptr();
     }
 private:
-    template<class T> ResultObject(std::shared_ptr<const T> g) : is_const(true), const_pointer(std::move(g)) {}
-    template<class T> ResultObject(std::shared_ptr<T> g) : is_const(false), pointer(std::move(g)) {}
+    template <class T> ResultObject(std::shared_ptr<const T> g) : is_const(true), const_pointer(std::move(g)) {}
+    template <class T> ResultObject(std::shared_ptr<T> g) : is_const(false), pointer(std::move(g)) {}
 
     bool is_const;
     std::shared_ptr<Geometry> pointer;

@@ -62,7 +62,7 @@ void shader_attribs_disable(const ShaderUtils::ShaderInfo& shaderinfo)
 VBORenderer::VBORenderer() : Renderer() {}
 
 size_t VBORenderer::calcNumVertices(const std::shared_ptr<CSGProducts>& products,
-                                         bool unique_geometry) const
+                                    bool unique_geometry) const
 {
   size_t buffer_size = 0;
   if (unique_geometry) this->geom_visit_mark_.clear();
@@ -82,8 +82,7 @@ size_t VBORenderer::calcNumVertices(const CSGChainObject& csgobj, bool unique_ge
 {
   size_t buffer_size = 0;
   if (unique_geometry &&
-      this->geom_visit_mark_[std::make_pair(csgobj.leaf->polyset.get(), &csgobj.leaf->matrix)]++ > 0)
-    return 0;
+      this->geom_visit_mark_[std::make_pair(csgobj.leaf->polyset.get(), &csgobj.leaf->matrix)]++ > 0)return 0;
 
   if (csgobj.leaf->polyset) {
     buffer_size += calcNumVertices(*csgobj.leaf->polyset);
@@ -149,19 +148,19 @@ void VBORenderer::add_shader_pointers(VBOBuilder& vbo_builder, const ShaderUtils
       vertex_data->attributes()[vbo_builder.shader_attributes_index_ + BARYCENTRIC_ATTRIB]->glType();
     stride = vertex_data->stride();
     offset = start_offset +
-             vertex_data->interleavedOffset(vbo_builder.shader_attributes_index_ + BARYCENTRIC_ATTRIB);
+      vertex_data->interleavedOffset(vbo_builder.shader_attributes_index_ + BARYCENTRIC_ATTRIB);
     ss->glBegin().emplace_back(
       [attribute_index, count, type, stride, offset, ss_ptr = std::weak_ptr<VertexState>(ss)]() {
-        auto ss = ss_ptr.lock();
-        if (ss) {
-          // NOLINTBEGIN(performance-no-int-to-ptr)
-          GL_TRACE("glVertexAttribPointer(%d, %d, %d, GL_FALSE, %d, %p)",
-                   attribute_index % count % type % stride % (GLvoid *)(ss->drawOffset() + offset));
-          GL_CHECKD(glVertexAttribPointer(attribute_index, count, type, GL_FALSE, stride,
-                                          (GLvoid *)(ss->drawOffset() + offset)));
-          // NOLINTEND(performance-no-int-to-ptr)
-        }
-      });
+      auto ss = ss_ptr.lock();
+      if (ss) {
+        // NOLINTBEGIN(performance-no-int-to-ptr)
+        GL_TRACE("glVertexAttribPointer(%d, %d, %d, GL_FALSE, %d, %p)",
+                 attribute_index % count % type % stride % (GLvoid *)(ss->drawOffset() + offset));
+        GL_CHECKD(glVertexAttribPointer(attribute_index, count, type, GL_FALSE, stride,
+                                        (GLvoid *)(ss->drawOffset() + offset)));
+        // NOLINTEND(performance-no-int-to-ptr)
+      }
+    });
   }
 
   vbo_builder.states().emplace_back(std::move(ss));

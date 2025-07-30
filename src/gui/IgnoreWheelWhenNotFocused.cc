@@ -11,7 +11,7 @@ void installIgnoreWheelWhenNotFocused(QWidget *parent){
   auto spinBoxes = parent->findChildren<QSpinBox *>();
   auto spinDoubleBoxes = parent->findChildren<QDoubleSpinBox *>();
 
-  if(comboBoxes.size() == 0 && spinBoxes.size() == 0 && spinDoubleBoxes.size() == 0){
+  if (comboBoxes.size() == 0 && spinBoxes.size() == 0 && spinDoubleBoxes.size() == 0){
     return; //nothing do
   }
 
@@ -23,8 +23,8 @@ void installIgnoreWheelWhenNotFocused(QWidget *parent){
   }
 
   for (const auto& spinBox : spinBoxes){
-      spinBox->installEventFilter(ignoreWheelWhenNotFocused);
-      spinBox->setFocusPolicy(Qt::StrongFocus);
+    spinBox->installEventFilter(ignoreWheelWhenNotFocused);
+    spinBox->setFocusPolicy(Qt::StrongFocus);
   }
 
   for (auto spinDoubleBox : spinDoubleBoxes) {

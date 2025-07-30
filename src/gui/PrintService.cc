@@ -50,10 +50,9 @@ PrintServices PrintService::printServices;
 namespace {
 
 std::unique_ptr<PrintService>
-createPrintService(const QJsonObject &serviceObject) {
+createPrintService(const QJsonObject& serviceObject) {
   auto service = std::make_unique<PrintService>();
-  if (service->init(serviceObject))
-    return service;
+  if (service->init(serviceObject))return service;
   return nullptr;
 }
 
@@ -61,29 +60,29 @@ PrintServices createPrintServices() {
   PrintServices printServices;
   try {
     auto networkRequest = NetworkRequest<void>{
-        QUrl{"https://app.openscad.org/print-service.json"}, {200}, 30};
+      QUrl{"https://app.openscad.org/print-service.json"}, {200}, 30};
     networkRequest.execute(
-        [](QNetworkRequest &request) {
-          request.setHeader(QNetworkRequest::ContentTypeHeader,
-                            "application/json");
-        },
-        [](QNetworkAccessManager &nam, QNetworkRequest &request) {
-          return nam.get(request);
-        },
-        [&](QNetworkReply *reply) {
-          const auto doc = QJsonDocument::fromJson(reply->readAll());
-          PRINTDB("Response: %s", QString{doc.toJson()}.toStdString());
-          const QStringList services = doc.object().keys();
-          for (const auto &serviceName : services) {
-            auto printService =
-                createPrintService(doc.object().value(serviceName).toObject());
-            if (printService) {
-              printServices[serviceName.toStdString()] =
-                  std::move(printService);
-            }
+      [](QNetworkRequest& request) {
+        request.setHeader(QNetworkRequest::ContentTypeHeader,
+                          "application/json");
+      },
+      [](QNetworkAccessManager& nam, QNetworkRequest& request) {
+        return nam.get(request);
+      },
+      [&](QNetworkReply *reply) {
+        const auto doc = QJsonDocument::fromJson(reply->readAll());
+        PRINTDB("Response: %s", QString{doc.toJson()}.toStdString());
+        const QStringList services = doc.object().keys();
+        for (const auto& serviceName : services) {
+          auto printService =
+            createPrintService(doc.object().value(serviceName).toObject());
+          if (printService) {
+            printServices[serviceName.toStdString()] =
+              std::move(printService);
           }
-        });
-  } catch (const NetworkException &e) {
+        }
+      });
+  } catch (const NetworkException& e) {
     LOG(message_group::Error, "%1$s", e.getErrorMessage());
   }
   for (const auto& printService : printServices) {
@@ -114,15 +113,15 @@ const PrintServices& PrintService::getPrintServices() {
   return printServices;
 }
 
-const PrintService *PrintService::getPrintService(const std::string &name) {
-  const auto &printServices = getPrintServices();
+const PrintService *PrintService::getPrintService(const std::string& name) {
+  const auto& printServices = getPrintServices();
   if (const auto it = printServices.find(name); it != printServices.end()) {
     return it->second.get();
   }
   return nullptr;
 }
 
-bool PrintService::init(const QJsonObject &serviceObject) {
+bool PrintService::init(const QJsonObject& serviceObject) {
   displayName = serviceObject.value("displayName").toString();
   apiUrl = serviceObject.value("apiUrl").toString();
   fileSizeLimitMB = serviceObject.value("fileSizeLimitMB").toInt();
@@ -132,7 +131,7 @@ bool PrintService::init(const QJsonObject &serviceObject) {
     FileFormat fileFormat;
     if (fileformat::fromIdentifier(variant.toString().toStdString(), fileFormat)) {
       fileFormats.push_back(fileFormat);
-    } 
+    }
     // TODO: else print warning?
   }
   // For legacy reasons; default to STL
@@ -157,8 +156,8 @@ bool PrintService::init(const QJsonObject &serviceObject) {
  *    The resulting url to go to next to continue the order process.
  */
 const QString
-PrintService::upload(const QString &fileName, const QString &contentBase64,
-                     const network_progress_func_t &progress_func) const {
+PrintService::upload(const QString& fileName, const QString& contentBase64,
+                     const network_progress_func_t& progress_func) const {
   QJsonObject jsonInput;
   jsonInput.insert("fileName", fileName);
   jsonInput.insert("file", contentBase64);
@@ -170,36 +169,36 @@ PrintService::upload(const QString &fileName, const QString &contentBase64,
   // about 96MB data.
   if (jsonInput.value("file") == QJsonValue::Undefined) {
     const QString msg =
-        "Could not encode STL into JSON. Perhaps it is too large of a file? "
-        "Maybe try reducing the model resolution.";
+      "Could not encode STL into JSON. Perhaps it is too large of a file? "
+      "Maybe try reducing the model resolution.";
     throw NetworkException(QNetworkReply::ProtocolFailure, msg);
   }
 
   auto networkRequest =
-      NetworkRequest<const QString>{QUrl{apiUrl}, {200, 201}, 180};
+    NetworkRequest<const QString>{QUrl{apiUrl}, {200, 201}, 180};
   networkRequest.set_progress_func(progress_func);
   return networkRequest.execute(
-      [](QNetworkRequest &request) {
-        request.setHeader(QNetworkRequest::ContentTypeHeader,
-                          "application/json");
-      },
-      [&](QNetworkAccessManager &nam, QNetworkRequest &request) {
-        return nam.post(request, QJsonDocument(jsonInput).toJson());
-      },
-      [](QNetworkReply *reply) {
-        const auto doc = QJsonDocument::fromJson(reply->readAll());
-        PRINTDB("Response: %s", QString{doc.toJson()}.toStdString());
+    [](QNetworkRequest& request) {
+    request.setHeader(QNetworkRequest::ContentTypeHeader,
+                      "application/json");
+  },
+    [&](QNetworkAccessManager& nam, QNetworkRequest& request) {
+    return nam.post(request, QJsonDocument(jsonInput).toJson());
+  },
+    [](QNetworkReply *reply) {
+    const auto doc = QJsonDocument::fromJson(reply->readAll());
+    PRINTDB("Response: %s", QString{doc.toJson()}.toStdString());
 
-        // Extract cartUrl which gives the page to open in a webbrowser to view
-        // uploaded part
-        auto cartUrlValue =
-            doc.object().value("data").toObject().value("cartUrl");
-        auto cartUrl = cartUrlValue.toString();
-        if ((cartUrlValue == QJsonValue::Undefined) || (cartUrl.isEmpty())) {
-          const QString msg = "Could not get data.cartUrl field from response.";
-          throw NetworkException(QNetworkReply::ProtocolFailure, msg);
-        }
-        LOG("Upload finished, opening URL %1$s.", cartUrl.toStdString());
-        return cartUrl;
-      });
+    // Extract cartUrl which gives the page to open in a webbrowser to view
+    // uploaded part
+    auto cartUrlValue =
+      doc.object().value("data").toObject().value("cartUrl");
+    auto cartUrl = cartUrlValue.toString();
+    if ((cartUrlValue == QJsonValue::Undefined) || (cartUrl.isEmpty())) {
+      const QString msg = "Could not get data.cartUrl field from response.";
+      throw NetworkException(QNetworkReply::ProtocolFailure, msg);
+    }
+    LOG("Upload finished, opening URL %1$s.", cartUrl.toStdString());
+    return cartUrl;
+  });
 }

@@ -93,9 +93,9 @@ private:
 
 template <typename ResultType>
 ResultType NetworkRequest<ResultType>::execute(
-    const NetworkRequest::setup_func_t& setup_func,
-    const NetworkRequest::reply_func_t& reply_func,
-    const NetworkRequest::transform_func_t& transform_func)
+  const NetworkRequest::setup_func_t& setup_func,
+  const NetworkRequest::reply_func_t& reply_func,
+  const NetworkRequest::transform_func_t& transform_func)
 {
   return execute(setup_func, reply_func, transform_func, [](QNetworkReply *reply) -> ResultType {
     throw NetworkException{reply->error(), reply->errorString()};
@@ -104,10 +104,10 @@ ResultType NetworkRequest<ResultType>::execute(
 
 template <typename ResultType>
 ResultType NetworkRequest<ResultType>::execute(
-    const NetworkRequest::setup_func_t& setup_func,
-    const NetworkRequest::reply_func_t& reply_func,
-    const NetworkRequest::transform_func_t& transform_func,
-    const NetworkRequest::error_func_t& error_func)
+  const NetworkRequest::setup_func_t& setup_func,
+  const NetworkRequest::reply_func_t& reply_func,
+  const NetworkRequest::transform_func_t& transform_func,
+  const NetworkRequest::error_func_t& error_func)
 {
   QNetworkRequest request(url);
   request.setHeader(QNetworkRequest::UserAgentHeader, QString::fromStdString(PlatformUtils::user_agent()));

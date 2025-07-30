@@ -492,7 +492,7 @@ int GeometryUtils::findUnconnectedEdges(const std::vector<IndexedTriangle>& tria
   return edges.size();
 }
 
-Transform3d GeometryUtils::getResizeTransform(const BoundingBox &bbox, const Vector3d& newsize, const Eigen::Matrix<bool, 3, 1>& autosize)
+Transform3d GeometryUtils::getResizeTransform(const BoundingBox& bbox, const Vector3d& newsize, const Eigen::Matrix<bool, 3, 1>& autosize)
 {
   // Find largest dimension
   int maxdim = 0;
@@ -527,7 +527,7 @@ std::shared_ptr<const Geometry> GeometryUtils::getBackendSpecificGeometry(const 
     if (const auto ps = std::dynamic_pointer_cast<const PolySet>(geom)) {
       std::shared_ptr<ManifoldGeometry> mani = ManifoldUtils::createManifoldFromPolySet(*ps);
       if (mani == nullptr) {
-         mani = std::make_shared<ManifoldGeometry>();
+        mani = std::make_shared<ManifoldGeometry>();
       }
       return mani;
     } else if (auto mani = std::dynamic_pointer_cast<const ManifoldGeometry>(geom)) {
@@ -536,7 +536,7 @@ std::shared_ptr<const Geometry> GeometryUtils::getBackendSpecificGeometry(const 
       assert(false && "Unexpected geometry");
     }
   }
-#endif
+#endif // if ENABLE_MANIFOLD
 #if ENABLE_CGAL
   if (auto ps = std::dynamic_pointer_cast<const PolySet>(geom)) {
     return CGALUtils::createNefPolyhedronFromPolySet(*ps);

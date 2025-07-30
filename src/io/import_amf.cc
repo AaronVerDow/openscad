@@ -140,7 +140,7 @@ void AmfImporter::set_v3(AmfImporter *importer, const xmlChar *value)
 
 void AmfImporter::start_object(AmfImporter *importer, const xmlChar *)
 {
-  importer->builder = std::make_unique<PolySetBuilder>(0,0);
+  importer->builder = std::make_unique<PolySetBuilder>(0, 0);
 }
 
 void AmfImporter::end_object(AmfImporter *importer, const xmlChar *)
@@ -159,14 +159,14 @@ void AmfImporter::end_vertex(AmfImporter *importer, const xmlChar *)
 
 void AmfImporter::end_triangle(AmfImporter *importer, const xmlChar *)
 {
-  int idx[3]= {importer->idx_v1,importer->idx_v2,importer->idx_v3};
+  int idx[3] = {importer->idx_v1, importer->idx_v2, importer->idx_v3};
   PRINTDB("AMF: add triangle %d - (%.2f, %.2f, %.2f)", importer->vertex_list.size() % idx[0] % idx[1] % idx[2]);
 
   std::vector<Eigen::Vector3d>& v = importer->vertex_list;
 
   importer->builder->beginPolygon(3);
-  for(auto i : idx) // TODO set vertex array first
-	  importer->builder->addVertex(Vector3d(v[i].x(), v[i].y(), v[i].z()));
+  for (auto i : idx)// TODO set vertex array first
+    importer->builder->addVertex(Vector3d(v[i].x(), v[i].y(), v[i].z()));
 }
 
 void AmfImporter::processNode(xmlTextReaderPtr reader)
@@ -280,7 +280,7 @@ std::unique_ptr<PolySet> AmfImporter::read(const std::string& filename)
       return std::make_unique<PolySet>(*ps);
     } else
 #endif // ENABLE_CGAL
-      LOG(message_group::Error, "Error importing multi-object AMF file '%1$s', import() at line %2$d", filename, this->loc.firstLine());
+    LOG(message_group::Error, "Error importing multi-object AMF file '%1$s', import() at line %2$d", filename, this->loc.firstLine());
   }
   return PolySet::createEmpty();
 }

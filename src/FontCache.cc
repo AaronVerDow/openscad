@@ -78,7 +78,7 @@ std::string get_freetype_version()
 }
 
 FontInfo::FontInfo(std::string family, std::string style, std::string file, uint32_t hash)
-   : family(std::move(family)), style(std::move(style)), file(std::move(file)), hash(hash)
+  : family(std::move(family)), style(std::move(style)), file(std::move(file)), hash(hash)
 {
 }
 
@@ -266,7 +266,7 @@ std::vector<uint32_t> FontCache::filter(const std::u32string& str) const
 
   std::vector<uint32_t> result;
   result.reserve(font_set->nfont);
-  for (int a = 0;a < font_set->nfont;++a) {
+  for (int a = 0; a < font_set->nfont; ++a) {
     result.push_back(FcPatternHash(font_set->fonts[a]));
   }
   FcFontSetDestroy(font_set);
@@ -288,17 +288,17 @@ FontInfoList *FontCache::list_fonts() const
 
     FcChar8 *file_value;
     if (FcPatternGetString(p, FC_FILE, 0, &file_value) != FcResultMatch) {
-        continue;
+      continue;
     }
 
     FcChar8 *family_value;
     if (FcPatternGetString(p, FC_FAMILY, 0, &family_value) != FcResultMatch) {
-        continue;
+      continue;
     }
 
     FcChar8 *style_value;
     if (FcPatternGetString(p, FC_STYLE, 0, &style_value) != FcResultMatch) {
-        continue;
+      continue;
     }
 
     const std::string family((const char *) family_value);
@@ -421,8 +421,8 @@ FontFacePtr FontCache::find_face_fontconfig(const std::string& font) const
   FcChar8 *font_features;
   std::string font_features_str;
   if (FcPatternGetString(match, FC_FONT_FEATURES, 0, &font_features) == FcResultMatch) {
-      font_features_str = (const char *)(font_features);
-      PRINTDB("Found font features: '%s'", font_features_str);
+    font_features_str = (const char *)(font_features);
+    PRINTDB("Found font features: '%s'", font_features_str);
   }
 
   FT_Face ftFace;

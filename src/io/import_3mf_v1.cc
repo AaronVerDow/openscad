@@ -32,7 +32,7 @@
 #include <string>
 #include <iomanip>
 #include <algorithm>
- 
+
 #include <Model/COM/NMR_DLLInterfaces.h>
 
 #include "geometry/PolySet.h"
@@ -90,7 +90,7 @@ using MeshObjectList = std::list<std::unique_ptr<MeshObject>>;
 
 // lib3mf_propertyhandler_getcolor states:
 // (#00000000) means no property or a different kind of property!
-Color4f get_color(const MODELMESHCOLOR_SRGB &color)
+Color4f get_color(const MODELMESHCOLOR_SRGB& color)
 {
   if (color.m_Red == 0 && color.m_Green == 0 && color.m_Blue == 0 && color.m_Alpha == 0) {
     return {}; // invalid color
@@ -99,30 +99,30 @@ Color4f get_color(const MODELMESHCOLOR_SRGB &color)
   return c;
 }
 
-Color4f get_color(const MODELMESH_TRIANGLECOLOR_SRGB &color, int idx)
+Color4f get_color(const MODELMESH_TRIANGLECOLOR_SRGB& color, int idx)
 {
   return get_color(color.m_Colors[idx]);
 }
 
 Matrix4d get_matrix(MODELTRANSFORM& transform)
 {
-    Matrix4d tm;
-    tm << transform.m_fFields[0][0], transform.m_fFields[0][1], transform.m_fFields[0][2], transform.m_fFields[0][3],
-          transform.m_fFields[1][0], transform.m_fFields[1][1], transform.m_fFields[1][2], transform.m_fFields[1][3],
-          transform.m_fFields[2][0], transform.m_fFields[2][1], transform.m_fFields[2][2], transform.m_fFields[2][3],
-                                  0,                         0,                         0,                         1;
-    return tm;
+  Matrix4d tm;
+  tm << transform.m_fFields[0][0], transform.m_fFields[0][1], transform.m_fFields[0][2], transform.m_fFields[0][3],
+    transform.m_fFields[1][0], transform.m_fFields[1][1], transform.m_fFields[1][2], transform.m_fFields[1][3],
+    transform.m_fFields[2][0], transform.m_fFields[2][1], transform.m_fFields[2][2], transform.m_fFields[2][3],
+    0,                         0,                         0,                         1;
+  return tm;
 }
 
 std::string get_object_type_name(DWORD objecttype)
 {
   switch (objecttype) {
-    case MODELOBJECTTYPE_OTHER: return "Other";
-    case MODELOBJECTTYPE_MODEL: return "Model";
-    case MODELOBJECTTYPE_SUPPORT: return "Support";
-    case MODELOBJECTTYPE_SOLIDSUPPORT: return "Solid Support";
-    case MODELOBJECTTYPE_SURFACE: return "Surface";
-    default: return "<Unknown>";
+  case MODELOBJECTTYPE_OTHER: return "Other";
+  case MODELOBJECTTYPE_MODEL: return "Model";
+  case MODELOBJECTTYPE_SUPPORT: return "Support";
+  case MODELOBJECTTYPE_SOLIDSUPPORT: return "Solid Support";
+  case MODELOBJECTTYPE_SURFACE: return "Surface";
+  default: return "<Unknown>";
   }
 }
 
@@ -191,7 +191,7 @@ std::string collect_mesh_objects(MeshObjectList& object_list, PLib3MFModelObject
       return "Could not get object component count";
     }
     PRINTDB("%sobject (%d components) type = %s, number = '%s', name = '%s' (%s)", boost::io::group(std::setw(2 * level), "") % componentcount % get_object_type_name(objecttype) % number % name % (hasuuid ? uuid : "<no uuid>"));
-    for (DWORD idx = 0;idx < componentcount;++idx) {
+    for (DWORD idx = 0; idx < componentcount; ++idx) {
       PLib3MFModelComponent *component = nullptr;
       if (lib3mf_componentsobject_getcomponent(object, idx, &component) != LIB3MF_OK) {
         return "Could not get object component";
@@ -251,10 +251,10 @@ Color4f get_triangle_color_from_basematerial(PLib3MFModel *model, PLib3MFPropert
 Color4f get_triangle_color(PLib3MFPropertyHandler *propertyhandler, int idx)
 {
   MODELMESH_TRIANGLECOLOR_SRGB color = { .m_Colors = {
-    { 0, 0, 0 },
-    { 0, 0, 0 },
-    { 0, 0, 0 }
-  } };
+                                           { 0, 0, 0 },
+                                           { 0, 0, 0 },
+                                           { 0, 0, 0 }
+                                         } };
   if (lib3mf_propertyhandler_getcolor(propertyhandler, idx, &color) == LIB3MF_OK) {
     const Color4f col0 = get_color(color, 0);
     const Color4f col1 = get_color(color, 1);
@@ -309,7 +309,7 @@ std::string import_3mf_mesh(const std::string& filename, unsigned int mesh_idx, 
   ps->indices.reserve(triangle_count);
   ps->color_indices.reserve(triangle_count);
 
-  for (DWORD idx = 0; idx < vertex_count;++idx) {
+  for (DWORD idx = 0; idx < vertex_count; ++idx) {
     MODELMESHVERTEX vertex;
     if (lib3mf_meshobject_getvertex(mo->obj, idx, &vertex) != LIB3MF_OK) {
       return "Could not read vertex from object";
@@ -357,20 +357,20 @@ std::string import_3mf_mesh(const std::string& filename, unsigned int mesh_idx, 
 std::string read_metadata(PLib3MFModel *model)
 {
   DWORD metadatacount;
-	if (lib3mf_model_getmetadatacount(model, &metadatacount) != LIB3MF_OK) {
+  if (lib3mf_model_getmetadatacount(model, &metadatacount) != LIB3MF_OK) {
     return "Could not retrieve metadata";
   }
 
   ModelMetadata mmd;
-  for (DWORD idx = 0;idx < metadatacount;++idx) {
+  for (DWORD idx = 0; idx < metadatacount; ++idx) {
     char key[4096] = { 0, };
     ULONG keylen = 0;
-		if (lib3mf_model_getmetadatakeyutf8(model, idx, &key[0], sizeof(key), &keylen) != LIB3MF_OK) {
+    if (lib3mf_model_getmetadatakeyutf8(model, idx, &key[0], sizeof(key), &keylen) != LIB3MF_OK) {
       return "Could not retrieve metadata key";
     }
     char value[4096] = { 0, };
     ULONG valuelen = 0;
-		if (lib3mf_model_getmetadatavalueutf8(model, idx, &value[0], sizeof(value), &valuelen) != LIB3MF_OK) {
+    if (lib3mf_model_getmetadatavalueutf8(model, idx, &value[0], sizeof(value), &valuelen) != LIB3MF_OK) {
       return "Could not retrieve metadata value";
     }
     PRINTDB("METADATA[%d]: %s = '%s'", idx % key % value);

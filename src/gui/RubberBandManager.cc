@@ -15,7 +15,7 @@ void RubberBandManager::hide(){
   emphasizedDock = nullptr;
 }
 
-bool RubberBandManager::isEmphasized(Dock* dock){
+bool RubberBandManager::isEmphasized(Dock *dock){
   return rubberBand.isVisible() && emphasizedDock == dock;
 }
 

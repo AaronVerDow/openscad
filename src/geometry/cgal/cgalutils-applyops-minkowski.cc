@@ -16,7 +16,7 @@ std::shared_ptr<const Geometry> applyMinkowski3D(const Geometry::Geometries& chi
   CGAL::Timer t;
   CGAL::Timer t_tot;
   t_tot.start();
-  
+
   auto it = children.begin();
   std::shared_ptr<const Geometry> operands[2] = {it->second, std::shared_ptr<const Geometry>()};
   try {
@@ -145,8 +145,8 @@ std::shared_ptr<const Geometry> applyMinkowski3D(const Geometry::Geometries& chi
 
 
               for (CGAL::Polyhedron_3<Hull_kernel>::Vertex::Halfedge_handle j = h->next_on_vertex();
-                    j != h && !collinear && !coplanar;
-                    j = j->next_on_vertex()) {
+                   j != h && !collinear && !coplanar;
+                   j = j->next_on_vertex()) {
 
                 Hull_kernel::Point_3 const& r = j->opposite()->vertex()->point();
                 if (CGAL::collinear(p, q, r)) {

@@ -28,7 +28,7 @@ static void add_outline_to_poly(CGAL_Nef_polyhedron2::Explorer& explorer,
                                 CGAL_Nef_polyhedron2::Explorer::Halfedge_around_face_const_circulator circ,
                                 CGAL_Nef_polyhedron2::Explorer::Halfedge_around_face_const_circulator end,
                                 bool positive,
-                                Polygon2d &poly) {
+                                Polygon2d& poly) {
   Outline2d outline;
 
   CGAL_For_all(circ, end) {
@@ -237,8 +237,7 @@ std::unique_ptr<Polygon2d> project(const CGALNefGeometry& N, bool cut)
   else {
     if (auto ps = CGALUtils::createPolySetFromNefPolyhedron3(*N.p3)) {
       poly = PolySetUtils::project(*ps);
-    }
-    else {
+    } else {
       LOG(message_group::Error, "Nef->PolySet failed");
       return poly;
     }

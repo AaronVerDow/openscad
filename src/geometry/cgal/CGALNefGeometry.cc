@@ -88,7 +88,7 @@ BoundingBox CGALNefGeometry::getBoundingBox() const
 }
 
 void CGALNefGeometry::resize(const Vector3d& newsize,
-                                 const Eigen::Matrix<bool, 3, 1>& autosize)
+                             const Eigen::Matrix<bool, 3, 1>& autosize)
 {
   // Based on resize() in Giles Bathgate's RapCAD (but not exactly)
   if (this->isEmpty()) return;

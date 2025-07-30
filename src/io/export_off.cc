@@ -53,7 +53,7 @@ void export_off(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
   }
 
   auto has_color = !ps->color_indices.empty();
-  
+
   for (size_t i = 0; i < ps->indices.size(); ++i) {
     const size_t nverts = ps->indices[i].size();
     output << nverts;

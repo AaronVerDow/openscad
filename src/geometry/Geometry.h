@@ -72,7 +72,7 @@ public:
 };
 
 #define VISITABLE_GEOMETRY() \
-        void accept(GeometryVisitor &visitor) const override { \
+        void accept(GeometryVisitor & visitor) const override { \
           visitor.visit(*this); \
         }
 

@@ -88,17 +88,17 @@ void InitConfigurator::updateComboBox(const BlockSignals<QComboBox *>& comboBox,
 }
 
 void InitConfigurator::initMetaData(QCheckBox *checkBox, QLineEdit *lineEdit, Settings::SettingsEntryBool *settingsEntryFlag, Settings::SettingsEntryString& settingsEntry) {
-	lineEdit->setText(QString::fromStdString(settingsEntry.value()));
-	if (checkBox && settingsEntryFlag) {
-	    checkBox->setChecked(settingsEntryFlag->value());
-	}
+  lineEdit->setText(QString::fromStdString(settingsEntry.value()));
+  if (checkBox && settingsEntryFlag) {
+    checkBox->setChecked(settingsEntryFlag->value());
+  }
 }
 
 void InitConfigurator::applyMetaData(const QCheckBox *checkBox, const QLineEdit *lineEdit, Settings::SettingsEntryBool *settingsEntryFlag, Settings::SettingsEntryString& settingsEntry) {
-	if (checkBox && settingsEntryFlag) {
-		settingsEntryFlag->setValue(checkBox->isChecked());
-	}
-	const auto value = lineEdit->text().trimmed().toStdString();
-	settingsEntry.setValue(value);
-	return;
+  if (checkBox && settingsEntryFlag) {
+    settingsEntryFlag->setValue(checkBox->isChecked());
+  }
+  const auto value = lineEdit->text().trimmed().toStdString();
+  settingsEntry.setValue(value);
+  return;
 }

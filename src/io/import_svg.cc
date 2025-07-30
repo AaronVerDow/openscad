@@ -25,7 +25,7 @@
  */
 
 #include "io/import.h"
- 
+
 #include <exception>
 #include <memory>
 #include <string>
@@ -93,9 +93,9 @@ double calc_alignment(const libsvg::align_t alignment, double page_mm, double sc
 
 
 std::unique_ptr<Polygon2d> import_svg(double fn, double fs, double fa,
-				      const std::string& filename,
-				      const boost::optional<std::string>& id, const boost::optional<std::string>& layer,
-				      const double dpi, const bool center, const Location& loc)
+                                      const std::string& filename,
+                                      const boost::optional<std::string>& id, const boost::optional<std::string>& layer,
+                                      const double dpi, const bool center, const Location& loc)
 {
   try {
     fnContext scadContext(fn, fs, fa);

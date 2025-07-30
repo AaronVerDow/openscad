@@ -66,14 +66,14 @@ QString getArgValue(const Settings::LocalAppParameter& arg,
 
 }  // namespace
 
-bool ExternalToolInterface::exportTemporaryFile(const std::shared_ptr<const Geometry>& rootGeometry, 
-  const QString& sourceFileName, const Camera *const camera)
+bool ExternalToolInterface::exportTemporaryFile(const std::shared_ptr<const Geometry>& rootGeometry,
+                                                const QString& sourceFileName, const Camera *const camera)
 {
   // FIXME: Remove original suffix first
   QTemporaryFile exportFile{getTempDir().filePath(
-    QString("%1.XXXXXX.%2").
-      arg(QString::fromStdString(sourceFileName.toStdString())).
-      arg(QString::fromStdString(fileformat::toSuffix(exportFormat_))))};
+                              QString("%1.XXXXXX.%2").
+                              arg(QString::fromStdString(sourceFileName.toStdString())).
+                              arg(QString::fromStdString(fileformat::toSuffix(exportFormat_))))};
   // FIXME: When is it safe to remove the file?
   // * Octoprint: After uploading?
   // * PrintService: After uploading?
@@ -93,7 +93,7 @@ bool ExternalToolInterface::exportTemporaryFile(const std::shared_ptr<const Geom
   return ok;
 }
 
-bool OctoPrintService::process(const std::string& displayName, std::function<bool (double)> progress_cb) 
+bool OctoPrintService::process(const std::string& displayName, std::function<bool (double)> progress_cb)
 {
   const OctoPrint octoPrint;
 
@@ -126,7 +126,7 @@ QDir LocalProgramService::getTempDir() const
   return tempDir;
 }
 
-bool LocalProgramService::process(const std::string& displayName, std::function<bool (double)> progress_cb) 
+bool LocalProgramService::process(const std::string& displayName, std::function<bool (double)> progress_cb)
 {
   QProcess process;
   process.setProcessChannelMode(QProcess::MergedChannels);
@@ -162,7 +162,7 @@ bool LocalProgramService::process(const std::string& displayName, std::function<
   }
   PRINTD("Executing: " + application.toStdString() + " " + args.join(" ").toStdString());
   if (!process.startDetached(application, args)) {
-#endif
+#endif // ifdef Q_OS_MACOS
     LOG(message_group::Error, "Could not start local application '%1$s': %2$s", application.toStdString(), process.errorString().toStdString());
     const auto output = process.readAll();
     if (output.length() > 0) {
@@ -172,7 +172,7 @@ bool LocalProgramService::process(const std::string& displayName, std::function<
   return true;
 }
 
-bool ExternalPrintService::process(const std::string& displayName, std::function<bool (double)> progress_cb) 
+bool ExternalPrintService::process(const std::string& displayName, std::function<bool (double)> progress_cb)
 {
   QFile file(QString::fromStdString(exportedFilename_));
   if (!file.open(QIODevice::ReadOnly)) {
@@ -190,7 +190,7 @@ bool ExternalPrintService::process(const std::string& displayName, std::function
   }
   try {
     const QString partUrl = printService->upload(QString::fromStdString(displayName), fileContentBase64, progress_cb);
-    this->url = partUrl.toStdString() ;
+    this->url = partUrl.toStdString();
   } catch (const NetworkException& e) {
     LOG(message_group::Error, "%1$s", e.getErrorMessage());
   }
@@ -208,8 +208,8 @@ std::unique_ptr<OctoPrintService> createOctoPrintService(FileFormat fileFormat)
 
 // TODO: set action, slicerEngine, slicerAction
 //    const std::string& action = Settings::Settings::octoPrintAction.value();
-    // const QString slicer = QString::fromStdString(Settings::Settings::octoPrintSlicerEngine.value());
-    // const QString profile = QString::fromStdString(Settings::Settings::octoPrintSlicerProfile.value());
+// const QString slicer = QString::fromStdString(Settings::Settings::octoPrintSlicerEngine.value());
+// const QString profile = QString::fromStdString(Settings::Settings::octoPrintSlicerProfile.value());
 
 
   return octoPrintService;

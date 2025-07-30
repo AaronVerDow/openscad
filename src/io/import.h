@@ -14,9 +14,9 @@ std::unique_ptr<class PolySet> import_amf(const std::string&, const Location& lo
 std::unique_ptr<class PolySet> import_3mf(const std::string&, const Location& loc);
 
 std::unique_ptr<class Polygon2d> import_svg(double fn, double fs, double fa,
-					  const std::string& filename,
-					  const boost::optional<std::string>& id, const boost::optional<std::string>& layer,
-					  const double dpi, const bool center, const Location& loc);
+                                            const std::string& filename,
+                                            const boost::optional<std::string>& id, const boost::optional<std::string>& layer,
+                                            const double dpi, const bool center, const Location& loc);
 
 #ifdef ENABLE_CGAL
 std::unique_ptr<class CGALNefGeometry> import_nef3(const std::string& filename, const Location& loc);

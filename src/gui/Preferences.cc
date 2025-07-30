@@ -75,7 +75,7 @@
 #include <string>
 
 
-static const char* featurePropertyName="FeatureProperty";
+static const char *featurePropertyName = "FeatureProperty";
 
 using S = Settings::Settings;
 
@@ -408,28 +408,28 @@ void Preferences::setup3DPrintPage()
   checkBoxEnableRemotePrintServices->setChecked(Settings::Settings::enableRemotePrintServices.value());
   comboBoxDefaultPrintService->clear();
   const std::unordered_map<std::string, QString> services = {
-      {"NONE", _("NONE")},
-      {"OCTOPRINT", _("OctoPrint")},
-      {"LOCAL_APPLICATION", _("Local Application")},
+    {"NONE", _("NONE")},
+    {"OCTOPRINT", _("OctoPrint")},
+    {"LOCAL_APPLICATION", _("Local Application")},
   };
 
   comboBoxDefaultPrintService->addItem(services.at("NONE"),
-                                                 QStringList{"NONE", ""});
-  for (const auto &printServiceItem : PrintService::getPrintServices()) {
-    const auto &key = printServiceItem.first;
-    const auto &printService = printServiceItem.second;
+                                       QStringList{"NONE", ""});
+  for (const auto& printServiceItem : PrintService::getPrintServices()) {
+    const auto& key = printServiceItem.first;
+    const auto& printService = printServiceItem.second;
     const auto settingValue = QStringList{"PRINT_SERVICE", QString::fromStdString(key)};
     const auto displayName = QString(printService->getDisplayName());
     comboBoxDefaultPrintService->addItem(displayName, settingValue);
     if (key == currentPrintServiceName.toStdString()) {
       comboBoxDefaultPrintService->setCurrentText(
-          QString(printService->getDisplayName()));
+        QString(printService->getDisplayName()));
     }
   }
   comboBoxDefaultPrintService->addItem(services.at("OCTOPRINT"),
-                                                 QStringList{"OCTOPRINT", ""});
+                                       QStringList{"OCTOPRINT", ""});
   comboBoxDefaultPrintService->addItem(services.at("LOCAL_APPLICATION"),
-                                                 QStringList{"LOCAL_APPLICATION", ""});
+                                       QStringList{"LOCAL_APPLICATION", ""});
 
   auto it = services.find(currentPrintService);
   if (it != services.end()) {
@@ -1017,7 +1017,7 @@ void Preferences::on_listWidgetLocalAppParams_itemSelectionChanged()
 void Preferences::updateLocalAppParams()
 {
   std::vector<Settings::LocalAppParameter> items;
-  for (int idx = 0;idx < this->listWidgetLocalAppParams->count();++idx) {
+  for (int idx = 0; idx < this->listWidgetLocalAppParams->count(); ++idx) {
     const auto item = this->listWidgetLocalAppParams->item(idx);
     if (item->type() == static_cast<int>(QListWidgetItem::UserType) + static_cast<int>(Settings::LocalAppParameterType::string)) {
       items.emplace_back(Settings::LocalAppParameterType::string, item->text().toStdString());
@@ -1044,7 +1044,7 @@ void Preferences::on_listWidgetLocalAppParams_itemChanged(QListWidgetItem *) {
 
 void Preferences::listWidgetLocalAppParamsModelDataChanged()
 {
-  // called when rows are added or removed 
+  // called when rows are added or removed
   updateLocalAppParams();
 }
 
@@ -1354,17 +1354,17 @@ void Preferences::apply_win() const
 
 bool Preferences::hasHighlightingColorScheme() const
 {
-    return BlockSignals<QComboBox *>(syntaxHighlight)->count() != 0;
+  return BlockSignals<QComboBox *>(syntaxHighlight)->count() != 0;
 }
 
 void Preferences::setHighlightingColorSchemes(const QStringList& colorSchemes)
 {
-    auto combobox = BlockSignals<QComboBox *>(syntaxHighlight);
-    combobox->clear();
-    combobox->addItems(colorSchemes);
+  auto combobox = BlockSignals<QComboBox *>(syntaxHighlight);
+  combobox->clear();
+  combobox->addItems(colorSchemes);
 }
 
-void Preferences::createFontSizeMenu(QComboBox *boxarg, const QString &setting)
+void Preferences::createFontSizeMenu(QComboBox *boxarg, const QString& setting)
 {
   uint savedsize = getValue(setting).toUInt();
   const QFontDatabase db;
@@ -1379,16 +1379,16 @@ void Preferences::createFontSizeMenu(QComboBox *boxarg, const QString &setting)
   box->setEditText(QString("%1").arg(savedsize) );
 }
 
-void Preferences::updateGUIFontFamily(QFontComboBox *ffSelector, const QString &setting)
+void Preferences::updateGUIFontFamily(QFontComboBox *ffSelector, const QString& setting)
 {
-    const auto fontfamily = getValue(setting).toString();
-    const auto fidx = ffSelector->findText(fontfamily, Qt::MatchContains);
-    if (fidx >= 0) {
-      BlockSignals<QFontComboBox *>(ffSelector)->setCurrentIndex(fidx);
-    }
+  const auto fontfamily = getValue(setting).toString();
+  const auto fidx = ffSelector->findText(fontfamily, Qt::MatchContains);
+  if (fidx >= 0) {
+    BlockSignals<QFontComboBox *>(ffSelector)->setCurrentIndex(fidx);
+  }
 }
 
-void Preferences::updateGUIFontSize(QComboBox *fsSelector, const QString &setting)
+void Preferences::updateGUIFontSize(QComboBox *fsSelector, const QString& setting)
 {
   const auto fontsize = getValue(setting).toString();
   const auto sidx = fsSelector->findText(fontsize);
@@ -1399,8 +1399,8 @@ void Preferences::updateGUIFontSize(QComboBox *fsSelector, const QString &settin
   }
 }
 
-Preferences* GlobalPreferences::inst()
+Preferences *GlobalPreferences::inst()
 {
-    static auto* instance = new Preferences();
-    return instance;
-};
+  static auto *instance = new Preferences();
+  return instance;
+}

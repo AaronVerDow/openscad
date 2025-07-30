@@ -43,7 +43,8 @@
 
 namespace {
 
-class OffscreenContextEGL : public OffscreenContext {
+class OffscreenContextEGL : public OffscreenContext
+{
 public:
   OffscreenContextEGL(uint32_t width, uint32_t height) : OffscreenContext(width, height) {}
   ~OffscreenContextEGL() {
@@ -63,12 +64,12 @@ public:
     const char *version = eglQueryString(display, EGL_VERSION);
 
     result << "GL context creator: EGL (old)\n"
-    << "EGL version: " << version << " (" << vendor << ")\n"
-    << "PNG generator: lodepng\n";
+           << "EGL version: " << version << " (" << vendor << ")\n"
+           << "PNG generator: lodepng\n";
 
     return result.str();
   }
-  
+
   bool makeCurrent() const override {
     return eglMakeCurrent(this->display, this->surface, this->surface, this->context);
   }
@@ -173,8 +174,8 @@ static bool create_egl_dummy_context(OffscreenContextEGL& ctx)
 namespace offscreen_old {
 
 std::shared_ptr<OffscreenContext> CreateOffscreenContextEGL(
-    uint32_t width, uint32_t height, uint32_t majorGLVersion, 
-    uint32_t minorGLVersion, bool gles, bool compatibilityProfile)
+  uint32_t width, uint32_t height, uint32_t majorGLVersion,
+  uint32_t minorGLVersion, bool gles, bool compatibilityProfile)
 {
   auto ctx = std::make_shared<OffscreenContextEGL>(width, height);
 

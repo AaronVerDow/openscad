@@ -66,7 +66,7 @@ std::vector<CGAL_Polygon_with_holes_2> polygons_with_holes(const Clipper2Lib::Po
   std::vector<CGAL_Polygon_with_holes_2> ret;
 
   // lambda for recursive walk through polytree
-  std::function<void (const Clipper2Lib::PolyPath64 &)> walk = [&](const Clipper2Lib::PolyPath64 &c) {
+  std::function<void (const Clipper2Lib::PolyPath64&)> walk = [&](const Clipper2Lib::PolyPath64& c) {
       // outer path
       CGAL_Polygon_with_holes_2 c_poly(to_cgal_polygon_2(c.Polygon(), scale_bits));
       // holes
@@ -79,7 +79,7 @@ std::vector<CGAL_Polygon_with_holes_2> polygons_with_holes(const Clipper2Lib::Po
       return;
     };
 
-  for (const auto &root_node : polytree)
+  for (const auto& root_node : polytree)
     walk(*root_node);
 
   return ret;

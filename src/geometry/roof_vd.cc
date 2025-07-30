@@ -342,7 +342,7 @@ std::unique_ptr<PolySet> voronoi_diagram_roof(const Polygon2d& poly, double fa, 
   try {
 
     // input data for voronoi diagram is 32 bit integers
-    // FIXME: Why does this need to be 32 bits? The default we use elsewhere is 
+    // FIXME: Why does this need to be 32 bits? The default we use elsewhere is
     // scaleBitsFromPrecision(DEFAULT_PRECISION) which is 10^8.
     const int scale_bits = ClipperUtils::scaleBitsFromBounds(poly.getBoundingBox(), 32);
     const double scale = std::ldexp(1.0, scale_bits);
@@ -378,7 +378,7 @@ std::unique_ptr<PolySet> voronoi_diagram_roof(const Polygon2d& poly, double fa, 
       for (const IndexedFace& triangle : tess->indices) {
         std::vector<int> roof;
         for (int tvind : triangle) {
-          Vector3d tv=tess->vertices[tvind];
+          Vector3d tv = tess->vertices[tvind];
           Vector2d v;
           v << tv[0], tv[1];
           if (!(inner_faces.heights.find(v) != inner_faces.heights.end())) {
@@ -403,9 +403,9 @@ std::unique_ptr<PolySet> voronoi_diagram_roof(const Polygon2d& poly, double fa, 
         poly_floor.addOutline(o);
       }
       auto tess = poly_floor.tessellate();
-      for (const IndexedFace & triangle : tess->indices) {
+      for (const IndexedFace& triangle : tess->indices) {
         std::vector<int> floor;
-        for (const int  tv : triangle) {
+        for (const int tv : triangle) {
           floor.push_back(hatbuilder.vertexIndex(tess->vertices[tv]));
         }
         // floor has reverse orientation

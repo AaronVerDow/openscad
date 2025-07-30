@@ -40,59 +40,59 @@ std::unique_ptr<PolySet> import_off(const std::string& filename, const Location&
   std::string line;
 
   auto AsciiError = [&](const auto& errstr){
-    LOG(message_group::Error, loc, "",
-    "OFF File line %1$s, %2$s line '%3$s' importing file '%4$s'",
-    lineno, errstr, line, filename);
-  };
+      LOG(message_group::Error, loc, "",
+          "OFF File line %1$s, %2$s line '%3$s' importing file '%4$s'",
+          lineno, errstr, line, filename);
+    };
 
   auto getline_clean = [&](const auto& errstr){
-    do {
-      lineno++;
-      std::getline(f, line);
-      if (line.empty() && f.eof()) {
-        AsciiError(errstr);
-        return false;
-      }
-      // strip DOS line endings
-      if (boost::regex_search(line, results, ex_cr)) {
-        line = line.erase(results.position(), results[0].length());
-      }
-      // strip comments
-      if (boost::regex_search(line, results, ex_comment)) {
-        line = line.erase(results.position(), results[0].length());
-      }
-      boost::trim(line);
-    } while (line.empty());
+      do {
+        lineno++;
+        std::getline(f, line);
+        if (line.empty() && f.eof()) {
+          AsciiError(errstr);
+          return false;
+        }
+        // strip DOS line endings
+        if (boost::regex_search(line, results, ex_cr)) {
+          line = line.erase(results.position(), results[0].length());
+        }
+        // strip comments
+        if (boost::regex_search(line, results, ex_comment)) {
+          line = line.erase(results.position(), results[0].length());
+        }
+        boost::trim(line);
+      } while (line.empty());
 
-    return true;
-  };
+      return true;
+    };
 
   auto getcolor = [&](const auto& word){
-    int c;
-    if (boost::contains(word, ".")) {
-      float f;
+      int c;
+      if (boost::contains(word, ".")) {
+        float f;
 #ifdef __cpp_lib_to_chars
-      auto result = std::from_chars(word.data(), word.data() + word.length(), f);
-      if (result.ec != std::errc{}) {
-        AsciiError("Parse error");
-        return 0;
-      }
+        auto result = std::from_chars(word.data(), word.data() + word.length(), f);
+        if (result.ec != std::errc{}) {
+          AsciiError("Parse error");
+          return 0;
+        }
 #else
-      // fall back for pre C++17
-      std::istringstream istr(word);
-      istr.imbue(std::locale("C"));
-      istr >> f;
-      if (istr.peek() != EOF) {
-        AsciiError("Parse error");
-        return 0;
+        // fall back for pre C++17
+        std::istringstream istr(word);
+        istr.imbue(std::locale("C"));
+        istr >> f;
+        if (istr.peek() != EOF) {
+          AsciiError("Parse error");
+          return 0;
+        }
+#endif // ifdef __cpp_lib_to_chars
+        c = (int)(f * 255);
+      } else {
+        c = boost::lexical_cast<int>(word);
       }
-#endif
-      c = (int)(f * 255);
-    } else {
-      c = boost::lexical_cast<int>(word);
-    }
-    return c;
-  };
+      return c;
+    };
 
 
   if (!f.good()) {
@@ -109,7 +109,7 @@ std::unique_ptr<PolySet> import_off(const std::string& filename, const Location&
   unsigned int dimension = 3;
 
   if (line.empty() && !getline_clean("bad header: end of file")) {
-      return PolySet::createEmpty();
+    return PolySet::createEmpty();
   }
 
   if (boost::regex_search(line, results, ex_magic) > 0) {
@@ -119,8 +119,7 @@ std::unique_ptr<PolySet> import_off(const std::string& filename, const Location&
     has_color = results[2].matched;
     has_textures = results[1].matched;
     is_binary = results[6].matched;
-    if (results[4].matched)
-      dimension = 4;
+    if (results[4].matched)dimension = 4;
     has_ndim = results[5].matched;
   }
 
@@ -134,7 +133,7 @@ std::unique_ptr<PolySet> import_off(const std::string& filename, const Location&
 
   if (has_ndim) {
     if (line.empty() && !getline_clean("bad header: end of file")) {
-        return PolySet::createEmpty();
+      return PolySet::createEmpty();
     }
     boost::split(words, line, boost::is_any_of(" \t"), boost::token_compress_on);
     if (f.eof() || words.size() < 1) {
@@ -158,7 +157,7 @@ std::unique_ptr<PolySet> import_off(const std::string& filename, const Location&
   }
 
   if (line.empty() && !getline_clean("bad header: end of file")) {
-      return PolySet::createEmpty();
+    return PolySet::createEmpty();
   }
 
   boost::split(words, line, boost::is_any_of(" \t"), boost::token_compress_on);
@@ -208,19 +207,19 @@ std::unique_ptr<PolySet> import_off(const std::string& filename, const Location&
       Vector3d v = {0, 0, 0};
       int i;
       for (i = 0; i < dimension; i++) {
-        v[i]= boost::lexical_cast<double>(words[i]);
+        v[i] = boost::lexical_cast<double>(words[i]);
       }
       //PRINTDB("Vertex[%ld] = { %f, %f, %f }", vertex % v[0] % v[1] % v[2]);
       if (has_normals) {
-        ; // TODO words[i++]
+        // TODO words[i++]
         i += 0;
       }
       if (has_color) {
-        ; // TODO: Meshlab appends color there, probably to allow gradients
+        // TODO: Meshlab appends color there, probably to allow gradients
         i += 3; // 4?
       }
       if (has_textures) {
-        ; // TODO words[i++]
+        // TODO words[i++]
       }
       ps->vertices.push_back(v);
     } catch (const boost::bad_lexical_cast& blc) {
@@ -244,7 +243,7 @@ std::unique_ptr<PolySet> import_off(const std::string& filename, const Location&
 
     std::map<Color4f, int32_t> color_indices;
     try {
-      const auto face_size=boost::lexical_cast<unsigned long>(words[0]);
+      const auto face_size = boost::lexical_cast<unsigned long>(words[0]);
       unsigned long i;
       if (words.size() - 1 < face_size) {
         AsciiError("can't parse face: missing indices");
@@ -254,7 +253,7 @@ std::unique_ptr<PolySet> import_off(const std::string& filename, const Location&
       ps->indices.emplace_back().reserve(face_size);
       //PRINTDB("Index[%d] [%d] = { ", face % n);
       for (i = 0; i < face_size; i++) {
-        int ind=boost::lexical_cast<int>(words[i+1]);
+        int ind = boost::lexical_cast<int>(words[i + 1]);
         //PRINTDB("%d, ", ind);
         if (ind >= 0 && ind < vertices_count) {
           ps->indices.back().push_back(ind);
@@ -266,10 +265,10 @@ std::unique_ptr<PolySet> import_off(const std::string& filename, const Location&
       if (words.size() >= face_size + 4) {
         i = face_size + 1;
         // handle optional color info (r g b [a])
-        const int r=getcolor(words[i++]);
-        const int g=getcolor(words[i++]);
-        const int b=getcolor(words[i++]);
-        const int a=i < words.size() ? getcolor(words[i++]) : 255;
+        const int r = getcolor(words[i++]);
+        const int g = getcolor(words[i++]);
+        const int b = getcolor(words[i++]);
+        const int a = i < words.size() ? getcolor(words[i++]) : 255;
         const Color4f color(r, g, b, a);
 
         auto iter_pair = color_indices.insert_or_assign(color, ps->colors.size());

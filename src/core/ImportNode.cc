@@ -153,13 +153,13 @@ static std::shared_ptr<AbstractNode> do_import(const ModuleInstantiation *inst, 
 static std::shared_ptr<AbstractNode> builtin_import(const ModuleInstantiation *inst, Arguments arguments)
 { return do_import(inst, std::move(arguments), ImportType::UNKNOWN); }
 
-template<typename T>
+template <typename T>
 static std::unique_ptr<T> optionally_center(std::unique_ptr<T> g, bool center) {
   if (center) {
     auto bbox = g->getBoundingBox();
     auto center = bbox.center();
 
-    if constexpr (std::is_same_v<T, Polygon2d>) {
+    if constexpr (std::is_same_v<T, Polygon2d> ) {
       auto mat = Transform2d::Identity();
       auto translate = mat.translation();
 

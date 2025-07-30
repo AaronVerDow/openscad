@@ -244,7 +244,7 @@ public:
     }
     GL_TRACE0("glBindBuffer(GL_ARRAY_BUFFER, 0)");
     GL_CHECKD(glBindBuffer(GL_ARRAY_BUFFER, 0));
-  };
+  }
 
   // Add common surface data vertex layout PNC
   void addSurfaceData();
@@ -305,7 +305,7 @@ public:
 
   // Use VertexStateFactory to create a new VertexState object
   std::shared_ptr<VertexState> createVertexState(GLenum draw_mode, size_t draw_size, GLenum draw_type, size_t draw_offset, size_t element_offset) const {
-    return factory_->createVertexState(draw_mode, draw_size, draw_type, draw_offset, element_offset, 
+    return factory_->createVertexState(draw_mode, draw_size, draw_type, draw_offset, element_offset,
                                        vertex_state_container_.verticesVBO(), vertex_state_container_.elementsVBO());
   }
 
@@ -338,7 +338,7 @@ public:
                        const Vector3d& p1, const Vector3d& p2, size_t primitive_index,
                        size_t shape_size, bool outlines, bool enable_barycentric, bool mirror);
   void create_surface(const PolySet& ps, const Transform3d& m,
-                      const Color4f& default_color, bool enable_barycentric, bool force_default_color=false);
+                      const Color4f& default_color, bool enable_barycentric, bool force_default_color = false);
   void create_edges(const Polygon2d& polygon, const Transform3d& m, const Color4f& color);
   void create_polygons(const PolySet& ps, const Transform3d& m, const Color4f& color);
 

@@ -285,7 +285,7 @@ void LogVisitor::visit(const CGALNefGeometry& nef)
 void LogVisitor::visit(const ManifoldGeometry& mani_geom)
 {
   LOG("   Top level object is a 3D object (manifold):");
-  auto &mani = mani_geom.getManifold();
+  auto& mani = mani_geom.getManifold();
 
   LOG("   Status:     %1$s", ManifoldUtils::statusToString(mani.Status()));
   LOG("   Genus:      %1$d", mani.Genus());

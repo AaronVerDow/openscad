@@ -73,7 +73,7 @@ const QJsonDocument OctoPrint::getJsonData(const QString& endpoint) const
     PRINTDB("Response: %s", QString{doc.toJson()}.toStdString());
     return doc;
   }
-  );
+    );
 }
 
 const std::vector<std::pair<const QString, const QString>> OctoPrint::getSlicers() const
@@ -123,19 +123,19 @@ const QString OctoPrint::requestApiKey() const
   auto networkRequest = NetworkRequest<QString>{QUrl{url() + "/../plugin/appkeys/request"}, { 201 }, 30};
   return networkRequest.execute(
     [&](QNetworkRequest& request) {
-      request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    },
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  },
     [&](QNetworkAccessManager& nam, QNetworkRequest& request) {
-      return nam.post(request, QJsonDocument(jsonInput).toJson());
-    },
+    return nam.post(request, QJsonDocument(jsonInput).toJson());
+  },
     [](QNetworkReply *reply) -> QString {
-      const auto doc = QJsonDocument::fromJson(reply->readAll());
-      PRINTDB("Response: %s", QString{doc.toJson()}.toStdString());
-      const auto obj = doc.object();
-      const auto token = obj.value("app_token").toString();
-      return token;
-    }
-  );
+    const auto doc = QJsonDocument::fromJson(reply->readAll());
+    PRINTDB("Response: %s", QString{doc.toJson()}.toStdString());
+    const auto obj = doc.object();
+    const auto token = obj.value("app_token").toString();
+    return token;
+  }
+    );
 }
 
 const std::pair<int, QString> OctoPrint::pollApiKeyApproval(const QString& token) const
@@ -143,23 +143,23 @@ const std::pair<int, QString> OctoPrint::pollApiKeyApproval(const QString& token
   auto networkRequest = NetworkRequest<std::pair<int, QString>>{QUrl{url() + "/../plugin/appkeys/request/" + token}, { 200, 202, 404 }, 30};
   return networkRequest.execute(
     [&](QNetworkRequest& request) {
-      request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    },
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  },
     [&](QNetworkAccessManager& nam, QNetworkRequest& request) {
-      return nam.get(request);
-    },
+    return nam.get(request);
+  },
     [](QNetworkReply *reply) -> std::pair<int, QString> {
-      const auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-      PRINTDB("Response Code: %d", code);
-      const auto obj = QJsonDocument::fromJson(reply->readAll()).object();
-      return std::make_pair(code, obj.value("api_key").toString());
-    },
+    const auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    PRINTDB("Response Code: %d", code);
+    const auto obj = QJsonDocument::fromJson(reply->readAll()).object();
+    return std::make_pair(code, obj.value("api_key").toString());
+  },
     [](QNetworkReply *reply) -> std::pair<int, QString> {
-      const auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-      PRINTDB("Response (Error) Code: %d", code);
-      return std::make_pair(code, "");
-    }
-  );
+    const auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    PRINTDB("Response (Error) Code: %d", code);
+    return std::make_pair(code, "");
+  }
+    );
 }
 
 const QString OctoPrint::upload(const QString& exportFileName, const QString& fileName, const network_progress_func_t& progress_func) const {

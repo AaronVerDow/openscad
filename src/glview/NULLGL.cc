@@ -15,7 +15,7 @@
 #include "glview/system-gl.h"
 
 bool FBO::resize(size_t, size_t) { return false; }
-FBO::FBO(int, int, bool ) {}
+FBO::FBO(int, int, bool) {}
 GLuint FBO::bind() { return 0; }
 GLView::~GLView() = default;
 GLView::GLView() = default;
@@ -29,8 +29,8 @@ void GLView::initializeGL() {}
 void GLView::paintGL() {}
 void GLView::resizeGL(int w, int h) {}
 void GLView::setCamera(const Camera& /*cam*/) {assert(false && "not implemented");}
-void GLView::setColorScheme(const ColorScheme&  /*cs*/){assert(false && "not implemented");}
-void GLView::setColorScheme(const std::string&  /*cs*/) {assert(false && "not implemented");}
+void GLView::setColorScheme(const ColorScheme& /*cs*/){assert(false && "not implemented");}
+void GLView::setColorScheme(const std::string& /*cs*/) {assert(false && "not implemented");}
 void GLView::setRenderer(std::shared_ptr<Renderer>) {}
 void GLView::showAxes(const Color4f& col) {}
 void GLView::showCrosshairs(const Color4f& col) {}

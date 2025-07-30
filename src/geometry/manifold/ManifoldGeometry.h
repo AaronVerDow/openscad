@@ -13,8 +13,8 @@
 #include <string>
 
 namespace manifold {
-  class Manifold;
-};
+class Manifold;
+}
 
 /*! A mutable polyhedron backed by a manifold::Manifold
  */
@@ -26,10 +26,10 @@ public:
   ManifoldGeometry();
   ManifoldGeometry(
     manifold::Manifold object,
-    const std::set<uint32_t> & originalIDs = {},
-    const std::map<uint32_t, Color4f> & originalIDToColor = {},
-    const std::set<uint32_t> & subtractedIDs = {});
-   ManifoldGeometry(const ManifoldGeometry& other) = default;
+    const std::set<uint32_t>& originalIDs = {},
+    const std::map<uint32_t, Color4f>& originalIDToColor = {},
+    const std::set<uint32_t>& subtractedIDs = {});
+  ManifoldGeometry(const ManifoldGeometry& other) = default;
 
   [[nodiscard]] bool isEmpty() const override;
   [[nodiscard]] size_t numFacets() const override;

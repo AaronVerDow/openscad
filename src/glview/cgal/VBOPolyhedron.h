@@ -72,9 +72,9 @@ public:
 
     CGAL::Color c = getVertexColor(v);
     vbo_builder.createVertex({Vector3d(v->x(), v->y(), v->z())},
-                              {},
-                              Color4f(c.red(), c.green(), c.blue()),
-                              0, 0, 1);
+                             {},
+                             Color4f(c.red(), c.green(), c.blue()),
+                             0, 0, 1);
   }
 
   void draw(Edge_iterator e, VBOBuilder& vbo_builder) const {
@@ -85,13 +85,13 @@ public:
     const Color4f color(c.red(), c.green(), c.blue());
 
     vbo_builder.createVertex({Vector3d(p.x(), p.y(), p.z())},
-                              {},
-                              color,
-                              0, 0, true);
+                             {},
+                             color,
+                             0, 0, true);
     vbo_builder.createVertex({Vector3d(q.x(), q.y(), q.z())},
-                              {},
-                              color,
-                              0, 1, true);
+                             {},
+                             color,
+                             0, 1, true);
   }
 
   struct TessUserData {
@@ -163,9 +163,9 @@ public:
 
 
     tess->vbo_builder.createVertex({Vector3d(vertex)},
-                                    {Vector3d(tess->normal)},
-                                    Color4f(tess->color.red(), tess->color.green(), tess->color.blue()),
-                                    0, 0, shape_size);
+                                   {Vector3d(tess->normal)},
+                                   Color4f(tess->color.red(), tess->color.green(), tess->color.blue()),
+                                   0, 0, shape_size);
     tess->draw_size++;
     tess->active_point_index++;
   }

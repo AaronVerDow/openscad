@@ -50,7 +50,7 @@ ExportPdfDialog::ExportPdfDialog()
   this->groupScale->setChecked(S::exportPdfShowScale.value());
   this->checkBoxShowScaleMessage->setChecked(S::exportPdfShowScaleMessage.value());
   this->groupGrid->setChecked(S::exportPdfShowGrid.value());
-  
+
   // Initialize grid size from settings
   const auto gridSize = S::exportPdfGridSize.value();
   for (auto *button : buttonGroupGridSize->buttons()) {

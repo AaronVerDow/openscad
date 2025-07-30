@@ -59,12 +59,12 @@ GeometryEvaluator::GeometryEvaluator(const Tree& tree) : tree(tree) { }
    Set allownef to false to force the result to _not_ be a Nef polyhedron
 
    There are some guarantees on the returned geometry:
-   * 2D and 3D geometry cannot be mixed; we will return either _only_ 2D or _only_ 3D geometries
-   * PolySet geometries are always 3D. 2D Polysets are only created for special-purpose rendering operations downstream from here.
-   * Needs validation: Implementation-specific geometries shouldn't be mixed (Nef polyhedron, Manifold)
+ * 2D and 3D geometry cannot be mixed; we will return either _only_ 2D or _only_ 3D geometries
+ * PolySet geometries are always 3D. 2D Polysets are only created for special-purpose rendering operations downstream from here.
+ * Needs validation: Implementation-specific geometries shouldn't be mixed (Nef polyhedron, Manifold)
  */
 std::shared_ptr<const Geometry> GeometryEvaluator::evaluateGeometry(const AbstractNode& node,
-                                                               bool allownef)
+                                                                    bool allownef)
 {
   auto result = smartCacheGet(node, allownef);
   if (!result) {
@@ -232,7 +232,7 @@ std::unique_ptr<Polygon2d> GeometryEvaluator::applyHull2D(const AbstractNode& no
       LOG(message_group::Warning, "GeometryEvaluator::applyHull2D() during CGAL::convex_hull_2(): %1$s", e.what());
     }
   }
-#endif
+#endif // ifdef ENABLE_CGAL
   return geometry;
 }
 
@@ -722,7 +722,7 @@ Response GeometryEvaluator::visit(State& state, const TransformNode& node)
         ResultObject res = applyToChildren(node, OpenSCADOperator::UNION);
         if ((geom = res.constptr())) {
           if (geom->getDimension() == 2) {
-            auto polygons =  std::dynamic_pointer_cast<Polygon2d>(res.asMutableGeometry());
+            auto polygons = std::dynamic_pointer_cast<Polygon2d>(res.asMutableGeometry());
             assert(polygons);
 
             Transform2d mat2;
@@ -851,16 +851,16 @@ std::shared_ptr<const Geometry> GeometryEvaluator::projectionNoCut(const Project
   if (RenderSettings::inst()->backend3D == RenderBackend3D::ManifoldBackend) {
     const std::shared_ptr<const Geometry> newgeom = applyToChildren3D(node, OpenSCADOperator::UNION).constptr();
     if (newgeom) {
-        auto manifold = ManifoldUtils::createManifoldFromGeometry(newgeom);
-        if (manifold != nullptr) {
-          auto poly2d = manifold->project();
-          return std::shared_ptr<const Polygon2d>(ClipperUtils::sanitize(poly2d));
-        }
+      auto manifold = ManifoldUtils::createManifoldFromGeometry(newgeom);
+      if (manifold != nullptr) {
+        auto poly2d = manifold->project();
+        return std::shared_ptr<const Polygon2d>(ClipperUtils::sanitize(poly2d));
+      }
     } else {
       return std::make_shared<Polygon2d>();
     }
   }
-#endif
+#endif // ifdef ENABLE_MANIFOLD
 
   std::vector<std::shared_ptr<const Polygon2d>> tmp_geom;
   for (const auto& [chnode, chgeom] : this->visitedchildren[node.index()]) {
@@ -1025,4 +1025,4 @@ Response GeometryEvaluator::visit(State& state, const RoofNode& node)
   }
   return Response::ContinueTraversal;
 }
-#endif
+#endif // if defined(ENABLE_EXPERIMENTAL) && defined(ENABLE_CGAL)

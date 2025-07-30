@@ -48,7 +48,7 @@ public:
     bool operator==(const iterator& other) const { return ptr == other.ptr; }
     bool operator!=(const iterator& other) const { return ptr != other.ptr; }
 private:
-    size_t char_len() { return g_utf8_next_char(ptr) - ptr; };
+    size_t char_len() { return g_utf8_next_char(ptr) - ptr; }
     static const char nullterm = '\0';
     const char *ptr;
     size_t len = 0;
@@ -64,7 +64,7 @@ private:
   str_utf8_wrapper(uint32_t unicode) {
     char out[6] = " ";
     if (unicode != 0 && g_unichar_validate(unicode)) {
-        g_unichar_to_utf8(unicode, out);
+      g_unichar_to_utf8(unicode, out);
     }
     str_ptr = std::make_shared<str_utf8_t>(out);
   }
@@ -90,8 +90,8 @@ private:
       // Ensure character (not byte) index is inside the character/glyph array
       if (idx < this->get_utf8_strlen()) {
         gchar utf8_of_cp[6] = ""; //A buffer for a single unicode character to be copied into
-	auto ptr = g_utf8_offset_to_pointer(str_ptr->u8str.c_str(), idx);
-	if (ptr) {
+        auto ptr = g_utf8_offset_to_pointer(str_ptr->u8str.c_str(), idx);
+        if (ptr) {
           g_utf8_strncpy(utf8_of_cp, ptr, 1);
         }
         return std::string(utf8_of_cp);

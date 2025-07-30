@@ -18,8 +18,8 @@
 
 namespace VBOUtils {
 
-void shader_attribs_enable(const ShaderUtils::ShaderInfo &shaderinfo);
-void shader_attribs_disable(const ShaderUtils::ShaderInfo &shaderinfo);
+void shader_attribs_enable(const ShaderUtils::ShaderInfo& shaderinfo);
+void shader_attribs_disable(const ShaderUtils::ShaderInfo& shaderinfo);
 
 }  // namespace VBOUtils
 

@@ -64,9 +64,9 @@ std::shared_ptr<AbstractNode> BuiltinModule::instantiate(const std::shared_ptr<c
 }
 
 void BuiltinModule::noChildren(const ModuleInstantiation *inst, Arguments& arguments, std::string auxmsg) {
-      if (inst->scope.hasChildren()) {
-        LOG(message_group::Warning, inst->location(), arguments.documentRoot(),
-            "module %1$s() does not support child modules%2$s%3$s", inst->name(),
-            auxmsg.size() != 0  ? " " : "", auxmsg);
-      }
+  if (inst->scope.hasChildren()) {
+    LOG(message_group::Warning, inst->location(), arguments.documentRoot(),
+        "module %1$s() does not support child modules%2$s%3$s", inst->name(),
+        auxmsg.size() != 0  ? " " : "", auxmsg);
+  }
 }

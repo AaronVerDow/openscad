@@ -50,8 +50,8 @@ class OpenCSGVBOProduct : public VertexStateContainer
 {
 public:
   OpenCSGVBOProduct() = default;
-  OpenCSGVBOProduct(const OpenCSGVBOProduct &o) = delete;
-  OpenCSGVBOProduct(OpenCSGVBOProduct &&o) = delete;
+  OpenCSGVBOProduct(const OpenCSGVBOProduct& o) = delete;
+  OpenCSGVBOProduct(OpenCSGVBOProduct&& o) = delete;
   virtual ~OpenCSGVBOProduct() = default;
 
   [[nodiscard]] std::vector<OpenCSG::Primitive *>& primitives() { return primitives_; }

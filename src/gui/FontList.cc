@@ -58,7 +58,7 @@ void FontItemDelegate::setText(const QString& text)
   _text = text;
 }
 
-void FontItemDelegate::initStyleOption(QStyleOptionViewItem *opt, const QModelIndex &idx) const
+void FontItemDelegate::initStyleOption(QStyleOptionViewItem *opt, const QModelIndex& idx) const
 {
   QStyledItemDelegate::initStyleOption(opt, idx);
 
@@ -67,12 +67,12 @@ void FontItemDelegate::initStyleOption(QStyleOptionViewItem *opt, const QModelIn
   opt->textElideMode = Qt::ElideNone;
 }
 
-QWidget *FontItemDelegate::createEditor(QWidget *, const QStyleOptionViewItem &, const QModelIndex &) const
+QWidget *FontItemDelegate::createEditor(QWidget *, const QStyleOptionViewItem&, const QModelIndex&) const
 {
   return nullptr;
 }
 
-QSize FontItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &idx) const
+QSize FontItemDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& idx) const
 {
   QStyleOptionViewItem opt = option;
   initStyleOption(&opt, idx);
@@ -86,13 +86,13 @@ QSize FontItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QMode
   return {4 * fm.height() + fm.horizontalAdvance(text), fm.height()};
 }
 
-void FontItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &idx) const
+void FontItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem& option, const QModelIndex& idx) const
 {
   QStyleOptionViewItem opt = option;
   initStyleOption(&opt, idx);
 
   const auto fontName = FontList::colStr(idx, FontList::COL_FONT_NAME);
-  const auto fontStyle= FontList::colStr(idx, FontList::COL_FONT_STYLE);
+  const auto fontStyle = FontList::colStr(idx, FontList::COL_FONT_STYLE);
 
   opt.font.setFamily(fontName);
   opt.font.setStyleName(fontStyle);
@@ -117,7 +117,7 @@ void FontSortFilterProxyModel::appendFilterHashes(const std::vector<uint32_t>& h
   }
 }
 
-bool FontSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool FontSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
   const bool parentResult = QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
   if (filterHashes.empty()) {
@@ -125,7 +125,7 @@ bool FontSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex
   }
 
   const auto idx = sourceModel()->index(sourceRow, FontList::COL_HASH, sourceParent);
-  const auto &data = sourceModel()->data(idx);
+  const auto& data = sourceModel()->data(idx);
   const bool result = filterHashes.contains(data.toString());
   return parentResult && result;
 }
@@ -161,15 +161,15 @@ void FontList::updateFilter(int searchTypeIdx, const QString& text)
   const auto regExp = QRegularExpression(text, QRegularExpression::CaseInsensitiveOption);
 
   switch (searchTypeIdx) {
-    case 0:
-      proxy->setFilterFixedString(text);
-      break;
-    case 1:
-      proxy->setFilterWildcard(text);
-      break;
-    default:
-      proxy->setFilterRegularExpression(regExp);
-      break;
+  case 0:
+    proxy->setFilterFixedString(text);
+    break;
+  case 1:
+    proxy->setFilterWildcard(text);
+    break;
+  default:
+    proxy->setFilterRegularExpression(regExp);
+    break;
   }
   groupBoxFilter->setTitle(QString("Filter (%1 fonts found)").arg(proxy->rowCount()));
 }
@@ -351,7 +351,7 @@ void FontList::on_actionOpenFolder_triggered()
 {
   const QFileInfo fileInfo(colStr(currentIndex(), COL_FILE_PATH));
   if (fileInfo.dir().exists()) {
-      QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.dir().absolutePath()));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(fileInfo.dir().absolutePath()));
   }
 }
 
@@ -505,6 +505,6 @@ const QModelIndex FontList::colIdx(const QModelIndex& idx, int column)
 const QString FontList::colStr(const QModelIndex& idx, int column)
 {
   return idx.model() ?
-    idx.model()->data(colIdx(idx, column)).toString() :
-    QString{};
+         idx.model()->data(colIdx(idx, column)).toString() :
+         QString{};
 }

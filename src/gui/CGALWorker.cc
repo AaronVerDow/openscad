@@ -56,8 +56,7 @@ void CGALWorker::work()
       // calling status forces evaluation
       // we should complete evaluation within the worker thread, so computation
       // will not block the GUI.
-      if (manifold->getManifold().Status() != manifold::Manifold::Error::NoError)
-        LOG(message_group::Error, "Rendering cancelled due to unknown manifold error.");
+      if (manifold->getManifold().Status() != manifold::Manifold::Error::NoError)LOG(message_group::Error, "Rendering cancelled due to unknown manifold error.");
     }
 #endif
   } catch (const ProgressCancelException& e) {

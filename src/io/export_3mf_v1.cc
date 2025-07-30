@@ -187,12 +187,12 @@ bool append_polyset(const std::shared_ptr<const PolySet>& ps, ExportContext& ctx
 
       DWORD id = 0;
       uint8_t r, g, b, a;
-      if (!col.getRgba(r,g,b,a)) {
+      if (!col.getRgba(r, g, b, a)) {
         LOG(message_group::Warning, "Invalid color in 3MF export");
       }
       lib3mf_basematerial_addmaterialutf8(ctx.basematerial,
                                           colname.c_str(),
-                                          r,g,b,
+                                          r, g, b,
                                           &id);
       return id;
     };
@@ -270,10 +270,10 @@ bool append_polyset(const std::shared_ptr<const PolySet>& ps, ExportContext& ctx
     lib3mf_defaultpropertyhandler_setbasematerial(defaultpropertyhandler, ctx.basematerialid, ctx.defaultColorId);
   } else if (ctx.usecolors) {
     uint8_t r, g, b, a;
-    if (!ctx.defaultColor.getRgba(r,g,b,a)) {
+    if (!ctx.defaultColor.getRgba(r, g, b, a)) {
       LOG(message_group::Warning, "Invalid color in 3MF export");
     }
-    lib3mf_defaultpropertyhandler_setcolorrgba(defaultpropertyhandler,r,g,b,a);
+    lib3mf_defaultpropertyhandler_setcolorrgba(defaultpropertyhandler, r, g, b, a);
   }
 
   lib3mf_release(defaultpropertyhandler);
@@ -423,7 +423,7 @@ void export_3mf(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
         return;
       }
       uint8_t r, g, b, a;
-      if (!defaultColor.getRgba(r,g,b,a)) {
+      if (!defaultColor.getRgba(r, g, b, a)) {
         LOG(message_group::Warning, "Invalid color in 3MF export");
       }
       if (lib3mf_basematerial_addmaterialutf8(basematerial, "Default",

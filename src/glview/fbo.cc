@@ -12,34 +12,34 @@ bool checkFBOStatus() {
 
   const char *statusString = nullptr;
   switch (status) {
-    case GL_FRAMEBUFFER_COMPLETE:
+  case GL_FRAMEBUFFER_COMPLETE:
     return true;
     break;
-    case GL_FRAMEBUFFER_UNDEFINED:
+  case GL_FRAMEBUFFER_UNDEFINED:
     statusString = "GL_FRAMEBUFFER_UNDEFINED";
     break;
-    case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+  case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
     statusString = "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT";
     break;
-    case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+  case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
     statusString = "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT";
     break;
-    case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+  case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
     statusString = "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER";
     break;
-    case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+  case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
     statusString = "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER";
     break;
-    case GL_FRAMEBUFFER_UNSUPPORTED:
+  case GL_FRAMEBUFFER_UNSUPPORTED:
     statusString = "GL_FRAMEBUFFER_UNSUPPORTED";
     break;
-    case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+  case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
     statusString = "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE";
     break;
-    case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
+  case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:
     statusString = "GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS";
     break;
-    default:
+  default:
     break;
   }
 
@@ -75,7 +75,7 @@ FBO::FBO(int width, int height, bool useEXT) : width_(width), height_(height), u
 
   // Attach render and depth buffers
   GL_CHECKD(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-				  GL_RENDERBUFFER, this->renderbuf_id_));
+                                      GL_RENDERBUFFER, this->renderbuf_id_));
 
   if (!checkFBOStatus()) {
     LOG(message_group::Error, "Problem with OpenGL framebuffer after specifying color render buffer.");
@@ -85,9 +85,9 @@ FBO::FBO(int width, int height, bool useEXT) : width_(width), height_(height), u
   // to prevent Mesa's software renderer from crashing, do this in two stages.
   // ie. instead of using GL_DEPTH_STENCIL_ATTACHMENT, do DEPTH then STENCIL.
   GL_CHECKD(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-				     GL_RENDERBUFFER, this->depthbuf_id_));
+                                      GL_RENDERBUFFER, this->depthbuf_id_));
   GL_CHECKD(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT,
-				     GL_RENDERBUFFER, this->depthbuf_id_));
+                                      GL_RENDERBUFFER, this->depthbuf_id_));
 
   if (!checkFBOStatus()) {
     LOG(message_group::Error, "Problem with OpenGL framebuffer after specifying depth render buffer.");

@@ -23,7 +23,8 @@ int xlibErrorHandler(Display *dpy, XErrorEvent *event) {
 
 }  // namespace
 
-class OffscreenContextGLX : public OffscreenContext {
+class OffscreenContextGLX : public OffscreenContext
+{
 public:
   GLXContext glxContext = nullptr;
   Display *display = nullptr;
@@ -45,8 +46,8 @@ public:
     glXQueryVersion(this->display, &major, &minor);
 
     result << "GL context creator: GLX (new)\n"
-	         << "GLX version: " << major << "." << minor << "\n"
-	         << "PNG generator: lodepng\n";
+           << "GLX version: " << major << "." << minor << "\n"
+           << "PNG generator: lodepng\n";
 
     return result.str();
   }
@@ -152,7 +153,7 @@ public:
    This function will alter ctx.openGLContext and ctx.xwindow if successful
  */
 std::shared_ptr<OffscreenContext> CreateOffscreenContextGLX(size_t width, size_t height,
-							    size_t majorGLVersion, size_t minorGLVersion, bool gles, bool compatibilityProfile)
+                                                            size_t majorGLVersion, size_t minorGLVersion, bool gles, bool compatibilityProfile)
 {
   auto ctx = std::make_shared<OffscreenContextGLX>(width, height);
 
@@ -166,8 +167,8 @@ std::shared_ptr<OffscreenContext> CreateOffscreenContextGLX(size_t width, size_t
 
   int glxVersion = gladLoaderLoadGLX(ctx->display, DefaultScreen(ctx->display));
   if (!glxVersion) {
-      LOG("GLAD: Unable to load GLX");
-      return nullptr;
+    LOG("GLAD: Unable to load GLX");
+    return nullptr;
   }
   int glxMajor = GLAD_VERSION_MAJOR(glxVersion);
   int glxMinor = GLAD_VERSION_MINOR(glxVersion);
@@ -186,5 +187,5 @@ std::shared_ptr<OffscreenContext> CreateOffscreenContextGLX(size_t width, size_t
     return nullptr;
   }
 
-	return ctx;
+  return ctx;
 }

@@ -34,7 +34,7 @@
 #include <vector>
 
 #include <lib3mf_implicit.hpp>
- 
+
 #include "core/AST.h"
 #include "geometry/Geometry.h"
 #include "geometry/linalg.h"
@@ -72,22 +72,22 @@ using MeshObjectList = std::list<std::unique_ptr<MeshObject>>;
 std::string get_object_type_name(const Lib3MF::eObjectType objecttype)
 {
   switch (objecttype) {
-    case Lib3MF::eObjectType::Other: return "Other";
-    case Lib3MF::eObjectType::Model: return "Model";
-    case Lib3MF::eObjectType::Support: return "Support";
-    case Lib3MF::eObjectType::SolidSupport: return "Solid Support";
-    default: return "<Unknown>";
+  case Lib3MF::eObjectType::Other: return "Other";
+  case Lib3MF::eObjectType::Model: return "Model";
+  case Lib3MF::eObjectType::Support: return "Support";
+  case Lib3MF::eObjectType::SolidSupport: return "Solid Support";
+  default: return "<Unknown>";
   }
 }
 
-Matrix4d get_matrix(Lib3MF::sTransform &transform)
+Matrix4d get_matrix(Lib3MF::sTransform& transform)
 {
-    Matrix4d tm;
-    tm << transform.m_Fields[0][0], transform.m_Fields[1][0], transform.m_Fields[2][0], transform.m_Fields[3][0],
-          transform.m_Fields[0][1], transform.m_Fields[1][1], transform.m_Fields[2][1], transform.m_Fields[3][1],
-          transform.m_Fields[0][2], transform.m_Fields[1][2], transform.m_Fields[2][2], transform.m_Fields[3][2],
-                                 0,                        0,                        0,                        1;
-    return tm;
+  Matrix4d tm;
+  tm << transform.m_Fields[0][0], transform.m_Fields[1][0], transform.m_Fields[2][0], transform.m_Fields[3][0],
+    transform.m_Fields[0][1], transform.m_Fields[1][1], transform.m_Fields[2][1], transform.m_Fields[3][1],
+    transform.m_Fields[0][2], transform.m_Fields[1][2], transform.m_Fields[2][2], transform.m_Fields[3][2],
+    0,                        0,                        0,                        1;
+  return tm;
 }
 
 std::string collect_mesh_objects(const Lib3MF::PModel& model, MeshObjectList& object_list, const Lib3MF::PObject& object, const Matrix4d& m, const Location& loc, int level = 1)
@@ -121,7 +121,7 @@ std::string collect_mesh_objects(const Lib3MF::PModel& model, MeshObjectList& ob
     const int componentcount = componentsobject->GetComponentCount();
     PRINTDB("%sobject (%d components) type = %s, number = '%s', name = '%s' (%s)", boost::io::group(std::setw(2 * level), "") % componentcount % get_object_type_name(objecttype) % partnumber % name % (hasuuid ? uuid : "<no uuid>"));
 
-    for (int idx = 0;idx < componentcount;++idx) {
+    for (int idx = 0; idx < componentcount; ++idx) {
       const auto component = componentsobject->GetComponent(idx);
       const bool has_transform = component->HasTransform();
       Lib3MF::sTransform transform{ .m_Fields = {{ 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 }, { 0, 0, 1 } } };
@@ -190,12 +190,12 @@ Color4f get_triangle_color(const Lib3MF::PModel& model, const Lib3MF::PMeshObjec
 
   const auto propertytype = model->GetPropertyTypeByID(triangle_properties.m_ResourceID);
   switch (propertytype) {
-    case Lib3MF::ePropertyType::BaseMaterial:
-      return get_triangle_color_from_basematerial(model, triangle_properties);
-    case Lib3MF::ePropertyType::Colors:
-      return get_triangle_color(model, triangle_properties);
-    default:
-      return {};
+  case Lib3MF::ePropertyType::BaseMaterial:
+    return get_triangle_color_from_basematerial(model, triangle_properties);
+  case Lib3MF::ePropertyType::Colors:
+    return get_triangle_color(model, triangle_properties);
+  default:
+    return {};
   }
 }
 
@@ -261,7 +261,7 @@ std::string read_metadata(const Lib3MF::PModel& model)
   const auto metadatacount = metadatagroup->GetMetaDataCount();
 
   ModelMetadata mmd;
-  for (Lib3MF_uint32 idx = 0;idx < metadatacount;++idx) {
+  for (Lib3MF_uint32 idx = 0; idx < metadatacount; ++idx) {
     const auto metadata = metadatagroup->GetMetaData(idx);
     const auto key = metadata->GetKey();
     const auto value = metadata->GetValue();

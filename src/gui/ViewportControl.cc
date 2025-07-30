@@ -78,17 +78,17 @@ void ViewportControl::resizeEvent(QResizeEvent *event)
         while ((child = gridLayout->takeAt(0)) != nullptr) {
           delete child;
         }
-        gridLayout->addWidget(labelTranslation , 0, 0, 1, 1);
-        gridLayout->addWidget(doubleSpinBox_tx , 1, 0, 1, 1);
-        gridLayout->addWidget(doubleSpinBox_ty , 2, 0, 1, 1);
-        gridLayout->addWidget(doubleSpinBox_tz , 3, 0, 1, 1);
-        gridLayout->addWidget(labelRotation    , 4, 0, 1, 1);
-        gridLayout->addWidget(doubleSpinBox_rx , 5, 0, 1, 1);
-        gridLayout->addWidget(doubleSpinBox_ry , 6, 0, 1, 1);
-        gridLayout->addWidget(doubleSpinBox_rz , 7, 0, 1, 1);
-        gridLayout->addWidget(labelDistance    , 8, 0, 1, 1);
-        gridLayout->addWidget(doubleSpinBox_d  , 9, 0, 1, 1);
-        gridLayout->addWidget(labelFOV         , 10, 0, 1, 1);
+        gridLayout->addWidget(labelTranslation, 0, 0, 1, 1);
+        gridLayout->addWidget(doubleSpinBox_tx, 1, 0, 1, 1);
+        gridLayout->addWidget(doubleSpinBox_ty, 2, 0, 1, 1);
+        gridLayout->addWidget(doubleSpinBox_tz, 3, 0, 1, 1);
+        gridLayout->addWidget(labelRotation, 4, 0, 1, 1);
+        gridLayout->addWidget(doubleSpinBox_rx, 5, 0, 1, 1);
+        gridLayout->addWidget(doubleSpinBox_ry, 6, 0, 1, 1);
+        gridLayout->addWidget(doubleSpinBox_rz, 7, 0, 1, 1);
+        gridLayout->addWidget(labelDistance, 8, 0, 1, 1);
+        gridLayout->addWidget(doubleSpinBox_d, 9, 0, 1, 1);
+        gridLayout->addWidget(labelFOV, 10, 0, 1, 1);
         gridLayout->addWidget(doubleSpinBox_fov, 11, 0, 1, 1);
         scrollAreaWidgetContents->layout()->invalidate();
       }
@@ -114,7 +114,7 @@ void ViewportControl::resizeEvent(QResizeEvent *event)
       } else {
         const auto width = scrollAreaWidgetContents->minimumSizeHint().width();
         if (scrollArea->minimumSize().width() != width) {
-          scrollArea->setMinimumSize(QSize(width,0));
+          scrollArea->setMinimumSize(QSize(width, 0));
         }
       }
     }

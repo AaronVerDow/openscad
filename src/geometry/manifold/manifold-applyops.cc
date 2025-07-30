@@ -73,6 +73,6 @@ std::shared_ptr<ManifoldGeometry> applyOperator3DManifold(const Geometry::Geomet
   return geom;
 }
 
-};  // namespace ManifoldUtils
+}   // namespace ManifoldUtils
 
 #endif // ENABLE_MANIFOLD

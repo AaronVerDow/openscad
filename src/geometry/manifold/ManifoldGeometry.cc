@@ -38,13 +38,13 @@ ManifoldGeometry::ManifoldGeometry() : manifold_(manifold::Manifold()) {}
 
 ManifoldGeometry::ManifoldGeometry(
   manifold::Manifold mani,
-  const std::set<uint32_t> & originalIDs,
-  const std::map<uint32_t, Color4f> & originalIDToColor,
-  const std::set<uint32_t> & subtractedIDs)
-    : manifold_(std::move(mani)),
-      originalIDs_(originalIDs),
-      originalIDToColor_(originalIDToColor),
-      subtractedIDs_(subtractedIDs)
+  const std::set<uint32_t>& originalIDs,
+  const std::map<uint32_t, Color4f>& originalIDToColor,
+  const std::set<uint32_t>& subtractedIDs)
+  : manifold_(std::move(mani)),
+  originalIDs_(originalIDs),
+  originalIDToColor_(originalIDToColor),
+  subtractedIDs_(subtractedIDs)
 {
 }
 
@@ -88,7 +88,7 @@ size_t ManifoldGeometry::memsize() const {
 
 std::string ManifoldGeometry::dump() const {
   std::ostringstream out;
-  auto &manifold = getManifold();
+  auto& manifold = getManifold();
   auto meshgl = manifold.GetMeshGL64();
   out << "Manifold:"
       << "\n status: " << ManifoldUtils::statusToString(manifold.Status())
@@ -119,9 +119,9 @@ std::shared_ptr<PolySet> ManifoldGeometry::toPolySet() const {
   // first 3 channels are xyz coordinate
   for (size_t i = 0; i < mesh.vertProperties.size(); i += mesh.numProp)
     ps->vertices.emplace_back(
-        mesh.vertProperties[i],
-        mesh.vertProperties[i + 1],
-        mesh.vertProperties[i + 2]);
+      mesh.vertProperties[i],
+      mesh.vertProperties[i + 1],
+      mesh.vertProperties[i + 2]);
 
   ps->colors.reserve(originalIDToColor_.size());
   ps->color_indices.reserve(ps->indices.size());
@@ -134,42 +134,42 @@ std::shared_ptr<PolySet> ManifoldGeometry::toPolySet() const {
   std::map<uint32_t, int32_t> originalIDToColorIndex;
 
   auto getFaceFrontColorIndex = [&]() -> int {
-    if (faceFrontColorIndex < 0) {
-      faceFrontColorIndex = ps->colors.size();
-      ps->colors.push_back(ColorMap::getColor(*colorScheme, RenderColor::CGAL_FACE_FRONT_COLOR));
-    }
-    return faceFrontColorIndex;
-  };
+      if (faceFrontColorIndex < 0) {
+        faceFrontColorIndex = ps->colors.size();
+        ps->colors.push_back(ColorMap::getColor(*colorScheme, RenderColor::CGAL_FACE_FRONT_COLOR));
+      }
+      return faceFrontColorIndex;
+    };
   auto getFaceBackColorIndex = [&]() -> int {
-    if (faceBackColorIndex < 0) {
-      faceBackColorIndex = ps->colors.size();
-      ps->colors.push_back(ColorMap::getColor(*colorScheme, RenderColor::CGAL_FACE_BACK_COLOR));
-    }
-    return faceBackColorIndex;
-  };
+      if (faceBackColorIndex < 0) {
+        faceBackColorIndex = ps->colors.size();
+        ps->colors.push_back(ColorMap::getColor(*colorScheme, RenderColor::CGAL_FACE_BACK_COLOR));
+      }
+      return faceBackColorIndex;
+    };
 
   auto getColorIndex = [&](uint32_t originalID) -> int32_t {
-    if (subtractedIDs_.find(originalID) != subtractedIDs_.end()) {
-      return getFaceBackColorIndex();
-    }
-    auto colorIndexIt = originalIDToColorIndex.find(originalID);
-    if (colorIndexIt != originalIDToColorIndex.end()) {
-      return colorIndexIt->second;
-    }
-    auto colorIt = originalIDToColor_.find(originalID);
-    if (colorIt == originalIDToColor_.end()) {
-      return getFaceFrontColorIndex();
-    }
-    const auto & color = colorIt->second;
+      if (subtractedIDs_.find(originalID) != subtractedIDs_.end()) {
+        return getFaceBackColorIndex();
+      }
+      auto colorIndexIt = originalIDToColorIndex.find(originalID);
+      if (colorIndexIt != originalIDToColorIndex.end()) {
+        return colorIndexIt->second;
+      }
+      auto colorIt = originalIDToColor_.find(originalID);
+      if (colorIt == originalIDToColor_.end()) {
+        return getFaceFrontColorIndex();
+      }
+      const auto& color = colorIt->second;
 
-    auto pair = colorToIndex.insert({color, ps->colors.size()});
-    if (pair.second) {
-      ps->colors.push_back(color);
-    }
-    int32_t color_index = pair.first->second;
-    originalIDToColorIndex[originalID] = color_index;
-    return color_index;
-  };
+      auto pair = colorToIndex.insert({color, ps->colors.size()});
+      if (pair.second) {
+        ps->colors.push_back(color);
+      }
+      int32_t color_index = pair.first->second;
+      originalIDToColorIndex[originalID] = color_index;
+      return color_index;
+    };
 
   auto start = mesh.runIndex[0];
   for (int run = 0, numRun = mesh.runIndex.size() - 1; run < numRun; ++run) {
@@ -183,9 +183,9 @@ std::shared_ptr<PolySet> ManifoldGeometry::toPolySet() const {
     auto colorIndex = getColorIndex(id);
     for (size_t i = start; i < end; i += 3) {
       ps->indices.push_back({
-          static_cast<int>(mesh.triVerts[i]),
-          static_cast<int>(mesh.triVerts[i + 1]),
-          static_cast<int>(mesh.triVerts[i + 2])});
+        static_cast<int>(mesh.triVerts[i]),
+        static_cast<int>(mesh.triVerts[i + 1]),
+        static_cast<int>(mesh.triVerts[i + 2])});
       ps->color_indices.push_back(colorIndex);
     }
     start = end;
@@ -240,7 +240,7 @@ std::shared_ptr<Polyhedron> ManifoldGeometry::toPolyhedron() const
 
 template std::shared_ptr<CGAL::Polyhedron_3<CGAL_Kernel3>> ManifoldGeometry::toPolyhedron() const;
 
-#endif
+#endif // ifdef ENABLE_CGAL
 
 ManifoldGeometry ManifoldGeometry::binOp(const ManifoldGeometry& lhs, const ManifoldGeometry& rhs, manifold::OpType opType) const {
   auto mani = lhs.manifold_.Boolean(rhs.manifold_, opType);
@@ -290,7 +290,7 @@ std::shared_ptr<ManifoldGeometry> minkowskiOp(const ManifoldGeometry& lhs, const
     LOG(message_group::Warning,
         "Nef minkowski hard-crashed");
   }
-#endif
+#endif // ifdef ENABLE_CGAL
   return {};
 }
 
@@ -329,7 +329,7 @@ void ManifoldGeometry::transform(const Transform3d& mat) {
     {mat(0, 1), mat(1, 1), mat(2, 1)},
     {mat(0, 2), mat(1, 2), mat(2, 2)},
     {mat(0, 3), mat(1, 3), mat(2, 3)}
-  );
+    );
   manifold_ = getManifold().Transform(glMat);
 }
 

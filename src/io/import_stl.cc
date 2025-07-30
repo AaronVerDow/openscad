@@ -103,7 +103,7 @@ std::unique_ptr<PolySet> import_stl(const std::string& filename, const Location&
       binary = true;
     }
   }
-  if(!binary) facenum=0;
+  if (!binary)facenum = 0;
   PolySetBuilder builder(0, facenum);
   f.seekg(0);
 
@@ -153,7 +153,7 @@ std::unique_ptr<PolySet> import_stl(const std::string& filename, const Location&
           }
           if (++i == 3) {
             builder.beginPolygon(3);
-            for(int j=0;j<3;j++) {
+            for (int j = 0; j < 3; j++) {
               builder.addVertex(Vector3d(vdata[j][0], vdata[j][1], vdata[j][2]));
             }
           }
@@ -178,9 +178,9 @@ std::unique_ptr<PolySet> import_stl(const std::string& filename, const Location&
           throw;
         }
         builder.appendPolygon({
-                Vector3d(facet.data.x1, facet.data.y1, facet.data.z1),
-                Vector3d(facet.data.x2, facet.data.y2, facet.data.z2),
-                Vector3d(facet.data.x3, facet.data.y3, facet.data.z3)
+          Vector3d(facet.data.x1, facet.data.y1, facet.data.z1),
+          Vector3d(facet.data.x2, facet.data.y2, facet.data.z2),
+          Vector3d(facet.data.x3, facet.data.y3, facet.data.z3)
         });
       }
     } catch (const std::ios_base::failure& ex) {

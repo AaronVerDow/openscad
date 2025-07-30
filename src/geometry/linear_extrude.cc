@@ -26,12 +26,12 @@
 namespace {
 
 /*
-  Compare Euclidean length of vectors
-  Return:
+   Compare Euclidean length of vectors
+   Return:
    -1 : if v1  < v2
     0 : if v1 ~= v2 (approximation to compoensate for floating point precision)
     1 : if v1  > v2
-*/
+ */
 int sgn_vdiff(const Vector2d& v1, const Vector2d& v2) {
   constexpr double ratio_threshold = 1e5; // 10ppm difference
   double l1 = v1.norm();
@@ -215,7 +215,7 @@ std::unique_ptr<PolySet> assemblePolySetForManifold(
     std::reverse(p.begin(), p.end());
   }
   std::copy(ps_bottom->indices.begin(), ps_bottom->indices.end(),
-     std::back_inserter(final_polyset->indices));
+            std::back_inserter(final_polyset->indices));
 
   for (auto& p : ps_bottom->indices) {
     std::reverse(p.begin(), p.end());
@@ -224,7 +224,7 @@ std::unique_ptr<PolySet> assemblePolySetForManifold(
     }
   }
   std::copy(ps_bottom->indices.begin(), ps_bottom->indices.end(),
-     std::back_inserter(final_polyset->indices));
+            std::back_inserter(final_polyset->indices));
 
   // LOG(PolySetUtils::polySetToPolyhedronSource(*final_polyset));
 
@@ -232,10 +232,10 @@ std::unique_ptr<PolySet> assemblePolySetForManifold(
 }
 
 std::unique_ptr<PolySet> assemblePolySetForCGAL(const Polygon2d& polyref,
-  std::vector<Vector3d>& vertices, PolygonIndices& indices,
-  int convexity, boost::tribool isConvex,
-  double scale_x, double scale_y,
-  const Vector3d& h1, const Vector3d& h2, double twist) {
+                                                std::vector<Vector3d>& vertices, PolygonIndices& indices,
+                                                int convexity, boost::tribool isConvex,
+                                                double scale_x, double scale_y,
+                                                const Vector3d& h1, const Vector3d& h2, double twist) {
 
   PolySetBuilder builder(0, 0, 3, isConvex);
   builder.setConvexity(convexity);
@@ -248,10 +248,10 @@ std::unique_ptr<PolySet> assemblePolySetForCGAL(const Polygon2d& polyref,
   }
 
   auto translatePolySet = [](PolySet& ps, const Vector3d& translation) {
-    for (auto& v : ps.vertices) {
-      v += translation;
-    }
-  };
+      for (auto& v : ps.vertices) {
+        v += translation;
+      }
+    };
 
   // Create bottom face.
   auto ps_bottom = polyref.tessellate(); // bottom
@@ -283,11 +283,11 @@ std::unique_ptr<PolySet> assemblePolySetForCGAL(const Polygon2d& polyref,
    Quads are triangulated across the shorter of the two diagonals, which works well in most cases.
    However, when diagonals are equal length, decision may flip depending on other factors.
  */
-void add_slice_indices(PolygonIndices &indices, int slice_idx, int slice_stride, const Polygon2d& poly,
-                              double rot1, double rot2,
-                              const Vector2d& scale1, const Vector2d& scale2)
+void add_slice_indices(PolygonIndices& indices, int slice_idx, int slice_stride, const Polygon2d& poly,
+                       double rot1, double rot2,
+                       const Vector2d& scale1, const Vector2d& scale2)
 {
-  int prev_slice = (slice_idx-1)*slice_stride;
+  int prev_slice = (slice_idx - 1) * slice_stride;
   int curr_slice = slice_idx * slice_stride;
 
   Eigen::Affine2d trans1(Eigen::Scaling(scale1) * Eigen::Affine2d(rotate_degrees(-rot1)));
@@ -326,26 +326,26 @@ void add_slice_indices(PolygonIndices &indices, int slice_idx, int slice_stride,
       // unless at top for a 0-scaled axis (which can create 0 thickness "ears")
       if (splitfirst xor any_zero) {
         indices.push_back({
-          prev_slice + curr_idx,
-          curr_slice + curr_idx,
-          prev_slice + prev_idx,
-        });
+            prev_slice + curr_idx,
+            curr_slice + curr_idx,
+            prev_slice + prev_idx,
+          });
         indices.push_back({
-          curr_slice + prev_idx,
-          prev_slice + prev_idx,
-          curr_slice + curr_idx,
-        });
+            curr_slice + prev_idx,
+            prev_slice + prev_idx,
+            curr_slice + curr_idx,
+          });
       } else {
         indices.push_back({
-          prev_slice + curr_idx,
-          curr_slice + prev_idx,
-          prev_slice + prev_idx,
-        });
+            prev_slice + curr_idx,
+            curr_slice + prev_idx,
+            prev_slice + prev_idx,
+          });
         indices.push_back({
-          prev_slice + curr_idx,
-          curr_slice + curr_idx,
-          curr_slice + prev_idx,
-        });
+            prev_slice + curr_idx,
+            curr_slice + curr_idx,
+            curr_slice + prev_idx,
+          });
       }
       prev1 = curr1;
       prev2 = curr2;
@@ -488,7 +488,7 @@ std::unique_ptr<Geometry> extrudePolygon(const LinearExtrudeNode& node, const Po
   auto full_height = (h2 - h1);
   for (unsigned int slice_idx = 0; slice_idx <= num_slices; slice_idx++) {
     Eigen::Affine2d trans(
-      Eigen::Scaling(Vector2d(1,1) - full_scale * slice_idx / num_slices) *
+      Eigen::Scaling(Vector2d(1, 1) - full_scale * slice_idx / num_slices) *
       Eigen::Affine2d(rotate_degrees(full_rot * slice_idx / num_slices)));
 
     for (const auto& o : polyref.outlines()) {
@@ -501,14 +501,14 @@ std::unique_ptr<Geometry> extrudePolygon(const LinearExtrudeNode& node, const Po
 
   // Create indices for sides
   for (unsigned int slice_idx = 1; slice_idx <= num_slices; slice_idx++) {
-    double rot_prev = node.twist * (slice_idx -1)/ num_slices;
+    double rot_prev = node.twist * (slice_idx - 1) / num_slices;
     double rot_curr = node.twist * slice_idx / num_slices;
     auto height_prev = h1 + (h2 - h1) * (slice_idx - 1) / num_slices;
     auto height_curr = h1 + (h2 - h1) * slice_idx / num_slices;
     Vector2d scale_prev(1 - (1 - node.scale_x) * (slice_idx - 1) / num_slices,
-                    1 - (1 - node.scale_y) * (slice_idx - 1) / num_slices);
+                        1 - (1 - node.scale_y) * (slice_idx - 1) / num_slices);
     Vector2d scale_curr(1 - (1 - node.scale_x) * slice_idx / num_slices,
-                    1 - (1 - node.scale_y) * slice_idx / num_slices);
+                        1 - (1 - node.scale_y) * slice_idx / num_slices);
     add_slice_indices(indices, slice_idx, slice_stride, polyref, rot_prev, rot_curr, scale_prev, scale_curr);
   }
 
@@ -520,8 +520,7 @@ std::unique_ptr<Geometry> extrudePolygon(const LinearExtrudeNode& node, const Po
   if (RenderSettings::inst()->backend3D == RenderBackend3D::ManifoldBackend) {
     return assemblePolySetForManifold(polyref, vertices, indices,
                                       node.convexity, isConvex, slice_stride * num_slices);
-  }
-  else
+  } else
 #endif
   return assemblePolySetForCGAL(polyref, vertices, indices,
                                 node.convexity, isConvex,

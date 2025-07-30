@@ -55,15 +55,14 @@ void export_pov(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
 
   auto has_color = !ps->color_indices.empty();
 
-  for (size_t polygon_index=0; polygon_index<ps->indices.size(); polygon_index++) {
-    const auto &polygon = ps->indices[polygon_index];
+  for (size_t polygon_index = 0; polygon_index < ps->indices.size(); polygon_index++) {
+    const auto& polygon = ps->indices[polygon_index];
     output << "polygon { " << polygon.size() + 1 << ", \n";
-    for (size_t i=0; i<polygon.size(); i++) {
-      if (i)
-        output << ", ";
-      const auto & x = ps->vertices[polygon[i]].x();
-      const auto & y = ps->vertices[polygon[i]].y();
-      const auto & z = ps->vertices[polygon[i]].z();
+    for (size_t i = 0; i < polygon.size(); i++) {
+      if (i)output << ", ";
+      const auto& x = ps->vertices[polygon[i]].x();
+      const auto& y = ps->vertices[polygon[i]].y();
+      const auto& z = ps->vertices[polygon[i]].z();
       output << "<" << x << ", " << y << ", " << z << ">";
     }
     output << ", <" << ps->vertices[polygon[0]].x() << ", " << ps->vertices[polygon[0]].y() << ", " << ps->vertices[polygon[0]].z() << ">";
@@ -89,13 +88,13 @@ void export_pov(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
 
   BoundingBox bbox = geom->getBoundingBox();
 
-  auto & min_x = bbox.min().x();
-  auto & min_y = bbox.min().y();
-  auto & min_z = bbox.min().z();
+  auto& min_x = bbox.min().x();
+  auto& min_y = bbox.min().y();
+  auto& min_z = bbox.min().z();
 
-  auto & max_x = bbox.max().x();
-  auto & max_y = bbox.max().y();
-  auto & max_z = bbox.max().z();
+  auto& max_x = bbox.max().x();
+  auto& max_y = bbox.max().y();
+  auto& max_z = bbox.max().z();
 
   const double dx = max_x - min_x;
   const double dy = max_y - min_y;
@@ -108,9 +107,9 @@ void export_pov(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
 
   constexpr float brightness = 0.2;  // 1.0 is way too bright
 
-  for(auto cur_lx: lx) {
-    for(auto cur_ly: ly) {
-      for(auto cur_lz: lz)
+  for (auto cur_lx: lx) {
+    for (auto cur_ly: ly) {
+      for (auto cur_lz: lz)
         output << "light_source { <" << cur_lx << ", " << cur_ly << ", " << cur_lz << "> color rgb <" << brightness << ", " << brightness << ", " << brightness << "> }\n";
     }
   }
@@ -120,8 +119,8 @@ void export_pov(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
     auto vpr = exportInfo.camera->getVpr();
 
     auto pitch = vpr.x();
-    auto yaw   = vpr.y();
-    auto roll  = vpr.z();
+    auto yaw = vpr.y();
+    auto roll = vpr.z();
 
     output << "camera { look_at <" << 0 << ", " << 0 << ", " << 0 << ">\n "
       "location <" << 0 << ", " << 0 << ", " << exportInfo.camera->viewer_distance << ">\n "
@@ -129,8 +128,7 @@ void export_pov(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
       "translate <" << vpt.x() << ", " << vpt.y() << ", " << vpt.z() << ">\n"
       "rotate <" << pitch << ", " << yaw << " + clock * 3, " << roll << " + clock>\n"
       "}\n";
-  }
-  else {
+  } else {
     output << "camera { look_at <" << bbox.center().x() << ", " << bbox.center().y() << ", " << bbox.center().z() << "> "
       "location <" << min_x + dx * move_away_factor << ", " << min_y - dy * move_away_factor << ", " << min_z + dz * move_away_factor << "> "
       "up <0, 0, 1> right <1, 0, 0> sky <0, 0, 1> rotate <-55, clock * 3, clock + 25> right x*image_width/image_height }\n";
