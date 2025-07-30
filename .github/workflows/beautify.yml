@@ -22,11 +22,4 @@ jobs:
         sudo apt -qq -y install uncrustify
 
     - name: Run beautify
-      run: ./scripts/beautify.sh --check 2>&1 | tee beautify.log
-
-    - name: Upload beautify Results
-      uses: actions/upload-artifact@v4
-      with:
-        name: beautify Results
-        path: |
-          beautify.log
+      run: ./scripts/beautify.sh --check
