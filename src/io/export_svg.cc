@@ -88,10 +88,20 @@ void export_svg(const std::shared_ptr<const Geometry>& geom, std::ostream& outpu
 {
   setlocale(LC_NUMERIC, "C");
   BoundingBox bbox = geom->getBoundingBox();
-  const int minx = (int)floor(bbox.min().x());
-  const int miny = (int)floor(-bbox.max().y());
-  const int maxx = (int)ceil(bbox.max().x());
-  const int maxy = (int)ceil(-bbox.min().y());
+  const ExportSvgOptions *options;
+  const ExportSvgOptions defaultSvgOptions;
+
+  if (exportInfo.optionsSvg) {
+    options = exportInfo.optionsSvg.get();
+  } else {
+    options = &defaultSvgOptions;
+  }
+
+  const double strokePad = options->stroke ? options->strokeWidth/2.0 : 0.0;
+  const int minx = (int)floor(bbox.min().x() - strokePad);
+  const int miny = (int)floor(-bbox.max().y() - strokePad);
+  const int maxx = (int)ceil(bbox.max().x() + strokePad);
+  const int maxy = (int)ceil(-bbox.min().y() + strokePad);
   const int width = maxx - minx;
   const int height = maxy - miny;
   output
