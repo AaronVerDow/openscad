@@ -13,16 +13,29 @@ FORMAT_CMD=$FORMAT_CMD_UNCRUSTIFY
 #       which files would have been excluded.
 FILTER_CMD="grep -v -E ext/"
 
-function check_all() {
+function find_all() {
     find "$ROOT_DIR/src" \( -name "*.h" -o -name "*.hpp" -o -name "*.cc" -o -name "*.cpp" \) -a -not -name findversion.h \
-        | $FILTER_CMD \
-        | xargs uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --check
+        | $FILTER_CMD
+}
+
+function check_all() {
+    errors=false
+    while IFS= read -r file; do
+        if ! output=$( uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --check "$file" ); then
+            echo "$output"
+            errors=true
+        fi
+    done < <( find_all ) 
+    if $errors; then
+        echo "Formatting errors found. Please fix using ./scripts/beautify.sh"
+        return 1
+    else
+        echo "All C files formatted correctly."
+    fi
 }
 
 function reformat_all() {
-    find "$ROOT_DIR/src" \( -name "*.h" -o -name "*.hpp" -o -name "*.cc" -o -name "*.cpp" \) -a -not -name findversion.h \
-        | $FILTER_CMD \
-        | xargs $FORMAT_CMD
+    find_all | xargs $FORMAT_CMD
 }
 
 # reformat files that differ from master.
