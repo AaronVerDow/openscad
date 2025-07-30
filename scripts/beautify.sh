@@ -30,7 +30,7 @@ function check_all() {
         echo "Formatting errors found. Please fix using ./scripts/beautify.sh"
         return 1
     else
-        echo "All C files formatted correctly."
+        echo "All files formatted correctly."
     fi
 }
 
