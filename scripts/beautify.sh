@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Reformat C++ code using uncrustify
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -13,6 +12,12 @@ FORMAT_CMD=$FORMAT_CMD_UNCRUSTIFY
 #       that matches the pattern. For testing, you can remove the -v to see
 #       which files would have been excluded.
 FILTER_CMD="grep -v -E ext/"
+
+function check_all() {
+    find "$ROOT_DIR/src" \( -name "*.h" -o -name "*.hpp" -o -name "*.cc" -o -name "*.cpp" \) -a -not -name findversion.h \
+        | $FILTER_CMD \
+        | xargs uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --check
+}
 
 function reformat_all() {
     find "$ROOT_DIR/src" \( -name "*.h" -o -name "*.hpp" -o -name "*.cc" -o -name "*.cpp" \) -a -not -name findversion.h \
@@ -46,6 +51,8 @@ do
   if [ "$KEY" == "--diffbase" ]; then
     [ -z "$var" ] && echo "script option --diffbase=BASE requires a non-empty value" && exit 1
     DIFFBASE="${VALUE}"
+  elif [ "$PARAM" == "--check" ]; then
+    CHECKALL=1
   elif [ "$PARAM" == "--all" ]; then
     DOALL=1
   elif [ "$KEY" == "-h" ]; then
@@ -64,6 +71,9 @@ done
 if ((DOALL)); then
     echo "Reformatting all files..."
     reformat_all
+elif ((CHECKALL)); then
+    echo "Checking all files..."
+    check_all
 else
     echo "Reformatting files that differ from $DIFFBASE..."
     reformat_changed
