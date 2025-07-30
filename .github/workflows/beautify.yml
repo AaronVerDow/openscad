@@ -1,0 +1,31 @@
+name: Beautify Checks
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  RunClangTidy:
+    runs-on: ubuntu-24.04
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt -qq -y install uncrustify
+
+    - name: Run beautify
+      run: ./scripts/beautify.sh --check 2>&1 | tee beautify.log
+
+    - name: Upload beautify Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: beautify Results
+        path: |
+          beautify.log
