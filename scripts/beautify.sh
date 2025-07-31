@@ -18,6 +18,25 @@ function find_all() {
         | $FILTER_CMD
 }
 
+function diff_all() {
+    errors=false
+    while IFS= read -r file; do
+        if ! output=$( uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --check "$file" ); then
+            echo "$output"
+            uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --suffix "_fail" "$file"
+            diff "$file" "${file}_fail"
+            errors=true
+        fi
+    done < <( find_all ) 
+    if $errors; then
+        echo "Formatting errors found. Please fix using ./scripts/beautify.sh"
+        return 1
+    else
+        echo "All files formatted correctly."
+    fi
+}
+
+
 function check_all() {
     errors=false
     while IFS= read -r file; do
@@ -85,8 +104,9 @@ if ((DOALL)); then
     echo "Reformatting all files..."
     reformat_all
 elif ((CHECKALL)); then
-    echo "Checking all files..."
-    check_all
+    echo -n "Checking all files using "
+    uncrustify -v
+    diff_all
 else
     echo "Reformatting files that differ from $DIFFBASE..."
     reformat_changed
