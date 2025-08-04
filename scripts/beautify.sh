@@ -6,7 +6,7 @@ ROOT_DIR=$SCRIPT_DIR/..
 
 FORMAT_CMD_UNCRUSTIFY="uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --no-backup"
 #LLVM|GNU|Google|Chromium|Microsoft|Mozilla|WebKit
-FORMAT_CMD_CLANG="clang-format -i --style LLVM" 
+FORMAT_CMD_CLANG="clang-format -i --style file:.clang-format" 
 FORMAT_CMD=$FORMAT_CMD_CLANG
 
 # Filter out any files that shouldn't be auto-formatted.
