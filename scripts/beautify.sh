@@ -6,7 +6,7 @@ ROOT_DIR=$SCRIPT_DIR/..
 
 FORMAT_CMD_UNCRUSTIFY="uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --no-backup"
 #LLVM|GNU|Google|Chromium|Microsoft|Mozilla|WebKit
-FORMAT_CMD_CLANG="clang-format -i --style file:.clang-format" 
+FORMAT_CMD_CLANG="clang-format -i --style file:$ROOT_DIR/.clang-format"
 FORMAT_CMD=$FORMAT_CMD_CLANG
 
 # Filter out any files that shouldn't be auto-formatted.
@@ -23,10 +23,15 @@ function find_all() {
 function diff_all() {
     errors=false
     while IFS= read -r file; do
-        if ! output=$( uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --check "$file" ); then
+        if ! output=$( clang-format --style file:$ROOT_DIR/.clang-format --dry-run --Werror "$file" 2>&1 ); then
             echo "$output"
-            uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --suffix "_fail" "$file"
-            diff "$file" "${file}_fail"
+            # Using clang-format -output-replacements-xml for diffing
+            clang-format --style file:$ROOT_DIR/.clang-format -output-replacements-xml "$file" > "${file}.clang"
+            grep -q '<replacement ' "${file}.clang" && (
+                echo "Formatting differences found in $file"
+                diff "$file" <(clang-format --style file:$ROOT_DIR/.clang-format "$file") || true
+            )
+            rm -f "${file}.clang"
             errors=true
         fi
     done < <( find_all ) 
