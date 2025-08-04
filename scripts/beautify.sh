@@ -5,7 +5,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$SCRIPT_DIR/..
 
 FORMAT_CMD_UNCRUSTIFY="uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --no-backup"
-FORMAT_CMD=$FORMAT_CMD_UNCRUSTIFY
+FORMAT_CMD_CLANG="clang-format --style LLVM" #|GNU|Google|Chromium|Microsoft|Mozilla|WebKit
+FORMAT_CMD=$FORMAT_CMD_CLANG
 
 # Filter out any files that shouldn't be auto-formatted.
 # note: -v flag inverts selection - this tells grep to *filter out* anything
