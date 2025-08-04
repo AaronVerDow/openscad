@@ -31,6 +31,8 @@ pkgs.mkShell {
     wayland
     wayland-protocols
 
+    clang-tools
+
     # QT5 
     # libsForQt5.full
     # qscintilla
