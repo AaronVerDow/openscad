@@ -19,7 +19,10 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt -qq -y install uncrustify
+        sudo apt -qq -y install clang-format
 
     - name: Run beautify
-      run: ./scripts/beautify.sh --check
+      run: ./scripts/beautify.sh --all
+      
+    - name: Git diff
+      run: git diff
