@@ -29,7 +29,7 @@ jobs:
         cd ${{ runner.temp }}/b
         ./scripts/beautify.sh --all
         cd ${{ runner.temp }}
-        diff -r a b | tee ${{ runner.temp }}/beautify.patch
+        diff -ruN a b | tee ${{ runner.temp }}/beautify.patch
 
     - name: Upload patch artifact
       uses: actions/upload-artifact@v4
