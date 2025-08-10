@@ -22,7 +22,10 @@ jobs:
         sudo apt -qq -y install clang-format
 
     - name: Run beautify
-      run: ./scripts/beautify.sh --all
-      
-    - name: Git diff
-      run: git diff
+      run: |
+        cp -r . ${{ runner.temp }}/a
+        cp -r . ${{ runner.temp }}/b
+        cd ${{ runner.temp }}/b
+        ./scripts/beautify.sh --all
+        cd ${{ runner.temp }}
+        diff -r a b
