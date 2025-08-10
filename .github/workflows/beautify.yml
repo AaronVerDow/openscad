@@ -23,9 +23,16 @@ jobs:
 
     - name: Run beautify
       run: |
+        set -x
         cp -r . ${{ runner.temp }}/a
         cp -r . ${{ runner.temp }}/b
         cd ${{ runner.temp }}/b
         ./scripts/beautify.sh --all
         cd ${{ runner.temp }}
-        diff -r a b
+        diff -r a b > beautify.patch
+
+    - name: Upload patch artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: beautify-patch
+        path: beautify.patch
