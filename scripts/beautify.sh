@@ -31,12 +31,11 @@ function reformat_all() {
 DIFFBASE="origin/master"
 function reformat_changed() {
     ANCESTOR=$(git merge-base HEAD "$DIFFBASE")
-    FILES=$(git --no-pager diff --name-only $ANCESTOR | grep -E "\.(h|hpp|cc|cpp)" | $FILTER_CMD)
-    if [ $? -ne 0 ]; then
-        echo "No files to format, exiting..."
-    else
+    if FILES=$(git --no-pager diff --name-only "$ANCESTOR" | grep -E "\.(h|hpp|cc|cpp)" | $FILTER_CMD); then
         echo -e "Reformatting files:\n$FILES"
         echo $FILES | xargs $FORMAT_CMD
+    else
+        echo "No files to format, exiting..."
     fi
 }
 
@@ -70,28 +69,25 @@ do
 done
 
 function execute() {
-    # Execute function with version, done message, and return value 
+    # Execute function with version, done message, and preserved return value 
+    local function message return_value version
     function=$1
     message=$2
 
-    echo -n "$message"
-    $VERSION_CMD
+    version=$( $VERSION_CMD )
+    echo "$message ${version}..."
+    
     "$function"
+
     return_value=$?
     echo "Done."
     return $return_value
 }
 
 if ((DOALL)); then
-    echo -n "Reformatting all files using "
-    $VERSION_CMD
-    reformat_all
-    echo "Done."
+    execute reformat_all "Reformatting all files using"
 elif ((CHECKALL)); then
-    execute check_all "Checking all files using "
+    execute check_all "Checking all files using"
 else
-    echo -n "Reformatting files that differ from $DIFFBASE using "
-    $VERSION_CMD
-    reformat_changed
-    echo "Done."
+    execute reformat_changed "Reformatting files that differ from $DIFFBASE using"
 fi
