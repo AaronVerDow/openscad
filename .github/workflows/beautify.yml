@@ -24,6 +24,7 @@ jobs:
     - name: Run check
       id: check
       run: ./scripts/beautify.sh --check
+      continue-on-error: true
 
     - name: Generate patch
       if: steps.check.outcome == 'failure'
