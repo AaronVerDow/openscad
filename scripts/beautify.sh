@@ -69,6 +69,18 @@ do
   fi
 done
 
+function execute() {
+    # Execute function with version, done message, and return value 
+    function=$1
+    message=$2
+
+    echo -n "$message"
+    $VERSION_CMD
+    exec "$function"
+    return_value=$?
+    echo "Done."
+    return $return_value
+}
 
 if ((DOALL)); then
     echo -n "Reformatting all files using "
@@ -76,12 +88,7 @@ if ((DOALL)); then
     reformat_all
     echo "Done."
 elif ((CHECKALL)); then
-    echo -n "Checking all files using "
-    $VERSION_CMD
-    check_all
-    return_value=$?
-    echo "Done."
-    exit $return_value
+    execute check_all "Checking all files using "
 else
     echo -n "Reformatting files that differ from $DIFFBASE using "
     $VERSION_CMD
