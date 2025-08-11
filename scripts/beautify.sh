@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # Reformat C++ code using clang-format
 
+# This script can be set directly as a git hook:
+# cd .git/hooks/
+# ln -s ../../scripts/beautify.sh pre-commit
+
 # Resolve script's real location (follow symlinks)
-script_dir="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
-ROOT_DIR="$(git -C "$script_dir" rev-parse --show-toplevel)"
+# Required to run as a git hook
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+ROOT_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+
+DOALL=0
+CHECKALL=0
 
 FORMAT_CMD="clang-format -i --style file:$ROOT_DIR/.clang-format"
 CHECK_CMD="$FORMAT_CMD --dry-run --Werror"
@@ -70,19 +79,19 @@ do
 done
 
 function execute() {
-    # Execute function with version, done message, and preserved return value 
-    local function message return_value version
-    function=$1
-    message=$2
+    # Execute function with done message, version, and preserved return value 
+    local FUNCTION MESSAGE RETURN_VALUE
+    FUNCTION=$1
+    MESSAGE=$2
 
-    echo "$message"
+    echo "$MESSAGE"
     
-    "$function"
-    return_value=$?
+    "$FUNCTION"
+    RETURN_VALUE=$?
 
     echo -n "Completed with "
     $VERSION_CMD
-    return $return_value
+    return $RETURN_VALUE
 }
 
 if ((DOALL)); then
