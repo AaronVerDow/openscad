@@ -4,8 +4,7 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$SCRIPT_DIR/..
 
-FORMAT_CMD_UNCRUSTIFY="uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --no-backup"
-#LLVM|GNU|Google|Chromium|Microsoft|Mozilla|WebKit
+# LLVM|GNU|Google|Chromium|Microsoft|Mozilla|WebKit
 FORMAT_CMD_CLANG="clang-format -i --style file:$ROOT_DIR/.clang-format"
 FORMAT_CMD=$FORMAT_CMD_CLANG
 
@@ -20,34 +19,10 @@ function find_all() {
         | $FILTER_CMD
 }
 
-function diff_all() {
-    errors=false
-    while IFS= read -r file; do
-        if ! output=$( clang-format --style file:$ROOT_DIR/.clang-format --dry-run --Werror "$file" 2>&1 ); then
-            echo "$output"
-            # Using clang-format -output-replacements-xml for diffing
-            clang-format --style file:$ROOT_DIR/.clang-format -output-replacements-xml "$file" > "${file}.clang"
-            grep -q '<replacement ' "${file}.clang" && (
-                echo "Formatting differences found in $file"
-                diff "$file" <(clang-format --style file:$ROOT_DIR/.clang-format "$file") || true
-            )
-            rm -f "${file}.clang"
-            errors=true
-        fi
-    done < <( find_all ) 
-    if $errors; then
-        echo "Formatting errors found. Please fix using ./scripts/beautify.sh"
-        return 1
-    else
-        echo "All files formatted correctly."
-    fi
-}
-
-
 function check_all() {
     errors=false
     while IFS= read -r file; do
-        if ! output=$( uncrustify -c "$ROOT_DIR/.uncrustify.cfg" --check "$file" ); then
+        if ! output=$( $FORMAT_CMD --dry-run --WError "$file" ); then
             echo "$output"
             errors=true
         fi
