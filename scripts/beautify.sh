@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Reformat C++ code using uncrustify
+# Reformat C++ code using clang-format
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$SCRIPT_DIR/..
@@ -22,7 +22,7 @@ function find_all() {
 function check_all() {
     errors=false
     while IFS= read -r file; do
-        if ! output=$( $FORMAT_CMD --dry-run --WError "$file" ); then
+        if ! output=$( $FORMAT_CMD --dry-run --Werror "$file" ); then
             echo "$output"
             errors=true
         fi
@@ -71,7 +71,7 @@ do
     DOALL=1
   elif [ "$KEY" == "-h" ]; then
     SCRIPT=$(basename "$0")
-    echo "Runs uncrustify on files which differ from diffbase, OR across the entire project (for --all)"
+    echo "Runs clang-format on files which differ from diffbase, OR across the entire project (for --all)"
     echo "If no options given, then diffbase defaults to \"origin/master\""
     echo
     echo "Usage:"
@@ -87,8 +87,7 @@ if ((DOALL)); then
     reformat_all
 elif ((CHECKALL)); then
     echo -n "Checking all files using "
-    uncrustify -v
-    diff_all
+    check_all
 else
     echo "Reformatting files that differ from $DIFFBASE..."
     reformat_changed
