@@ -10,7 +10,7 @@ on:
 
 jobs:
   Beautify:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
 
     - name: Checkout code
@@ -29,7 +29,6 @@ jobs:
     - name: Generate patch
       if: steps.check.outcome == 'failure'
       run: |
-        set -x
         cp -r . ${{ runner.temp }}/a
         cp -r . ${{ runner.temp }}/b
         cd ${{ runner.temp }}/b
