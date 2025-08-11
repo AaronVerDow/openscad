@@ -4,9 +4,9 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT_DIR=$SCRIPT_DIR/..
 
-# LLVM|GNU|Google|Chromium|Microsoft|Mozilla|WebKit
-FORMAT_CMD_CLANG="clang-format -i --style file:$ROOT_DIR/.clang-format"
-FORMAT_CMD=$FORMAT_CMD_CLANG
+FORMAT_CMD="clang-format -i --style file:$ROOT_DIR/.clang-format"
+CHECK_CMD="$FORMAT_CMD --dry-run --Werror"
+VERSION_CMD="clang-format --version"
 
 # Filter out any files that shouldn't be auto-formatted.
 # note: -v flag inverts selection - this tells grep to *filter out* anything
@@ -20,19 +20,7 @@ function find_all() {
 }
 
 function check_all() {
-    errors=false
-    while IFS= read -r file; do
-        if ! output=$( $FORMAT_CMD --dry-run --Werror "$file" ); then
-            echo "$output"
-            errors=true
-        fi
-    done < <( find_all ) 
-    if $errors; then
-        echo "Formatting errors found. Please fix using ./scripts/beautify.sh"
-        return 1
-    else
-        echo "All files formatted correctly."
-    fi
+    find_all | xargs $CHECK_CMD
 }
 
 function reformat_all() {
@@ -83,12 +71,18 @@ done
 
 
 if ((DOALL)); then
-    echo "Reformatting all files..."
+    echo -n "Reformatting all files using "
+    $VERSION_CMD
     reformat_all
+    echo "Done."
 elif ((CHECKALL)); then
     echo -n "Checking all files using "
+    $VERSION_CMD
     check_all
+    echo "Done."
 else
-    echo "Reformatting files that differ from $DIFFBASE..."
+    echo -n "Reformatting files that differ from $DIFFBASE using "
+    $VERSION_CMD
     reformat_changed
+    echo "Done."
 fi
