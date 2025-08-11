@@ -9,7 +9,7 @@ set -euo pipefail
 # Resolve script's real location (follow symlinks)
 # Required to run as a git hook
 SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
-ROOT_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+ROOT_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)" || ROOT_DIR="$SCRIPT_DIR/.."
 
 DOALL=0
 CHECKALL=0
