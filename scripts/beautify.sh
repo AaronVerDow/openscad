@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Reformat C++ code using clang-format
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOT_DIR=$SCRIPT_DIR/..
+# Resolve script's real location (follow symlinks)
+script_dir="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+ROOT_DIR="$(git -C "$script_dir" rev-parse --show-toplevel)"
 
 FORMAT_CMD="clang-format -i --style file:$ROOT_DIR/.clang-format"
 CHECK_CMD="$FORMAT_CMD --dry-run --Werror"
