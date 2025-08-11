@@ -76,7 +76,7 @@ function execute() {
 
     echo -n "$message"
     $VERSION_CMD
-    exec "$function"
+    "$function"
     return_value=$?
     echo "Done."
     return $return_value
