@@ -74,20 +74,20 @@ function execute() {
     function=$1
     message=$2
 
-    version=$( $VERSION_CMD )
-    echo "$message ${version}..."
+    echo "$message"
     
     "$function"
-
     return_value=$?
-    echo "Done."
+
+    echo -n "Completed with "
+    $VERSION_CMD
     return $return_value
 }
 
 if ((DOALL)); then
-    execute reformat_all "Reformatting all files using"
+    execute reformat_all "Reformatting all files..."
 elif ((CHECKALL)); then
-    execute check_all "Checking all files using"
+    execute check_all "Checking all files..."
 else
-    execute reformat_changed "Reformatting files that differ from $DIFFBASE using"
+    execute reformat_changed "Reformatting files that differ from $DIFFBASE..."
 fi
