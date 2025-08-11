@@ -79,7 +79,9 @@ elif ((CHECKALL)); then
     echo -n "Checking all files using "
     $VERSION_CMD
     check_all
+    return_value=$?
     echo "Done."
+    exit $return_value
 else
     echo -n "Reformatting files that differ from $DIFFBASE using "
     $VERSION_CMD
