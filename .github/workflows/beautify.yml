@@ -21,7 +21,12 @@ jobs:
         sudo apt update
         sudo apt -qq -y install clang-format
 
-    - name: Run beautify
+    - name: Run check
+      id: check
+      run: ./scripts/beautify.sh --check
+
+    - name: Generate patch
+      if: steps.check.outcome == 'failure'
       run: |
         set -x
         cp -r . ${{ runner.temp }}/a
@@ -32,6 +37,7 @@ jobs:
         diff -ruN a b | tee ${{ runner.temp }}/beautify.patch
 
     - name: Upload patch artifact
+      if: steps.check.outcome == 'failure'
       uses: actions/upload-artifact@v4
       with:
         name: beautify-patch
