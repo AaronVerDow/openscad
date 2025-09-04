@@ -11,7 +11,7 @@ pipeline {
 		sh '''
 		    pwd
 		    cd pkgs/my_openscad
-		    nix-shell -p nurl jq --run './dirty_update.sh $GIT_COMMIT'
+		    nix-shell -p nix-prefetch-git jq --run './dirty_update.sh $GIT_COMMIT'
 		'''
 	    }
 	}
