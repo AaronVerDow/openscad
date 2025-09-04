@@ -12,7 +12,7 @@ pipeline {
 		    pwd
 		    cd pkgs/my_openscad
 		    nix-shell -p nurl jq --run './dirty_update.sh $GIT_COMMIT'
-		    '''
+		'''
 	    }
 	}
 	stage('Test') {
