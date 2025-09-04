@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'nixos-agent' }
     stages {
 	stage('Pull Nix') {
 	    steps {
