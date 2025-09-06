@@ -6,7 +6,7 @@
 # Usage: <script> <inputfile> --openscad=<executable-path> --format=<format> [<openscad args>] file.png
 #
 #
-# step 1. Run OpenSCAD on the .scad file, output an export format (pdf)
+# step 1. Run OpenSCAD on the .scad file, output an export format (pdf, svg)
 # step 2. Convert exported file to PNG image
 # step 3. (done in CTest) - compare the generated .png file to expected output
 #
@@ -27,6 +27,18 @@ gs_cmd = [
     "-dGraphicsAlphaBits=4",
     "-r300"
 ]
+
+def convert_svg_to_png(svg_file, png_file):
+    """Convert SVG file to PNG using ImageMagick"""
+    convert_cmd = ['convert', svg_file, png_file]
+    print('Running SVG Converter:', ' '.join(convert_cmd), file=sys.stderr)
+    result = subprocess.call(convert_cmd)
+    if result == 0:
+        print('SVG to PNG conversion successful', file=sys.stderr)
+        return True
+    else:
+        print('SVG to PNG conversion failed with return code', result, file=sys.stderr)
+        return False
 
 def failquit(*args):
     if len(args)!=0: print(args)
@@ -50,7 +62,7 @@ def createImport(inputfile, scadfile):
 #
 # Parse arguments
 #
-formats = ['pdf']
+formats = ['pdf', 'svg']
 parser = argparse.ArgumentParser()
 parser.add_argument('--openscad', required=True, help='Specify OpenSCAD executable')
 parser.add_argument('--format', required=True, choices=[item for sublist in [(f,f.upper()) for f in formats] for item in sublist], help='Specify export format')
@@ -81,11 +93,17 @@ result = subprocess.call(export_cmd, env = fontenv)
 if result != 0:
     failquit('OpenSCAD failed with return code ' + str(result))
 
-convert_cmd = gs_cmd + ["-sOutputFile=" + pngfile, exportfile]
-print('Running Converter:', ' '.join(convert_cmd), file=sys.stderr)
-result = subprocess.call(convert_cmd)
-if result != 0:
-    failquit('Converter failed with return code ' + str(result))
+# Convert exported file to PNG based on format
+if args.format == 'svg':
+    if not convert_svg_to_png(exportfile, pngfile):
+        failquit('SVG to PNG conversion failed')
+else:
+    # PDF conversion using Ghostscript
+    convert_cmd = gs_cmd + ["-sOutputFile=" + pngfile, exportfile]
+    print('Running Converter:', ' '.join(convert_cmd), file=sys.stderr)
+    result = subprocess.call(convert_cmd)
+    if result != 0:
+        failquit('Converter failed with return code ' + str(result))
 
 #try:    os.remove(exportfile)
 #except: failquit('failure at os.remove('+exportfile+')')
