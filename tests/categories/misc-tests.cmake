@@ -95,18 +95,4 @@ list(APPEND ECHO_FILES ${FUNCTION_FILES} ${MISC_FILES} ${REDEFINITION_FILES}
   ${TEST_SCAD_DIR}/misc/echo-tests.scad
 )
 
-# Add misc tests
-add_cmdline_test(astdump        OPENSCAD SUFFIX ast FILES ${ASTDUMP_FILES})
-add_cmdline_test(echo           OPENSCAD SUFFIX echo FILES ${ECHO_FILES})
-add_cmdline_test(dump           OPENSCAD SUFFIX csg FILES ${MISC_FILES})
-
-# Customizer tests
-file(GLOB CUSTOMIZER_FILES ${TEST_CUSTOMIZER_DIR}/*.scad)
-add_cmdline_test(customizer     OPENSCAD SUFFIX ast FILES ${CUSTOMIZER_FILES})
-
-# JSON tests
-file(GLOB JSON_FILES ${TEST_SCAD_DIR}/json/*.scad)
-add_cmdline_test(echo           OPENSCAD SUFFIX echo FILES ${JSON_FILES})
-
-# Non-ASCII filename test
-add_cmdline_test(export-csg-nonascii  OPENSCAD FILES ${TEST_SCAD_DIR}/misc/sfære.scad SUFFIX csg)
+# Misc tests are defined in the main CMakeLists.txt to avoid duplicates

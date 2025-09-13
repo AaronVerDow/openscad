@@ -35,18 +35,4 @@ list(APPEND RENDER_2D_FILES ${FEATURES_2D_FILES} ${SCAD_DXF_FILES} ${ISSUES_2D_F
 list(APPEND DUMP_FILES ${FEATURES_2D_FILES})
 list(APPEND ECHO_FILES ${FEATURES_2D_FILES} ${ISSUES_2D_FILES})
 
-# Add 2D tests
-add_cmdline_test(dump           OPENSCAD SUFFIX csg FILES ${FEATURES_2D_FILES})
-add_cmdline_test(echo           OPENSCAD SUFFIX echo FILES ${FEATURES_2D_FILES} ${ISSUES_2D_FILES})
-add_cmdline_test(render-cgal    OPENSCAD SUFFIX png FILES ${RENDER_2D_FILES} EXPECTEDDIR render ARGS --render --backend=cgal)
-add_cmdline_test(render-manifold OPENSCAD SUFFIX png FILES ${RENDER_2D_FILES} EXPECTEDDIR render ARGS --render --backend=manifold)
-add_cmdline_test(preview-cgal   OPENSCAD SUFFIX png FILES ${RENDER_2D_FILES} EXPECTEDDIR preview ARGS --backend=cgal)
-add_cmdline_test(preview-manifold OPENSCAD SUFFIX png FILES ${RENDER_2D_FILES} ARGS --backend=manifold)
-add_cmdline_test(throwntogether-cgal OPENSCAD SUFFIX png FILES ${RENDER_2D_FILES} EXPECTEDDIR throwntogether ARGS --render --backend=cgal)
-add_cmdline_test(throwntogether-manifold OPENSCAD SUFFIX png FILES ${RENDER_2D_FILES} ARGS --render --backend=manifold)
-
-# DXF specific tests
-add_cmdline_test(render-dxf     OPENSCAD SUFFIX png FILES ${SCAD_DXF_FILES} EXPECTEDDIR render ARGS --render)
-
-# SVG specific tests
-add_cmdline_test(export-svg SCRIPT ${EXPORT_PNGTEST_PY} SUFFIX png FILES ${SCAD_SVG_FILES} ARGS ${OPENSCAD_EXE_ARG} --format=SVG)
+# 2D tests are defined in the main CMakeLists.txt to avoid duplicates

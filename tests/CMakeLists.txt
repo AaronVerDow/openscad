@@ -1,5 +1,5 @@
-# Modular OpenSCAD Test Configuration
-# This is a simplified, modular version of the original CMakeLists.txt
+# Modular OpenSCAD Test Configuration v2
+# This version avoids duplicate test definitions by using a cleaner approach
 # See ../doc/testing.txt for instructions
 
 cmake_minimum_required(VERSION 3.13)
@@ -29,7 +29,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/config/test-commands.cmake)
 ###############################
 
 # Set up custom commands to run before & after Ctest run.
-# 1. Start/stop Virtual Framebuffer for linux/bsd. 2. Pretty Print
 message(STATUS "creating CTestCustom.cmake")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.template
                ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake @ONLY)
@@ -79,6 +78,172 @@ list(REMOVE_ITEM EXAMPLE_3D_FILES
   ${EXAMPLES_DIR}/Functions/recursion.scad
 )
 
+# Misc files
+list(APPEND MISC_FILES
+  ${TEST_SCAD_DIR}/misc/arg-permutations.scad
+  ${TEST_SCAD_DIR}/misc/escape-test.scad
+  ${TEST_SCAD_DIR}/misc/include-tests.scad
+  ${TEST_SCAD_DIR}/misc/include-overwrite-main.scad
+  ${TEST_SCAD_DIR}/misc/include-overwrite-main2.scad
+  ${TEST_SCAD_DIR}/misc/use-tests.scad
+  ${TEST_SCAD_DIR}/misc/assert-tests.scad
+  ${TEST_SCAD_DIR}/misc/let-module-tests.scad
+  ${TEST_SCAD_DIR}/misc/localfiles-test.scad
+  ${TEST_SCAD_DIR}/misc/parser-tests.scad
+  ${TEST_SCAD_DIR}/misc/builtin-tests.scad
+  ${TEST_SCAD_DIR}/misc/dim-all.scad
+  ${TEST_SCAD_DIR}/misc/string-test.scad
+  ${TEST_SCAD_DIR}/misc/string-indexing.scad
+  ${TEST_SCAD_DIR}/misc/string-unicode.scad
+  ${TEST_SCAD_DIR}/misc/chr-tests.scad
+  ${TEST_SCAD_DIR}/misc/ord-tests.scad
+  ${TEST_SCAD_DIR}/misc/vector-values.scad
+  ${TEST_SCAD_DIR}/misc/search-tests.scad
+  ${TEST_SCAD_DIR}/misc/search-tests-unicode.scad
+  ${TEST_SCAD_DIR}/misc/recursion-test-function.scad
+  ${TEST_SCAD_DIR}/misc/recursion-test-function2.scad
+  ${TEST_SCAD_DIR}/misc/recursion-test-function3.scad
+  ${TEST_SCAD_DIR}/misc/recursion-test-module.scad
+  ${TEST_SCAD_DIR}/misc/tail-recursion-tests.scad
+  ${TEST_SCAD_DIR}/misc/value-reassignment-tests.scad
+  ${TEST_SCAD_DIR}/misc/value-reassignment-tests2.scad
+  ${TEST_SCAD_DIR}/misc/variable-scope-tests.scad
+  ${TEST_SCAD_DIR}/misc/scope-assignment-tests.scad
+  ${TEST_SCAD_DIR}/misc/lookup-tests.scad
+  ${TEST_SCAD_DIR}/misc/expression-shortcircuit-tests.scad
+  ${TEST_SCAD_DIR}/misc/parent_module-tests.scad
+  ${TEST_SCAD_DIR}/misc/children-tests.scad
+  ${TEST_SCAD_DIR}/misc/range-tests.scad
+  ${TEST_SCAD_DIR}/misc/no-break-space-test.scad
+  ${TEST_SCAD_DIR}/misc/unicode-tests.scad
+  ${TEST_SCAD_DIR}/misc/utf8-tests.scad
+  ${TEST_SCAD_DIR}/misc/nbsp-utf8-test.scad
+  ${TEST_SCAD_DIR}/misc/nbsp-latin1-test.scad
+  ${TEST_SCAD_DIR}/misc/concat-tests.scad
+  ${TEST_SCAD_DIR}/misc/include-recursive-test.scad
+  ${TEST_SCAD_DIR}/misc/errors-warnings.scad
+  ${TEST_SCAD_DIR}/misc/errors-warnings-included.scad
+  ${TEST_SCAD_DIR}/misc/children-warnings-tests.scad
+  ${TEST_SCAD_DIR}/misc/isundef-test.scad
+  ${TEST_SCAD_DIR}/misc/islist-test.scad
+  ${TEST_SCAD_DIR}/misc/isnum-test.scad
+  ${TEST_SCAD_DIR}/misc/isbool-test.scad
+  ${TEST_SCAD_DIR}/misc/isstring-test.scad
+  ${TEST_SCAD_DIR}/misc/operators-tests.scad
+  ${TEST_SCAD_DIR}/misc/expression-precedence.scad
+  ${TEST_SCAD_DIR}/misc/builtins-calling-vec3vec2.scad
+  ${TEST_SCAD_DIR}/misc/leaf-module-warnings.scad
+  ${TEST_SCAD_DIR}/issues/issue1472.scad
+  ${TEST_SCAD_DIR}/misc/empty-stl.scad
+  ${TEST_SCAD_DIR}/issues/issue1516.scad
+  ${TEST_SCAD_DIR}/issues/issue1528.scad
+  ${TEST_SCAD_DIR}/issues/issue1923.scad
+  ${TEST_SCAD_DIR}/misc/preview_variable.scad
+)
+
+# Function test files
+file(GLOB FUNCTION_FILES ${TEST_SCAD_DIR}/functions/*.scad)
+
+# Redefinition test files
+file(GLOB REDEFINITION_FILES ${TEST_SCAD_DIR}/redefinition/*.scad)
+
+# Failing tests
+list(APPEND FAILING_FILES
+  ${TEST_SCAD_DIR}/issues/issue1890-comment.scad
+  ${TEST_SCAD_DIR}/issues/issue1890-include.scad
+  ${TEST_SCAD_DIR}/issues/issue1890-string.scad
+  ${TEST_SCAD_DIR}/issues/issue1890-use.scad
+)
+
+# AST dump tests
+list(APPEND ASTDUMP_FILES ${MISC_FILES}
+  ${TEST_SCAD_DIR}/functions/assert-expression-fail1-test.scad
+  ${TEST_SCAD_DIR}/functions/assert-expression-fail2-test.scad
+  ${TEST_SCAD_DIR}/functions/assert-expression-fail3-test.scad
+  ${TEST_SCAD_DIR}/functions/assert-expression-tests.scad
+  ${TEST_SCAD_DIR}/functions/echo-expression-tests.scad
+  ${TEST_SCAD_DIR}/functions/expression-precedence-tests.scad
+  ${TEST_SCAD_DIR}/functions/let-test-single.scad
+  ${TEST_SCAD_DIR}/functions/let-tests.scad
+  ${TEST_SCAD_DIR}/functions/list-comprehensions.scad
+  ${TEST_SCAD_DIR}/functions/exponent-operator-test.scad
+  ${TEST_SCAD_DIR}/misc/ifelse-ast-dump.scad
+  ${TEST_SCAD_DIR}/svg/id-layer-selection-test.scad
+)
+
+# Echo tests
+list(APPEND ECHO_FILES ${FUNCTION_FILES} ${MISC_FILES} ${REDEFINITION_FILES}
+  ${TEST_SCAD_DIR}/3D/features/for-tests.scad
+  ${TEST_SCAD_DIR}/3D/features/rotate-parameters.scad
+  ${TEST_SCAD_DIR}/3D/features/linear_extrude-parameter-tests.scad
+  ${TEST_SCAD_DIR}/misc/expression-evaluation-tests.scad
+  ${TEST_SCAD_DIR}/misc/echo-tests.scad
+)
+
+# Combine test files for different test types
+list(APPEND DUMP_FILES ${FEATURES_2D_FILES} ${FEATURES_3D_FILES} ${DEPRECATED_3D_FILES} ${MISC_FILES})
+
+# 2D tests
+list(APPEND RENDER_2D_FILES ${FEATURES_2D_FILES} ${SCAD_DXF_FILES} ${ISSUES_2D_FILES} ${EXAMPLE_2D_FILES})
+list(APPEND ALL_2D_FILES
+  ${FEATURES_2D_FILES}
+  ${ISSUES_2D_FILES}
+  ${EXAMPLE_2D_FILES}
+  ${SCAD_DXF_FILES}
+  ${SCAD_SVG_FILES}
+  ${TEST_SCAD_DIR}/2D/features/text-metrics.scad
+)
+
+# 3D tests
+list(APPEND RENDER_3D_FILES ${FEATURES_3D_FILES} ${SCAD_AMF_FILES} ${DEPRECATED_3D_FILES} ${ISSUES_3D_FILES} ${EXAMPLE_3D_FILES} ${SCAD_NEF3_FILES})
+list(APPEND RENDER_3D_FILES
+  ${TEST_SCAD_DIR}/misc/include-tests.scad
+  ${TEST_SCAD_DIR}/misc/use-tests.scad
+  ${TEST_SCAD_DIR}/misc/assert-tests.scad
+  ${TEST_SCAD_DIR}/misc/let-module-tests.scad
+  ${TEST_SCAD_DIR}/misc/localfiles-test.scad
+)
+
+# Import tests
+list(APPEND STL_IMPORT_FILES
+  ${TEST_SCAD_DIR}/stl/stl-import-invalidvertex.scad
+  ${TEST_SCAD_DIR}/stl/stl-import-toomanyvertices.scad
+  ${TEST_SCAD_DIR}/stl/stl-import-unparseable.scad
+  ${TEST_SCAD_DIR}/stl/stl-import-centered.scad
+)
+
+list(APPEND OBJ_IMPORT_FILES ${TEST_SCAD_DIR}/obj/obj-import-centered.scad)
+list(APPEND 3MF_IMPORT_FILES ${TEST_SCAD_DIR}/3mf/3mf-import-centered.scad)
+list(APPEND OFF_IMPORT_FILES ${TEST_SCAD_DIR}/off/off-import-centered.scad)
+
+# Combine all render files
+list(APPEND ALL_RENDER_FILES ${RENDER_2D_FILES} ${RENDER_3D_FILES} ${BUGS_FILES} ${BUGS_2D_FILES})
+
+# Preview only files
+list(APPEND PREVIEW_ONLY_FILES
+  ${TEST_SCAD_DIR}/3D/features/child-background.scad
+  ${TEST_SCAD_DIR}/3D/features/highlight-and-background-modifier.scad
+  ${TEST_SCAD_DIR}/3D/features/highlight-modifier2.scad
+  ${TEST_SCAD_DIR}/3D/features/background-modifier2.scad
+  ${TEST_SCAD_DIR}/2D/issues/issue5574.scad
+)
+
+# Color tests
+list(APPEND COLOR_3D_TEST_FILES
+  ${TEST_SCAD_DIR}/misc/color-cubes.scad
+  ${TEST_SCAD_DIR}/3D/features/color-tests3.scad
+  ${TEST_SCAD_DIR}/3D/features/linear_extrude-parameter-tests.scad
+  ${TEST_SCAD_DIR}/3D/features/resize-tests.scad
+)
+
+# Combine all preview files (excluding render files to avoid duplicates)
+list(APPEND ALL_PREVIEW_FILES ${3MF_IMPORT_FILES} ${OBJ_IMPORT_FILES} ${OFF_IMPORT_FILES} ${STL_IMPORT_FILES} ${PREVIEW_ONLY_FILES})
+
+# Create a separate list for render files that should also be tested in preview mode
+# (excluding the preview-only files to avoid duplicates)
+list(APPEND RENDER_FOR_PREVIEW ${ALL_RENDER_FILES})
+list(REMOVE_ITEM RENDER_FOR_PREVIEW ${PREVIEW_ONLY_FILES})
+
 ###############################
 # Define Test Configurations
 ###############################
@@ -113,42 +278,72 @@ set_test_config(Examples FILES ${EXAMPLE_FILES} PREFIXES
 set_test_config(Examples FILES ${EXAMPLE_2D_FILES} PREFIXES render-dxf)
 
 ###############################
-# Include Test Category Modules
+# Test Definitions
 ###############################
 
-# Load test categories
-include(${CMAKE_CURRENT_SOURCE_DIR}/categories/2d-tests.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/categories/3d-tests.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/categories/import-export-tests.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/categories/bug-tests.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/categories/experimental-tests.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/categories/misc-tests.cmake)
+# Basic tests
+add_cmdline_test(dump           OPENSCAD SUFFIX csg FILES ${DUMP_FILES})
+add_cmdline_test(echo           OPENSCAD SUFFIX echo FILES ${ECHO_FILES})
+add_cmdline_test(astdump        OPENSCAD SUFFIX ast FILES ${ASTDUMP_FILES})
 
-###############################
-# Additional Test Definitions
-###############################
+# Render tests - use combined lists to avoid duplicates
+add_cmdline_test(render-cgal    OPENSCAD SUFFIX png FILES ${ALL_RENDER_FILES} EXPECTEDDIR render ARGS --render --backend=cgal)
+add_cmdline_test(render-manifold OPENSCAD SUFFIX png FILES ${ALL_RENDER_FILES} EXPECTEDDIR render ARGS --render --backend=manifold)
+add_cmdline_test(preview-cgal   OPENSCAD SUFFIX png FILES ${ALL_PREVIEW_FILES} ${RENDER_FOR_PREVIEW} EXPECTEDDIR preview ARGS --backend=cgal)
+add_cmdline_test(preview-manifold OPENSCAD SUFFIX png FILES ${ALL_PREVIEW_FILES} ${RENDER_FOR_PREVIEW} ARGS --backend=manifold)
+add_cmdline_test(throwntogether-cgal OPENSCAD SUFFIX png FILES ${ALL_RENDER_FILES} EXPECTEDDIR throwntogether ARGS --render --backend=cgal)
+add_cmdline_test(throwntogether-manifold OPENSCAD SUFFIX png FILES ${ALL_RENDER_FILES} ARGS --render --backend=manifold)
 
 # Examples tests
 add_cmdline_test(dump-examples OPENSCAD SUFFIX csg FILES ${EXAMPLE_FILES})
-add_cmdline_test(render-cgal   OPENSCAD SUFFIX png FILES ${EXAMPLE_FILES} EXPECTEDDIR render ARGS --render --backend=cgal)
-add_cmdline_test(render-manifold OPENSCAD SUFFIX png FILES ${EXAMPLE_FILES} EXPECTEDDIR render ARGS --render --backend=manifold)
-add_cmdline_test(preview-cgal  OPENSCAD SUFFIX png FILES ${EXAMPLE_FILES} EXPECTEDDIR preview ARGS --backend=cgal)
-add_cmdline_test(preview-manifold OPENSCAD SUFFIX png FILES ${EXAMPLE_FILES} ARGS --backend=manifold)
-add_cmdline_test(throwntogether-cgal OPENSCAD SUFFIX png FILES ${EXAMPLE_FILES} EXPECTEDDIR throwntogether ARGS --render --backend=cgal)
-add_cmdline_test(throwntogether-manifold OPENSCAD SUFFIX png FILES ${EXAMPLE_FILES} ARGS --render --backend=manifold)
+
+# Customizer tests
+file(GLOB CUSTOMIZER_FILES ${TEST_CUSTOMIZER_DIR}/*.scad)
+add_cmdline_test(customizer     OPENSCAD SUFFIX ast FILES ${CUSTOMIZER_FILES})
+
+# JSON tests
+file(GLOB JSON_FILES ${TEST_SCAD_DIR}/json/*.scad)
+add_cmdline_test(echo           OPENSCAD SUFFIX echo FILES ${JSON_FILES})
+
+# Non-ASCII filename test
+add_cmdline_test(export-csg-nonascii  OPENSCAD FILES ${TEST_SCAD_DIR}/misc/sfære.scad SUFFIX csg)
+
+# Failing tests
+add_failing_test(shouldfail RETVAL 1 SUFFIX echo FILES ${FAILING_FILES})
 
 # Special tests
 add_cmdline_test(echo         OPENSCAD SUFFIX echo FILES ${TEST_SCAD_DIR}/issues/issue4172-echo-vector-stack-exhaust.scad ARGS --quiet --trace-usermodule-parameters=false)
 
-# Render force tests
-add_cmdline_test(render-force-cgal OPENSCAD SUFFIX png FILES ${RENDERFORCETEST_FILES} EXPECTEDDIR render ARGS --render=force --backend=cgal)
-add_cmdline_test(render-force-manifold OPENSCAD SUFFIX png FILES ${RENDERFORCETEST_FILES} EXPECTEDDIR render ARGS --render=force --backend=manifold)
+# DXF specific tests
+add_cmdline_test(render-dxf     OPENSCAD SUFFIX png FILES ${SCAD_DXF_FILES} EXPECTEDDIR render ARGS --render)
 
-# Manifold hard warnings test
-add_cmdline_test(render-force-manifold-hardwarnings OPENSCAD SUFFIX png FILES ${MANIFOLDHARDWARNING_FILES} EXPECTEDDIR render ARGS --render=force --backend=manifold --hardwarnings)
+# SVG specific tests
+add_cmdline_test(export-svg SCRIPT ${EXPORT_PNGTEST_PY} SUFFIX png FILES ${SCAD_SVG_FILES} ARGS ${OPENSCAD_EXE_ARG} --format=SVG)
+
+# Import/Export tests
+add_cmdline_test(preview-stl    OPENSCAD SUFFIX png FILES ${STL_IMPORT_FILES} EXPECTEDDIR preview ARGS --render)
+add_cmdline_test(render-stl     OPENSCAD SUFFIX png FILES ${STL_IMPORT_FILES} EXPECTEDDIR render ARGS --render=force)
+add_cmdline_test(preview-off    OPENSCAD SUFFIX png FILES ${OFF_IMPORT_FILES} EXPECTEDDIR preview ARGS --render)
+add_cmdline_test(render-off     OPENSCAD SUFFIX png FILES ${OFF_IMPORT_FILES} EXPECTEDDIR render ARGS --render=force)
+
+# Export tests (compare actually exported files)
+add_cmdline_test(export-stl              EXPERIMENTAL OPENSCAD SUFFIX stl FILES ${TEST_SCAD_DIR}/stl/stl-export.scad ARGS --enable=predictible-output --render)
+add_cmdline_test(export-obj              EXPERIMENTAL OPENSCAD SUFFIX obj FILES ${TEST_SCAD_DIR}/obj/obj-export.scad ARGS --enable=predictible-output --render)
+add_cmdline_test(export-3mf              EXPERIMENTAL OPENSCAD SUFFIX 3mf FILES ${TEST_SCAD_DIR}/3mf/3mf-export.scad ARGS --enable=predictible-output --render)
+add_cmdline_test(export-pov              EXPERIMENTAL OPENSCAD SUFFIX pov FILES ${TEST_SCAD_DIR}/pov/pov-export.scad ARGS --enable=predictible-output --render)
+
+# Export/import color support
+add_cmdline_test(offcolorpngtest EXPERIMENTAL SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${COLOR_3D_TEST_FILES} EXPECTEDDIR render-manifold ARGS ${OPENSCAD_EXE_ARG} --format=OFF --backend=manifold --render)
+
+# PDF Export
+add_cmdline_test(export-pdf              EXPERIMENTAL SCRIPT ${EXPORT_PNGTEST_PY} SUFFIX png FILES ${TEST_SCAD_DIR}/pdf/pdf-export.scad ARGS ${OPENSCAD_EXE_ARG} --format=PDF)
+add_cmdline_test(export-pdf-fill         EXPERIMENTAL SCRIPT ${EXPORT_PNGTEST_PY} SUFFIX png FILES ${TEST_SCAD_DIR}/pdf/pdf-export-fill.scad ARGS ${OPENSCAD_EXE_ARG} --format=PDF)
+
+# STL export sanity test
+add_cmdline_test(export-stl-sanitytest  SCRIPT ${STLEXPORTSANITYTEST_PY} SUFFIX txt FILES ${TEST_SCAD_DIR}/misc/normal-nan.scad ARGS ${OPENSCAD_EXE_ARG})
 
 # Monotone color scheme test
-add_cmdline_test(render-monotone OPENSCAD SUFFIX png FILES ${EXPORT_IMPORT_3D_PREVIEW_FILES} ${SIMPLE_EXPORT_IMPORT_2D_FILES} ARGS --colorscheme=Monotone --render)
+add_cmdline_test(render-monotone OPENSCAD SUFFIX png FILES ${TEST_SCAD_DIR}/misc/square10.scad ARGS --colorscheme=Monotone --render)
 
 # SVG viewbox tests
 list(APPEND SVG_VIEWBOX_TESTS

@@ -71,18 +71,4 @@ list(APPEND COLOR_3D_TEST_FILES
 # Combine all preview files
 list(APPEND ALL_PREVIEW_FILES ${3MF_IMPORT_FILES} ${OBJ_IMPORT_FILES} ${OFF_IMPORT_FILES} ${STL_IMPORT_FILES} ${ALL_RENDER_FILES} ${PRUNE_TEST} ${PREVIEW_ONLY_FILES})
 
-# Add 3D tests
-add_cmdline_test(dump           OPENSCAD SUFFIX csg FILES ${FEATURES_3D_FILES} ${DEPRECATED_3D_FILES})
-add_cmdline_test(echo           OPENSCAD SUFFIX echo FILES ${FEATURES_3D_FILES} ${ISSUES_3D_FILES} ${DEPRECATED_3D_FILES})
-add_cmdline_test(render-cgal    OPENSCAD SUFFIX png FILES ${RENDER_3D_FILES} EXPECTEDDIR render ARGS --render --backend=cgal)
-add_cmdline_test(render-manifold OPENSCAD SUFFIX png FILES ${RENDER_3D_FILES} EXPECTEDDIR render ARGS --render --backend=manifold)
-add_cmdline_test(preview-cgal   OPENSCAD SUFFIX png FILES ${ALL_PREVIEW_FILES} EXPECTEDDIR preview ARGS --backend=cgal)
-add_cmdline_test(preview-manifold OPENSCAD SUFFIX png FILES ${ALL_PREVIEW_FILES} ARGS --backend=manifold)
-add_cmdline_test(throwntogether-cgal OPENSCAD SUFFIX png FILES ${ALL_RENDER_FILES} EXPECTEDDIR throwntogether ARGS --render --backend=cgal)
-add_cmdline_test(throwntogether-manifold OPENSCAD SUFFIX png FILES ${ALL_RENDER_FILES} ARGS --render --backend=manifold)
-
-# Import/Export tests
-add_cmdline_test(preview-stl    OPENSCAD SUFFIX png FILES ${STL_IMPORT_FILES} EXPECTEDDIR preview ARGS --render)
-add_cmdline_test(render-stl     OPENSCAD SUFFIX png FILES ${STL_IMPORT_FILES} EXPECTEDDIR render ARGS --render=force)
-add_cmdline_test(preview-off    OPENSCAD SUFFIX png FILES ${OFF_IMPORT_FILES} EXPECTEDDIR preview ARGS --render)
-add_cmdline_test(render-off     OPENSCAD SUFFIX png FILES ${OFF_IMPORT_FILES} EXPECTEDDIR render ARGS --render=force)
+# 3D tests are defined in the main CMakeLists.txt to avoid duplicates
