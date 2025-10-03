@@ -18,7 +18,7 @@
 # o render-dxf: Export to DXF, Re-import and render to PNG (--render=force)
 #
 
-include(./tests/ast.cmake)
+include(./cmake/tests/ast.cmake)
 
 add_cmdline_test(csgterm      OPENSCAD SUFFIX term FILES
   ${TEST_SCAD_DIR}/misc/allexpressions.scad
@@ -26,14 +26,14 @@ add_cmdline_test(csgterm      OPENSCAD SUFFIX term FILES
   ${TEST_SCAD_DIR}/misc/allmodules.scad
 )
 
-include(./tests/echo.cmake)
+include(./cmake/tests/echo.cmake)
 
 add_cmdline_test(dump           OPENSCAD FILES ${FEATURES_2D_FILES} ${FEATURES_3D_FILES} ${DEPRECATED_3D_FILES} ${MISC_FILES} SUFFIX csg ARGS)
 add_cmdline_test(dump-examples  OPENSCAD FILES ${EXAMPLE_FILES} SUFFIX csg ARGS)
 # non-ASCII filenames
 add_cmdline_test(export-csg-nonascii  OPENSCAD FILES ${TEST_SCAD_DIR}/misc/sfære.scad SUFFIX csg)
 
-include(./tests/manifold.cmake)
+include(./cmake/tests/manifold.cmake)
 
 # 
 # OBJECT echo tests
@@ -103,7 +103,7 @@ ${TEST_SCAD_DIR}/3D/features/polyhedron-tests.scad
 #    e.g. self-touching polyhedron or malformed but repairable.
 #
 
-include(./tests/pov.cmake)
+include(./cmake/tests/pov.cmake)
 
 # Trivial Export/Import files: Sanity-checks bidirectional file format import/export
 set(SIMPLE_EXPORT_IMPORT_2D_FILES ${TEST_SCAD_DIR}/misc/square10.scad)
@@ -146,16 +146,16 @@ set(FILES_MANIFOLD_CORNER_CASES
 # Export-import tests
 add_cmdline_test(render-monotone OPENSCAD SUFFIX png FILES ${EXPORT_IMPORT_3D_PREVIEW_FILES} ${SIMPLE_EXPORT_IMPORT_2D_FILES} ARGS --colorscheme=Monotone --render)
 
-include(./tests/dxf.cmake)
-include(./tests/stl.cmake)
-include(./tests/cgal.cmake)
-include(./tests/obj.cmake)
-include(./tests/off.cmake)
-include(./tests/amf.cmake)
-include(./tests/3mf.cmake)
-include(./tests/pdf.cmake)
-include(./tests/svg.cmake)
-include(./tests/expected_fail.cmake)
+include(./cmake/tests/dxf.cmake)
+include(./cmake/tests/stl.cmake)
+include(./cmake/tests/cgal.cmake)
+include(./cmake/tests/obj.cmake)
+include(./cmake/tests/off.cmake)
+include(./cmake/tests/amf.cmake)
+include(./cmake/tests/3mf.cmake)
+include(./cmake/tests/pdf.cmake)
+include(./cmake/tests/svg.cmake)
+include(./cmake/tests/expected_fail.cmake)
 
 # Verify that test framework is paying attention to alpha channel, issue 1492
 #add_cmdline_test(openscad-colorscheme-cornfield-alphafail  ARGS --colorscheme=Cornfield SUFFIX png FILES ${EXAMPLES_DIR}/Basics/logo.scad)
@@ -167,9 +167,9 @@ include(./tests/expected_fail.cmake)
 # Also TEST_GENERATE=1 makes an expected image that makes the test fail.
 #set_property(TEST openscad-colorscheme-cornfield-alphafail_logo PROPERTY WILL_FAIL TRUE)
 
-include(./tests/customizer.cmake)
-include(./tests/camera.cmake)
-include(./tests/view_options.cmake)
-include(./tests/colorscheme.cmake)
-include(./tests/experimental.cmake)
-include(./tests/relative_filenames.cmake)
+include(./cmake/tests/customizer.cmake)
+include(./cmake/tests/camera.cmake)
+include(./cmake/tests/view_options.cmake)
+include(./cmake/tests/colorscheme.cmake)
+include(./cmake/tests/experimental.cmake)
+include(./cmake/tests/relative_filenames.cmake)
