@@ -19,6 +19,24 @@
 #
 
 include(./cmake/tests/ast.cmake)
+include(./cmake/tests/echo.cmake)
+include(./cmake/tests/render.cmake)
+include(./cmake/tests/pov.cmake)
+include(./cmake/tests/dxf.cmake)
+include(./cmake/tests/stl.cmake)
+include(./cmake/tests/obj.cmake)
+include(./cmake/tests/off.cmake)
+include(./cmake/tests/amf.cmake)
+include(./cmake/tests/3mf.cmake)
+include(./cmake/tests/pdf.cmake)
+include(./cmake/tests/svg.cmake)
+include(./cmake/tests/expected_fail.cmake)
+include(./cmake/tests/customizer.cmake)
+include(./cmake/tests/camera.cmake)
+include(./cmake/tests/view_options.cmake)
+include(./cmake/tests/colorscheme.cmake)
+include(./cmake/tests/experimental.cmake)
+include(./cmake/tests/relative_filenames.cmake)
 
 add_cmdline_test(csgterm      OPENSCAD SUFFIX term FILES
   ${TEST_SCAD_DIR}/misc/allexpressions.scad
@@ -26,14 +44,10 @@ add_cmdline_test(csgterm      OPENSCAD SUFFIX term FILES
   ${TEST_SCAD_DIR}/misc/allmodules.scad
 )
 
-include(./cmake/tests/echo.cmake)
-
 add_cmdline_test(dump           OPENSCAD FILES ${FEATURES_2D_FILES} ${FEATURES_3D_FILES} ${DEPRECATED_3D_FILES} ${MISC_FILES} SUFFIX csg ARGS)
 add_cmdline_test(dump-examples  OPENSCAD FILES ${EXAMPLE_FILES} SUFFIX csg ARGS)
 # non-ASCII filenames
 add_cmdline_test(export-csg-nonascii  OPENSCAD FILES ${TEST_SCAD_DIR}/misc/sfære.scad SUFFIX csg)
-
-include(./cmake/tests/render.cmake)
 
 # 
 # OBJECT echo tests
@@ -41,47 +55,6 @@ include(./cmake/tests/render.cmake)
 
 file(GLOB OBJECT_TEST ${TEST_SCAD_DIR}/experimental/object/*.scad)
 add_cmdline_test(echo EXPERIMENTAL OPENSCAD SUFFIX echo FILES ${OBJECT_TEST} ARGS --enable object-function)
-
-
-#
-# Export/import tests
-#
-
-list(APPEND EXPORT_IMPORT_3D_FILES
-${TEST_SCAD_DIR}/3D/features/mirror-tests.scad
-${TEST_SCAD_DIR}/3D/features/polyhedron-nonplanar-tests.scad
-${TEST_SCAD_DIR}/3D/features/rotate_extrude-tests.scad
-${TEST_SCAD_DIR}/3D/features/union-coincident-test.scad
-${TEST_SCAD_DIR}/3D/issues/fn_bug.scad
-${TEST_SCAD_DIR}/3D/issues/issue1105c.scad
-${TEST_SCAD_DIR}/3D/issues/issue1215.scad
-${TEST_SCAD_DIR}/3D/issues/issue1215b.scad
-${TEST_SCAD_DIR}/3D/issues/issue1221.scad
-${TEST_SCAD_DIR}/3D/issues/issue1225.scad
-${TEST_SCAD_DIR}/3D/issues/issue1258.scad
-${TEST_SCAD_DIR}/3D/issues/issue2259.scad
-${TEST_SCAD_DIR}/3D/issues/issue5216.scad
-${TEST_SCAD_DIR}/misc/bad-stl-pcbvicebar.scad
-${TEST_SCAD_DIR}/misc/bad-stl-tardis.scad
-${TEST_SCAD_DIR}/misc/bad-stl-wing.scad
-${TEST_SCAD_DIR}/misc/nonmanifold-polyhedron.scad
-${TEST_SCAD_DIR}/misc/preview_variable.scad
-)
-
-list(APPEND EXPORT_IMPORT_3D_DIFFERENT_FILES
-${TEST_SCAD_DIR}/3D/issues/issue904.scad
-${TEST_SCAD_DIR}/3D/issues/issue1105.scad
-${TEST_SCAD_DIR}/3D/issues/issue1105b.scad
-${TEST_SCAD_DIR}/3D/issues/issue1105d.scad
-${TEST_SCAD_DIR}/3D/issues/issue1215c.scad
-${TEST_SCAD_DIR}/misc/internal-cavity.scad
-${TEST_SCAD_DIR}/misc/internal-cavity-polyhedron.scad
-${TEST_SCAD_DIR}/misc/rotate_extrude-hole.scad
-)
-
-list(APPEND EXPORT_IMPORT_3D_DIFFERENT_MANIFOLD_FILES
-${TEST_SCAD_DIR}/3D/features/polyhedron-tests.scad
-)
 
 #
 # There are some caveats with export and import, so we need to test a few combinations:
@@ -98,58 +71,8 @@ ${TEST_SCAD_DIR}/3D/features/polyhedron-tests.scad
 #    e.g. self-touching polyhedron or malformed but repairable.
 #
 
-include(./cmake/tests/pov.cmake)
-
-# Trivial Export/Import files: Sanity-checks bidirectional file format import/export
-set(SIMPLE_EXPORT_IMPORT_2D_FILES ${TEST_SCAD_DIR}/misc/square10.scad)
-set(SIMPLE_EXPORT_IMPORT_3D_FILES ${TEST_SCAD_DIR}/misc/cube10.scad)
-set(SIMPLE_EXPORT_IMPORT_NON_MANIFOLD ${TEST_SCAD_DIR}/3D/misc/polyhedron-single-triangle.scad)
-
-set(EXPORT_IMPORT_2D_RENDER_FILES ${SIMPLE_EXPORT_IMPORT_2D_TESTS} ${FILES_2D})
-
-set(EXPORT_IMPORT_3D_PREVIEW_FILES ${SIMPLE_EXPORT_IMPORT_NON_MANIFOLD} ${SIMPLE_EXPORT_IMPORT_3D_FILES})
-set(EXPORT_IMPORT_3D_RENDER_FILES ${SIMPLE_EXPORT_IMPORT_3D_FILES} ${EXPORT_IMPORT_3D_FILES})
-list(REMOVE_ITEM EXPORT_IMPORT_3D_RENDER_FILES
-  # Non-manifold polyhedrons can never be rendered
-  ${TEST_SCAD_DIR}/misc/nonmanifold-polyhedron.scad
-)
-set(EXPORT_IMPORT_3D_RENDERMANIFOLD_FILES ${EXPORT_IMPORT_3D_RENDER_FILES})
-
-# Manifoldness corner cases
-set(FILES_MANIFOLD_CORNER_CASES
-  ${TEST_SCAD_DIR}/3D/misc/tetracyl-slim.scad
-  ${TEST_SCAD_DIR}/3D/misc/tetracyl-touch-edge.scad
-  ${TEST_SCAD_DIR}/3D/misc/tetracyl-touch-edge-nonmanifold.scad
-  ${TEST_SCAD_DIR}/3D/misc/tetracyl-touch-vertex.scad
-  ${TEST_SCAD_DIR}/3D/misc/tetracyl-touch-vertex-nonmanifold.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedrons-touch-edge-nonmanifold.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedrons-touch-edge.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedrons-touch-vertex-nonmanifold.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedrons-touch-vertex.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedrons-touch-face-nonmanifold.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedrons-touch-face.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedron-self-touch-edge-nonmanifold.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedron-self-touch-edge.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedron-self-touch-face-nonmanifold.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedron-self-touch-face.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedron-self-touch-vertex-nonmanifold.scad
-  ${TEST_SCAD_DIR}/3D/misc/polyhedron-self-touch-vertex.scad
-  ${TEST_SCAD_DIR}/3D/features/rotate_extrude-touch-edge.scad
-  ${TEST_SCAD_DIR}/3D/features/rotate_extrude-touch-vertex.scad
-)
-
 # Export-import tests
 add_cmdline_test(render-monotone OPENSCAD SUFFIX png FILES ${EXPORT_IMPORT_3D_PREVIEW_FILES} ${SIMPLE_EXPORT_IMPORT_2D_FILES} ARGS --colorscheme=Monotone --render)
-
-include(./cmake/tests/dxf.cmake)
-include(./cmake/tests/stl.cmake)
-include(./cmake/tests/obj.cmake)
-include(./cmake/tests/off.cmake)
-include(./cmake/tests/amf.cmake)
-include(./cmake/tests/3mf.cmake)
-include(./cmake/tests/pdf.cmake)
-include(./cmake/tests/svg.cmake)
-include(./cmake/tests/expected_fail.cmake)
 
 # Verify that test framework is paying attention to alpha channel, issue 1492
 #add_cmdline_test(openscad-colorscheme-cornfield-alphafail  ARGS --colorscheme=Cornfield SUFFIX png FILES ${EXAMPLES_DIR}/Basics/logo.scad)
@@ -160,10 +83,3 @@ include(./cmake/tests/expected_fail.cmake)
 # Commented out because the master branch isn't capable of making the expected image yet.
 # Also TEST_GENERATE=1 makes an expected image that makes the test fail.
 #set_property(TEST openscad-colorscheme-cornfield-alphafail_logo PROPERTY WILL_FAIL TRUE)
-
-include(./cmake/tests/customizer.cmake)
-include(./cmake/tests/camera.cmake)
-include(./cmake/tests/view_options.cmake)
-include(./cmake/tests/colorscheme.cmake)
-include(./cmake/tests/experimental.cmake)
-include(./cmake/tests/relative_filenames.cmake)
