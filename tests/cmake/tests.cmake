@@ -33,7 +33,7 @@ add_cmdline_test(dump-examples  OPENSCAD FILES ${EXAMPLE_FILES} SUFFIX csg ARGS)
 # non-ASCII filenames
 add_cmdline_test(export-csg-nonascii  OPENSCAD FILES ${TEST_SCAD_DIR}/misc/sfære.scad SUFFIX csg)
 
-include(./cmake/tests/manifold.cmake)
+include(./cmake/tests/render.cmake)
 
 # 
 # OBJECT echo tests
@@ -143,7 +143,6 @@ add_cmdline_test(render-monotone OPENSCAD SUFFIX png FILES ${EXPORT_IMPORT_3D_PR
 
 include(./cmake/tests/dxf.cmake)
 include(./cmake/tests/stl.cmake)
-include(./cmake/tests/cgal.cmake)
 include(./cmake/tests/obj.cmake)
 include(./cmake/tests/off.cmake)
 include(./cmake/tests/amf.cmake)
