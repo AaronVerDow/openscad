@@ -16,6 +16,9 @@ list(APPEND MISC_FILES
   ${TEST_SCAD_DIR}/misc/variable-overwrite.scad
 )
 
+file(GLOB FUNCTION_FILES           ${TEST_SCAD_DIR}/functions/*.scad)
+file(GLOB REDEFINITION_FILES       ${TEST_SCAD_DIR}/redefinition/*.scad)
+
 list(APPEND ECHO_FILES ${FUNCTION_FILES} ${MISC_FILES} ${REDEFINITION_FILES}
   ${TEST_SCAD_DIR}/3D/features/for-tests.scad
   ${TEST_SCAD_DIR}/3D/features/rotate-parameters.scad
