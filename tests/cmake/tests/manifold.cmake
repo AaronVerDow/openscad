@@ -1,3 +1,12 @@
+list(APPEND MANIFOLDHARDWARNING_FILES
+  ${TEST_SCAD_DIR}/3D/features/polyhedron-soup.scad
+  ${TEST_SCAD_DIR}/3D/issues/issue5741.scad
+  ${TEST_SCAD_DIR}/3D/issues/issue5555.scad
+  ${TEST_SCAD_DIR}/3D/issues/issue5555b.scad
+  ${TEST_SCAD_DIR}/3D/issues/issue5135.scad
+  ${TEST_SCAD_DIR}/3D/issues/issue5135-good.scad
+)
+
 if (ENABLE_MANIFOLD)
 add_cmdline_test(render-manifold OPENSCAD FILES ${RENDER_COMMON_FILES} EXPECTEDDIR render SUFFIX png ARGS --render --backend=manifold)
 add_cmdline_test(render-manifold OPENSCAD FILES ${RENDER_DIFFERENT_EXPECTATIONS} SUFFIX png ARGS --render --backend=manifold)

@@ -2,6 +2,24 @@
 # Experimental tests       #
 ############################
 
+list(APPEND LAZYUNION_3D_FILES
+  ${TEST_SCAD_DIR}/experimental/lazyunion-toplevel-objects.scad
+  ${TEST_SCAD_DIR}/experimental/lazyunion-toplevel-for.scad
+  ${TEST_SCAD_DIR}/experimental/lazyunion-nested-for.scad
+  ${TEST_SCAD_DIR}/experimental/lazyunion-children.scad
+  ${TEST_SCAD_DIR}/experimental/lazyunion-hull-for.scad
+  ${TEST_SCAD_DIR}/experimental/lazyunion-root-for.scad
+  ${TEST_SCAD_DIR}/experimental/lazyunion-intersection-for.scad
+  ${TEST_SCAD_DIR}/experimental/lazyunion-difference-for.scad
+  ${TEST_SCAD_DIR}/experimental/lazyunion-minkowski-for.scad
+  ${TEST_SCAD_DIR}/experimental/lazyunion-transform-for.scad
+  ${TEST_SCAD_DIR}/3D/features/2d-3d.scad
+)
+list(APPEND LAZYUNION_2D_FILES
+  ${TEST_SCAD_DIR}/experimental/lazyunion-toplevel-2dobjects.scad
+)
+list(APPEND LAZYUNION_FILES ${LAZYUNION_2D_FILES} ${LAZYUNION_3D_FILES})
+
 #
 # --enable=lazyunion tests
 #

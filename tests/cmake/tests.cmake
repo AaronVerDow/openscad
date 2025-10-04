@@ -47,11 +47,6 @@ add_cmdline_test(echo EXPERIMENTAL OPENSCAD SUFFIX echo FILES ${OBJECT_TEST} ARG
 # Export/import tests
 #
 
-# FIXME: Reintroduce
-list(APPEND COLOR_EXPORT_TEST_FILES
-  ${TEST_SCAD_DIR}/misc/color-export.scad
-)
-
 list(APPEND EXPORT_IMPORT_3D_FILES
 ${TEST_SCAD_DIR}/3D/features/mirror-tests.scad
 ${TEST_SCAD_DIR}/3D/features/polyhedron-nonplanar-tests.scad

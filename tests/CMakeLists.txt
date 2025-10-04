@@ -366,13 +366,6 @@ else()
   )
 endif(LIB3MF_FOUND)
 
-list(APPEND NEF3_BROKEN_TESTS
-  render-cgal_nef3_broken
-  preview-cgal_nef3_broken
-  throwntogether-cgal_nef3_broken
-  render-csg-cgal_nef3_broken
-)
-
 # Platform specific test disable
 if(APPLE)
 elseif(UNIX)
