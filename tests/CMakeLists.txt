@@ -715,6 +715,8 @@ set_directory_properties(PROPERTIES TEST_INCLUDE_FILES "${CCSD}/cmake/EnforceCon
 # o render-dxf: Export to DXF, Re-import and render to PNG (--render=force)
 #
 
+include(./cmake/tests/3mf.cmake)
+
 add_cmdline_test(astdump OPENSCAD SUFFIX ast FILES
   ${MISC_FILES}
   ${TEST_SCAD_DIR}/functions/assert-expression-fail1-test.scad
@@ -816,8 +818,6 @@ list(APPEND EXPORT_OBJ_TEST_FILES ${TEST_SCAD_DIR}/obj/obj-import-export_dodecah
 list(APPEND EXPORT_OBJ_TEST_FILES ${TEST_SCAD_DIR}/obj/obj-import-export_cube.scad)
 list(APPEND EXPORT_OBJ_TEST_FILES ${TEST_SCAD_DIR}/3D/features/polyhedron-cube.scad)
 
-list(APPEND EXPORT_3MF_TEST_FILES ${TEST_SCAD_DIR}/3mf/3mf-export.scad)
-
 list(APPEND EXPORT_POV_TEST_FILES ${TEST_SCAD_DIR}/pov/pov-export.scad)
 
 list(APPEND EXPORT_IMPORT_3D_FILES
@@ -883,9 +883,7 @@ add_cmdline_test(export-binstl           EXPERIMENTAL OPENSCAD SUFFIX stl FILES 
 add_cmdline_test(export-binstl-stdout    EXPERIMENTAL OPENSCAD SUFFIX stl FILES ${EXPORT_STL_TEST_FILES} STDIO EXPECTEDDIR export-binstl ARGS --enable=predictible-output --render --export-format binstl)
 
 add_cmdline_test(export-obj              EXPERIMENTAL OPENSCAD SUFFIX obj FILES ${EXPORT_OBJ_TEST_FILES} ARGS --enable=predictible-output)
-if (ENABLE_LIB3MF_TESTS)
-add_cmdline_test(export-3mf              EXPERIMENTAL OPENSCAD SUFFIX 3mf FILES ${EXPORT_3MF_TEST_FILES} ARGS --enable=predictible-output)
-endif()
+
 add_cmdline_test(export-pov-as-is        EXPERIMENTAL OPENSCAD SUFFIX pov FILES ${EXPORT_POV_TEST_FILES} ARGS --enable=predictible-output --backend=manifold)
 add_cmdline_test(export-pov-translate-1  EXPERIMENTAL OPENSCAD SUFFIX pov FILES ${EXPORT_POV_TEST_FILES} ARGS --enable=predictible-output --backend=manifold --camera=0,0,0,0,0,0,140)
 add_cmdline_test(export-pov-translate-2  EXPERIMENTAL OPENSCAD SUFFIX pov FILES ${EXPORT_POV_TEST_FILES} ARGS --enable=predictible-output --backend=manifold --camera=10,0,0,0,0,0,140)
@@ -956,7 +954,7 @@ list(REMOVE_ITEM render-off-manifold_FILES
  ${TEST_SCAD_DIR}/misc/cube10.scad
  ${TEST_SCAD_DIR}/3D/features/polyhedron-tests.scad
 )
-set(render-3mf-manifold_FILES ${render-off-manifold_FILES})
+
 add_cmdline_test(render-off-manifold SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_RENDER_FILES} EXPECTEDDIR render-monotone ARGS ${OPENSCAD_EXE_ARG} --format=OFF --render=force --backend=manifold)
 add_cmdline_test(render-off-manifold SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_DIFFERENT_FILES} EXPECTEDDIR render ARGS ${OPENSCAD_EXE_ARG} --format=OFF --render=force --backend=manifold)
 add_cmdline_test(render-off-manifold SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_DIFFERENT_MANIFOLD_FILES} EXPECTEDDIR render-manifold ARGS ${OPENSCAD_EXE_ARG} --format=OFF --render=force --backend=manifold)
@@ -969,15 +967,6 @@ add_cmdline_test(render-amf-manifold SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX p
 add_cmdline_test(render-obj-manifold SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_RENDERMANIFOLD_FILES} EXPECTEDDIR render-monotone ARGS ${OPENSCAD_EXE_ARG} --format=OBJ --render=force --backend=manifold)
 add_cmdline_test(render-obj-manifold SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${FILES_MANIFOLD_CORNER_CASES} EXPECTEDDIR render-off-manifold ARGS ${OPENSCAD_EXE_ARG} --format=OBJ --render=force --backend=manifold)
 endif(ENABLE_MANIFOLD_TESTS)
-
-if (ENABLE_LIB3MF_TESTS)
-add_cmdline_test(preview-3mf         SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_PREVIEW_FILES} EXPECTEDDIR render-monotone ARGS ${OPENSCAD_EXE_ARG} --format=3MF)
-add_cmdline_test(render-3mf-cgal     SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_RENDER_FILES} EXPECTEDDIR render-monotone ARGS ${OPENSCAD_EXE_ARG} --format=3MF --render=force --backend=cgal)
-add_cmdline_test(render-3mf-cgal     SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_DIFFERENT_FILES} EXPECTEDDIR render-monotone ARGS ${OPENSCAD_EXE_ARG} --format=3MF --render=force --backend=cgal)
-add_cmdline_test(render-3mf-manifold SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_RENDER_FILES} EXPECTEDDIR render-monotone ARGS ${OPENSCAD_EXE_ARG} --format=3MF --render=force --backend=manifold)
-add_cmdline_test(render-3mf-manifold SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_DIFFERENT_FILES} EXPECTEDDIR render ARGS ${OPENSCAD_EXE_ARG} --format=3MF --render=force --backend=manifold)
-add_cmdline_test(render-3mf-manifold SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_3D_DIFFERENT_MANIFOLD_FILES} EXPECTEDDIR render-manifold ARGS ${OPENSCAD_EXE_ARG} --format=3MF --render=force --backend=manifold)
-endif()
 
 add_cmdline_test(render-dxf  SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_2D_RENDER_FILES} ${SCAD_DXF_FILES} EXPECTEDDIR render ARGS ${OPENSCAD_EXE_ARG} --format=DXF --render=force)
 add_cmdline_test(render-svg  SCRIPT ${EXPORT_IMPORT_PNGTEST_PY} SUFFIX png FILES ${EXPORT_IMPORT_2D_RENDER_FILES} ${SCAD_SVG_FILES} EXPECTEDDIR render ARGS ${OPENSCAD_EXE_ARG} --format=SVG --render=force)
