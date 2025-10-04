@@ -42,90 +42,6 @@ list(REMOVE_ITEM EXAMPLE_FILES
   ${EXAMPLES_DIR}/Basics/roof.scad # -> EXPERIMENTAL_ROOF_FILES
 )
 
-# only used by RENDER_3D_FILES
-list(APPEND EXAMPLE_3D_FILES ${EXAMPLE_FILES})
-# Remove 2D files from 3D examples
-list(REMOVE_ITEM EXAMPLE_3D_FILES
-  ${EXAMPLES_DIR}/Old/example015.scad
-  ${EXAMPLES_DIR}/Advanced/module_recursion.scad
-  ${EXAMPLES_DIR}/Functions/list_comprehensions.scad
-  ${EXAMPLES_DIR}/Functions/polygon_areas.scad
-  ${EXAMPLES_DIR}/Functions/recursion.scad
-)
-
-# only used by ALL_RENDER_FILES
-list(APPEND RENDER_2D_FILES ${FEATURES_2D_FILES} ${SCAD_DXF_FILES} ${ISSUES_2D_FILES} ${EXAMPLE_2D_FILES})
-
-# only used by ALL_RENDER_FILES
-list(APPEND RENDER_3D_FILES ${FEATURES_3D_FILES} ${SCAD_AMF_FILES} ${DEPRECATED_3D_FILES} ${ISSUES_3D_FILES} ${EXAMPLE_3D_FILES} ${SCAD_NEF3_FILES})
-list(APPEND RENDER_3D_FILES
-  ${TEST_SCAD_DIR}/misc/include-tests.scad
-  ${TEST_SCAD_DIR}/misc/use-tests.scad
-  ${TEST_SCAD_DIR}/misc/assert-tests.scad
-  ${TEST_SCAD_DIR}/misc/let-module-tests.scad
-  ${TEST_SCAD_DIR}/misc/localfiles-test.scad
-  ${TEST_SCAD_DIR}/misc/localfiles_dir/localfiles-compatibility-test.scad
-  ${TEST_SCAD_DIR}/misc/rotate-empty-bbox.scad
-  ${TEST_SCAD_DIR}/misc/empty-shape-tests.scad
-  ${TEST_SCAD_DIR}/misc/internal-cavity.scad
-  ${TEST_SCAD_DIR}/misc/internal-cavity-polyhedron.scad
-  ${TEST_SCAD_DIR}/misc/bad-stl-pcbvicebar.scad
-  ${TEST_SCAD_DIR}/misc/bad-stl-tardis.scad
-  ${TEST_SCAD_DIR}/misc/bad-stl-wing.scad
-  ${TEST_SCAD_DIR}/misc/rotate_extrude-hole.scad
-  ${TEST_SCAD_DIR}/misc/preview_variable.scad
-)
-
-# test importing unparseable files, result will be an empty image
-# only added to ALL_PREVIEW_FILES
-list(APPEND STL_IMPORT_FILES
-  ${TEST_SCAD_DIR}/stl/stl-import-invalidvertex.scad
-  ${TEST_SCAD_DIR}/stl/stl-import-toomanyvertices.scad
-  ${TEST_SCAD_DIR}/stl/stl-import-unparseable.scad
-  # result will not be empty
-  ${TEST_SCAD_DIR}/stl/stl-import-centered.scad
-  ${TEST_SCAD_DIR}/stl/stl-import-not-centered.scad
-)
-
-# only used by ALL_PREVIEW_FILES
-list(APPEND OBJ_IMPORT_FILES ${TEST_SCAD_DIR}/obj/obj-import-centered.scad)
-# only used by ALL_PREVIEW_FILES
-list(APPEND 3MF_IMPORT_FILES ${TEST_SCAD_DIR}/3mf/3mf-import-centered.scad)
-# only used by ALL_PREVIEW_FILES
-list(APPEND OFF_IMPORT_FILES ${TEST_SCAD_DIR}/off/off-import-centered.scad)
-
-list(GET RENDER_2D_FILES 0 1 2 RENDERSTDIOTEST_FILES)
-
-# used by ALL_PREVIEW_FILES, RENDER_COMMON_FILES, ALL_THROWNTOGETHER_FILES
-list(APPEND ALL_RENDER_FILES ${RENDER_2D_FILES} ${RENDER_3D_FILES} ${BUGS_FILES} ${BUGS_2D_FILES})
-
-# only used by ALL_PREVIEW_FILES
-list(APPEND PREVIEW_ONLY_FILES
-  ${TEST_SCAD_DIR}/3D/features/child-background.scad
-  ${TEST_SCAD_DIR}/3D/features/highlight-and-background-modifier.scad
-  ${TEST_SCAD_DIR}/3D/features/highlight-modifier2.scad
-  ${TEST_SCAD_DIR}/3D/features/background-modifier2.scad
-  ${TEST_SCAD_DIR}/2D/issues/issue5574.scad
-)
-
-list(REMOVE_ITEM ALL_RENDER_FILES 
-  # These tests only makes sense in preview mode
-  ${PREVIEW_ONLY_FILES}
-)
-
-# used by cgal and manifold tests
-list(APPEND RENDERFORCETEST_FILES
-  ${TEST_SCAD_DIR}/3D/issues/issue5548.scad
-  ${TEST_SCAD_DIR}/3D/issues/issue5135-good.scad
-  ${TEST_SCAD_DIR}/3D/issues/issue5135-bad.scad
-  ${TEST_SCAD_DIR}/3D/misc/import-single-triangle.scad
-)
-
-set(PRUNE_TEST ${TEST_SCAD_DIR}/misc/intersection-prune-test.scad)
-
-# only used by PREVIEW_COMMON_FILES
-list(APPEND ALL_PREVIEW_FILES ${3MF_IMPORT_FILES} ${OBJ_IMPORT_FILES} ${OFF_IMPORT_FILES} ${STL_IMPORT_FILES} ${ALL_RENDER_FILES} ${PRUNE_TEST} ${PREVIEW_ONLY_FILES})
-
 # used by 3mf off
 list(APPEND COLOR_3D_TEST_FILES
   ${TEST_SCAD_DIR}/misc/color-cubes.scad
@@ -142,6 +58,36 @@ list(APPEND ALL_2D_FILES
   ${SCAD_DXF_FILES}
   ${SCAD_SVG_FILES}
   ${TEST_SCAD_DIR}/2D/features/text-metrics.scad
+)
+
+# used by cgal and manifold tests
+list(APPEND RENDERFORCETEST_FILES
+  ${TEST_SCAD_DIR}/3D/issues/issue5548.scad
+  ${TEST_SCAD_DIR}/3D/issues/issue5135-good.scad
+  ${TEST_SCAD_DIR}/3D/issues/issue5135-bad.scad
+  ${TEST_SCAD_DIR}/3D/misc/import-single-triangle.scad
+)
+
+# used by cgal and manifold tests
+# Preview in CGAL and Manifold should be the same, except for objects with color
+# ..but there are some exceptions.
+list(APPEND PREVIEW_DIFFERENT_EXPECTATIONS
+  # Manifold can construct geometry which isn't representable in CGAL mode,
+  # causing CGAL-based operations like minkowski() to fail.
+  ${TEST_SCAD_DIR}/3D/issues/issue1137.scad
+
+  # render() in manifold mode preserves colors
+  ${TEST_SCAD_DIR}/3D/features/render-tests.scad
+  ${TEST_SCAD_DIR}/misc/internal-cavity.scad
+  ${TEST_SCAD_DIR}/3D/features/render-preserve-colors.scad
+
+  # resize() in manifold mode preserves colors
+  ${TEST_SCAD_DIR}/3D/features/resize-convexity-tests.scad
+
+  # TODO(kintel): Run bugs files
+  # ${TEST_SCAD_DIR}/bugs/issue1000.scad
+  # ${TEST_SCAD_DIR}/bugs/issue802.scad
+  # ${TEST_SCAD_DIR}/bugs2D/issue2220.scad
 )
 
 # only added to RENDER_DIFFERENT_EXPECTATIONS
@@ -201,26 +147,82 @@ list(APPEND RENDER_DIFFERENT_EXPECTATIONS
   ${TEST_SCAD_DIR}/3D/issues/issue1165.scad
 )
 
-# used by cgal and manifold tests
-# Preview in CGAL and Manifold should be the same, except for objects with color
-# ..but there are some exceptions.
-list(APPEND PREVIEW_DIFFERENT_EXPECTATIONS
-  # Manifold can construct geometry which isn't representable in CGAL mode,
-  # causing CGAL-based operations like minkowski() to fail.
-  ${TEST_SCAD_DIR}/3D/issues/issue1137.scad
+# only used by RENDER_3D_FILES
+list(APPEND EXAMPLE_3D_FILES ${EXAMPLE_FILES})
+# Remove 2D files from 3D examples
+list(REMOVE_ITEM EXAMPLE_3D_FILES
+  ${EXAMPLES_DIR}/Old/example015.scad
+  ${EXAMPLES_DIR}/Advanced/module_recursion.scad
+  ${EXAMPLES_DIR}/Functions/list_comprehensions.scad
+  ${EXAMPLES_DIR}/Functions/polygon_areas.scad
+  ${EXAMPLES_DIR}/Functions/recursion.scad
+)
 
-  # render() in manifold mode preserves colors
-  ${TEST_SCAD_DIR}/3D/features/render-tests.scad
+# only used by ALL_RENDER_FILES
+list(APPEND RENDER_3D_FILES ${FEATURES_3D_FILES} ${SCAD_AMF_FILES} ${DEPRECATED_3D_FILES} ${ISSUES_3D_FILES} ${EXAMPLE_3D_FILES} ${SCAD_NEF3_FILES}
+  ${TEST_SCAD_DIR}/misc/include-tests.scad
+  ${TEST_SCAD_DIR}/misc/use-tests.scad
+  ${TEST_SCAD_DIR}/misc/assert-tests.scad
+  ${TEST_SCAD_DIR}/misc/let-module-tests.scad
+  ${TEST_SCAD_DIR}/misc/localfiles-test.scad
+  ${TEST_SCAD_DIR}/misc/localfiles_dir/localfiles-compatibility-test.scad
+  ${TEST_SCAD_DIR}/misc/rotate-empty-bbox.scad
+  ${TEST_SCAD_DIR}/misc/empty-shape-tests.scad
   ${TEST_SCAD_DIR}/misc/internal-cavity.scad
-  ${TEST_SCAD_DIR}/3D/features/render-preserve-colors.scad
+  ${TEST_SCAD_DIR}/misc/internal-cavity-polyhedron.scad
+  ${TEST_SCAD_DIR}/misc/bad-stl-pcbvicebar.scad
+  ${TEST_SCAD_DIR}/misc/bad-stl-tardis.scad
+  ${TEST_SCAD_DIR}/misc/bad-stl-wing.scad
+  ${TEST_SCAD_DIR}/misc/rotate_extrude-hole.scad
+  ${TEST_SCAD_DIR}/misc/preview_variable.scad
+)
 
-  # resize() in manifold mode preserves colors
-  ${TEST_SCAD_DIR}/3D/features/resize-convexity-tests.scad
+# only used by ALL_RENDER_FILES
+list(APPEND RENDER_2D_FILES ${FEATURES_2D_FILES} ${SCAD_DXF_FILES} ${ISSUES_2D_FILES} ${EXAMPLE_2D_FILES})
 
-  # TODO(kintel): Run bugs files
-  # ${TEST_SCAD_DIR}/bugs/issue1000.scad
-  # ${TEST_SCAD_DIR}/bugs/issue802.scad
-  # ${TEST_SCAD_DIR}/bugs2D/issue2220.scad
+list(GET RENDER_2D_FILES 0 1 2 RENDERSTDIOTEST_FILES)
+
+# used by ALL_PREVIEW_FILES, RENDER_COMMON_FILES, ALL_THROWNTOGETHER_FILES
+list(APPEND ALL_RENDER_FILES ${RENDER_2D_FILES} ${RENDER_3D_FILES} ${BUGS_FILES} ${BUGS_2D_FILES})
+
+# only used by ALL_PREVIEW_FILES
+list(APPEND PREVIEW_ONLY_FILES
+  ${TEST_SCAD_DIR}/3D/features/child-background.scad
+  ${TEST_SCAD_DIR}/3D/features/highlight-and-background-modifier.scad
+  ${TEST_SCAD_DIR}/3D/features/highlight-modifier2.scad
+  ${TEST_SCAD_DIR}/3D/features/background-modifier2.scad
+  ${TEST_SCAD_DIR}/2D/issues/issue5574.scad
+)
+
+list(REMOVE_ITEM ALL_RENDER_FILES 
+  # These tests only makes sense in preview mode
+  ${PREVIEW_ONLY_FILES}
+)
+
+# not sure where this goes
+set(PRUNE_TEST ${TEST_SCAD_DIR}/misc/intersection-prune-test.scad)
+
+# only added to ALL_PREVIEW_FILES
+list(APPEND OBJ_IMPORT_FILES ${TEST_SCAD_DIR}/obj/obj-import-centered.scad)
+list(APPEND 3MF_IMPORT_FILES ${TEST_SCAD_DIR}/3mf/3mf-import-centered.scad)
+list(APPEND OFF_IMPORT_FILES ${TEST_SCAD_DIR}/off/off-import-centered.scad)
+# test importing unparseable files, result will be an empty image
+list(APPEND STL_IMPORT_FILES
+  ${TEST_SCAD_DIR}/stl/stl-import-invalidvertex.scad
+  ${TEST_SCAD_DIR}/stl/stl-import-toomanyvertices.scad
+  ${TEST_SCAD_DIR}/stl/stl-import-unparseable.scad
+  # result will not be empty
+  ${TEST_SCAD_DIR}/stl/stl-import-centered.scad
+  ${TEST_SCAD_DIR}/stl/stl-import-not-centered.scad
+)
+
+# only used by PREVIEW_COMMON_FILES
+list(APPEND ALL_PREVIEW_FILES ${3MF_IMPORT_FILES} ${OBJ_IMPORT_FILES} ${OFF_IMPORT_FILES} ${STL_IMPORT_FILES} ${ALL_RENDER_FILES} ${PRUNE_TEST} ${PREVIEW_ONLY_FILES})
+
+# used by cgal and manifold tests
+list(APPEND PREVIEW_COMMON_FILES ${ALL_PREVIEW_FILES})
+list(REMOVE_ITEM PREVIEW_COMMON_FILES
+  ${PREVIEW_DIFFERENT_EXPECTATIONS}
 )
 
 # used by cgal and manifold tests
@@ -228,12 +230,6 @@ list(APPEND RENDER_COMMON_FILES ${ALL_RENDER_FILES})
 list(REMOVE_ITEM RENDER_COMMON_FILES
   ${SCAD_NEF3_FILES}       # Nef3 import not supported in Manifold mode
   ${RENDER_DIFFERENT_EXPECTATIONS}
-)
-
-# used by cgal and manifold tests
-list(APPEND PREVIEW_COMMON_FILES ${ALL_PREVIEW_FILES})
-list(REMOVE_ITEM PREVIEW_COMMON_FILES
-  ${PREVIEW_DIFFERENT_EXPECTATIONS}
 )
 
 # used by cgal and manifold tests
@@ -251,3 +247,4 @@ list(REMOVE_ITEM ALL_THROWNTOGETHER_FILES
 	${TEST_SCAD_DIR}/3D/issues/issue2841.scad
 	${TEST_SCAD_DIR}/3D/issues/issue2841b.scad
 )
+
