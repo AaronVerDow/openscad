@@ -119,7 +119,7 @@ add_custom_target(svg_viewbox_tests ALL
   COMMENT "Generating svg viewbox tests"
 )
 
-include(./cmake/lists.cmake)
+include(./cmake/files.cmake)
 
 ##############################
 # Define test configurations #
