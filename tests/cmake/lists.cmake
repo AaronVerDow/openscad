@@ -29,6 +29,16 @@ file(GLOB SCAD_SVG_FILES      ${TEST_SCAD_DIR}/svg/svg-spec/*.scad
   ${EXAMPLES_DIR}/Functions/recursion.scad
 )
 
+# used by is2d function
+# 2D tests
+list(APPEND FILES_2D ${FEATURES_2D_FILES} ${ISSUES_2D_FILES} ${EXAMPLE_2D_FILES})
+list(APPEND ALL_2D_FILES
+  ${FILES_2D}
+  ${SCAD_DXF_FILES}
+  ${SCAD_SVG_FILES}
+  ${TEST_SCAD_DIR}/2D/features/text-metrics.scad
+)
+
 file(GLOB FEATURES_3D_FILES   ${TEST_SCAD_DIR}/3D/features/*.scad)
 file(GLOB DEPRECATED_3D_FILES ${TEST_SCAD_DIR}/3D/deprecated/*.scad)
 file(GLOB ISSUES_3D_FILES     ${TEST_SCAD_DIR}/3D/issues/*.scad)
@@ -46,16 +56,6 @@ list(APPEND COLOR_3D_TEST_FILES
   ${TEST_SCAD_DIR}/3D/features/color-tests3.scad
   ${TEST_SCAD_DIR}/3D/features/linear_extrude-parameter-tests.scad
   ${TEST_SCAD_DIR}/3D/features/resize-tests.scad
-)
-
-# used by a function
-# 2D tests
-list(APPEND FILES_2D ${FEATURES_2D_FILES} ${ISSUES_2D_FILES} ${EXAMPLE_2D_FILES})
-list(APPEND ALL_2D_FILES
-  ${FILES_2D}
-  ${SCAD_DXF_FILES}
-  ${SCAD_SVG_FILES}
-  ${TEST_SCAD_DIR}/2D/features/text-metrics.scad
 )
 
 # used by cgal and manifold tests
