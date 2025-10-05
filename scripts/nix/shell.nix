@@ -25,6 +25,7 @@ pkgs.mkShell {
     manifold
     mpfr
     opencsg
+    pipewire
     pkg-config
     python3
     python3Packages.numpy
@@ -50,6 +51,9 @@ pkgs.mkShell {
 
     # used by scripts/beautify.sh to clean up code
     clang-tools
+
+    act
+
   ];
 
   # avoid segfault when showing a file dialog or color picker
